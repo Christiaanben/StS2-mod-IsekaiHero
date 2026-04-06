@@ -34,7 +34,7 @@ public class IsekaiHero : PlaceholderCharacterModel
 
     public override IReadOnlyList<RelicModel> StartingRelics =>
     [
-        ModelDb.Relic<HealingSigil>()
+        ModelDb.Relic<VeilOfTheUnseen>()
     ];
     
     public override CardPoolModel CardPool => ModelDb.CardPool<IsekaiHeroCardPool>();
