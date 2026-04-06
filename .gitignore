@@ -1,4 +1,6 @@
 .godot/
+.dotnet/
+_buildmods/
 bin/
 /android/
 .git/
