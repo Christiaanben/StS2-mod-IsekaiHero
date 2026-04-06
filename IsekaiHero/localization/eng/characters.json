@@ -1,0 +1,16 @@
+{
+  "ISEKAIHERO-ISEKAI_HERO.title": "Isekai Hero",
+  "ISEKAIHERO-ISEKAI_HERO.titleObject": "the Isekai Hero",
+  "ISEKAIHERO-ISEKAI_HERO.description": "A wanderer from another world.",
+  "ISEKAIHERO-ISEKAI_HERO.pronounObject": "them",
+  "ISEKAIHERO-ISEKAI_HERO.possessiveAdjective": "their",
+  "ISEKAIHERO-ISEKAI_HERO.pronounPossessive": "theirs",
+  "ISEKAIHERO-ISEKAI_HERO.pronounSubject": "they",
+  "ISEKAIHERO-ISEKAI_HERO.goldMonologue": "Gold is useful in any world.",
+  "ISEKAIHERO-ISEKAI_HERO.eventDeathPrevention": "Fate refuses to let them fall here.",
+  "ISEKAIHERO-ISEKAI_HERO.aromaPrinciple": "The scent of another world lingers.",
+  "ISEKAIHERO-ISEKAI_HERO.cardsModifierTitle": "Isekai Hero Cards",
+  "ISEKAIHERO-ISEKAI_HERO.cardsModifierDescription": "Adds the Isekai Hero card pool.",
+  "ISEKAIHERO-ISEKAI_HERO.banter.alive.endTurnPing": "Still in this fight.",
+  "ISEKAIHERO-ISEKAI_HERO.banter.dead.endTurnPing": "So this is the end..."
+}
