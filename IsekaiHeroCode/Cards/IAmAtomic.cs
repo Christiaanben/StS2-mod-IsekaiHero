@@ -12,9 +12,6 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 public sealed class IAmAtomic() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Rare, TargetType.None)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-    public override string PortraitPath => "card.png".CardImagePath();
-    public override string CustomPortraitPath => "card.png".BigCardImagePath();
-    public override string BetaPortraitPath => "card.png".CardImagePath();
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [];
 
