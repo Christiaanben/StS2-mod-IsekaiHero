@@ -13,7 +13,7 @@ public class IsekaiHero : PlaceholderCharacterModel
 {
     public const string CharacterId = "IsekaiHero";
     
-    public static readonly Color Color = new("ffffff");
+    public static readonly Color Color = new("6C3082");
 
     public override Color NameColor => Color;
     public override CharacterGender Gender => CharacterGender.Neutral;
