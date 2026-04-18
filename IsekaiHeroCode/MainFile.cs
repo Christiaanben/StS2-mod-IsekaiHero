@@ -1,5 +1,6 @@
 using Godot;
 using HarmonyLib;
+using BaseLib.Patches.Localization;
 using MegaCrit.Sts2.Core.Modding;
 
 namespace IsekaiHero.IsekaiHeroCode;
@@ -13,6 +14,8 @@ public partial class MainFile : Node
 
     public static void Initialize()
     {
+        SimpleLoc.EnableSimpleLoc(ModId);
+
         Harmony harmony = new(ModId);
 
         harmony.PatchAll();
