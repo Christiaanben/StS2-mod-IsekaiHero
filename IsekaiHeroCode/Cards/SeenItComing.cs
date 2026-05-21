@@ -1,0 +1,51 @@
+using BaseLib.Abstracts;
+using BaseLib.Utils;
+using IsekaiHero.IsekaiHeroCode.Extensions;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
+
+namespace IsekaiHero.IsekaiHeroCode.Cards;
+
+public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Common, TargetType.AnyEnemy)
+{
+    public override bool GainsBlock => true;
+
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new BlockVar(6m, ValueProp.Move),
+        new PowerVar<WeakPower>(1m)
+    ];
+
+    public override List<(string, string)> Localization => new CardLoc(
+        "Seen it Coming",
+        "# Gain !Block! Block. If the enemy intends to attack, apply !WeakPower! Weak.");
+
+    // public override string CustomPortraitPath => "card.png".BigCardImagePath();
+    // public override string PortraitPath => "card.png".CardImagePath();
+    // public override string BetaPortraitPath => "card.png".CardImagePath();
+
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
+    {
+        await CommonActions.CardBlock(this, play);
+
+        if (play.Target?.Monster?.IntendsToAttack != true)
+            return;
+
+        await PowerCmd.Apply<WeakPower>(
+            play.Target,
+            DynamicVars.Weak.IntValue,
+            Owner.Creature,
+            this,
+            false);
+    }
+
+    protected override void OnUpgrade()
+    {
+        DynamicVars.Block.UpgradeValueBy(2m);
+        DynamicVars.Weak.UpgradeValueBy(1m);
+    }
+}
