@@ -150,7 +150,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 
 ### Attacks
 
-- [ ] **Tutorial Sword** - Common Attack, 1 Energy. Deal 7 (9) damage. If
+- [x] **Tutorial Sword** - Common Attack, 1 Energy. Deal 7 (9) damage. If
   you have a Job, deal 4 (6) more damage.
 - [ ] **Boss Telegraph** - Common Attack, 1 Energy. Deal 6 (8) damage. If
   the enemy intends to attack, gain 5 Block. Upgraded: when the conditional
