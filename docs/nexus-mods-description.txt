@@ -1,0 +1,35 @@
+[size=4][b]Description[/b][/size]
+[size=3]Isekai Hero is an early alpha playable character mod for Slay the Spire 2.
+
+Play as a genre-parody protagonist dropped into the Spire with outsider logic, status-screen instincts, and far too much confidence in the rules of another world. The character is being built around three themes: taking on Jobs, finding Exploits in the Spire's systems, and earning dramatic Cheat Skill moments through setup and deckbuilding.
+
+This first public alpha is a small test build. Expect an evolving card pool, experimental mechanics, placeholder or changing visuals, and balance changes as the character develops.[/size]
+
+[size=4][b]Installation instructions[/b][/size]
+[size=3]1. Install BaseLib for Slay the Spire 2 first.
+2. Download the latest Isekai Hero main file.
+3. Extract the downloaded archive.
+4. Put the extracted [b]IsekaiHero[/b] folder into your Slay the Spire 2 [b]mods[/b] folder.
+5. Check that the IsekaiHero folder contains:
+   - IsekaiHero.dll
+   - IsekaiHero.pck
+   - IsekaiHero.json
+6. Launch Slay the Spire 2 and load mods when prompted.
+
+Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is required but is not bundled with this mod.[/size]
+
+[size=4][b]Main features[/b][/size]
+[size=3]- A new playable Slay the Spire 2 character: the Isekai Hero.
+- A starter deck with Isekai Hero Defends and the starter relic Veil of the Unseen.
+- A small early alpha card set with genre-parody cards such as Status Appraisal, Seen it Coming, Truck-kun, Return by Death, Megiddo, and I Am Atomic.
+- A developing class identity focused on Jobs, Exploits, and Cheat Skills.
+- An alpha foundation that will grow through more cards, mechanics, balance passes, and visual work.[/size]
+
+[size=4][b]Requirements[/b][/size]
+[size=3]- Slay the Spire 2.
+- BaseLib for Slay the Spire 2.
+
+Isekai Hero is built for the current Slay the Spire 2 modding ecosystem and may need updates as the game and BaseLib change during Early Access.[/size]
+
+[size=4][b]Shout outs[/b][/size]
+[size=3]Thanks to Mega Crit for Slay the Spire 2, to Alchyr and the BaseLib/Slay the Spire 2 modding work that makes character mods possible, and to the wider modding community sharing examples, tools, and discoveries while the game evolves.[/size]

@@ -1,9 +1,9 @@
 {
   "id": "IsekaiHero",
-  "name": "IsekaiHero",
+  "name": "Isekai Hero",
   "author": "Christiaanben",
-  "description": "Slay the Spire 2 character mod created from a template for use with BaseLib",
-  "version": "v0.0.0",
+  "description": "Play as the Isekai Hero, an early alpha Slay the Spire 2 character mod built around outsider logic, status screens, dramatic cheat skills, and genre-parody cards. Expect a small evolving card pool, experimental mechanics, and balance changes as the class grows.",
+  "version": "v0.1.0-alpha",
   "has_pck": true,
   "has_dll": true,
   "dependencies": ["BaseLib"],
