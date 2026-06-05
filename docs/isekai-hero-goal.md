@@ -179,7 +179,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 
 - [x] **Status Appraisal** - Common Skill, 0 Energy. Look at the top 3 (5)
   cards of your draw pile. Put one into your hand and discard the others.
-- [ ] **Item Box** - Common Skill, 1 Energy. Gain 7 (10) Block. Choose a
+- [x] **Item Box** - Common Skill, 1 Energy. Gain 7 (10) Block. Choose a
   card in your hand. Retain it. Upgraded: choose up to 2 cards instead.
 - [x] **Seen it Coming** - Common Skill, 1 Energy. Gain 6 (8)
   Block. If the enemy intends to attack, apply 1 (2) Weak.
