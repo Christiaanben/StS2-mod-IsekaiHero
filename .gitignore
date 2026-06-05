@@ -27,3 +27,6 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Decompiled base game source files
+Scratch/
