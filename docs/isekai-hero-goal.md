@@ -168,8 +168,8 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
   Upgraded: count this Attack too.
 - [ ] **Monster Grinding** - Uncommon Attack, 1 Energy. Deal 10 (13) damage.
   If this kills, permanently increase this card's damage by 3 (4).
-- [ ] **Megiddo** - Rare Attack, 2 Energy. Deal 24 (30) damage. If you
-  played a Power this combat, deal 12 (16) damage to ALL enemies.
+- [x] **Megiddo** - Rare Attack, 2 Energy. Deal 18 (24) damage. If you
+  played a Power this turn, deal 9 (12) damage to ALL enemies.
 - [ ] **I Am Atomic** - Rare Attack, 3 Energy. Deal 36 (45) damage to ALL
   enemies. Costs 1 less this combat whenever you trigger a conditional effect.
   Upgraded: the first conditional effect you trigger each turn reduces this
