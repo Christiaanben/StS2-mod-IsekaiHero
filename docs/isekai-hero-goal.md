@@ -212,7 +212,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 - [ ] **Job: Alchemist** - Uncommon Power, 1 Energy. The first time each
   turn you apply a debuff, gain 4 (6) Block and your next Attack against that
   enemy deals 4 (6) more damage.
-- [ ] **Grinding Montage** - Rare Power, 2 Energy. At the start of your
+- [x] **Grinding Montage** - Rare Power, 2 Energy. At the start of your
   turn, upgrade 1 (2) random Attack or Skill in your hand for this combat. If a
   chosen card is already upgraded, reduce its cost by 1 this turn.
 - [ ] **Protagonist Privilege** - Rare Power, 2 Energy. Once (twice) each
