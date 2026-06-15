@@ -13,6 +13,8 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(7m, ValueProp.Move),
@@ -32,7 +34,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var damage = DynamicVars.Damage.BaseValue;
-        if (HasJob())
+        if (IsConditionalEffectActive(HasJob()))
             damage += DynamicVars["JobDamage"].BaseValue;
 
         await DamageCmd.Attack(damage).FromCard(this).Targeting(play.Target)

@@ -14,6 +14,8 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(18m, ValueProp.Move),
@@ -33,7 +35,7 @@ public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Ra
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        if (!PlayedPowerThisTurn())
+        if (!IsConditionalEffectActive(PlayedPowerThisTurn()))
             return;
 
         await DamageCmd.Attack(DynamicVars["PowerDamage"].BaseValue).FromCard(this)

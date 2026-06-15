@@ -11,6 +11,8 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class BossTelegraph() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -31,7 +33,7 @@ public sealed class BossTelegraph() : IsekaiHeroCard(1, CardType.Attack, CardRar
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        if (play.Target.Monster?.IntendsToAttack != true)
+        if (!IsConditionalEffectActive(play.Target.Monster?.IntendsToAttack == true))
             return;
 
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, play);

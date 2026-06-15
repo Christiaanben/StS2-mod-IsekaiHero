@@ -197,7 +197,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 - [ ] **Return by Death** - Rare Skill, 2 (1) Energy. At the start of your
   next turn, return to your HP, Block, and status values from when this was
   played. Lose all Energy next turn. Exhaust.
-- [ ] **System Menu** - Rare Skill, 2 Energy. Choose a card in your hand.
+- [x] **System Menu** - Rare Skill, 2 Energy. Choose a card in your hand.
   For the rest of combat, its conditional effects are always active. Upgraded:
   you may choose a card in your discard pile instead. Exhaust.
 

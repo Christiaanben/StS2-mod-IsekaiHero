@@ -3,7 +3,9 @@ using BaseLib.Extensions;
 using BaseLib.Utils;
 using IsekaiHero.IsekaiHeroCode.Character;
 using IsekaiHero.IsekaiHeroCode.Extensions;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using System.Runtime.CompilerServices;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
@@ -11,6 +13,10 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity, TargetType target) :
     CustomCardModel(cost, type, rarity, target)
 {
+    private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalOverride> ConditionalOverrides = new();
+
+    public virtual bool HasConditionalEffects => false;
+
     //Image size:
     //Normal art: 1000x760 (Using 500x380 should also work, it will simply be scaled.)
     //Full art: 606x852
@@ -23,4 +29,24 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     //Uses card_portraits/card_name.png as image path. These should be smaller images.
     public override string PortraitPath => $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".CardImagePath();
     public override string BetaPortraitPath => $"beta/{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".CardImagePath();
+
+    protected bool IsConditionalEffectActive(bool condition)
+    {
+        return condition ||
+               (CombatState != null &&
+                ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
+                ReferenceEquals(conditionalOverride.CombatState, CombatState));
+    }
+
+    public void EnableConditionalEffectsForCombat()
+    {
+        if (CombatState == null)
+            return;
+
+        ConditionalOverrides.Remove(this);
+        ConditionalOverrides.Add(this, new ConditionalOverride(CombatState));
+        CardCmd.ApplyKeyword(this, IsekaiHeroKeywords.Override);
+    }
+
+    private sealed record ConditionalOverride(object CombatState);
 }

@@ -12,6 +12,8 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -30,9 +32,11 @@ public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarit
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
+        ArgumentNullException.ThrowIfNull(play.Target);
+
         await CommonActions.CardBlock(this, play);
 
-        if (play.Target?.Monster?.IntendsToAttack != true)
+        if (!IsConditionalEffectActive(play.Target.Monster?.IntendsToAttack == true))
             return;
 
         await PowerCmd.Apply<WeakPower>(
