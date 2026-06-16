@@ -19,7 +19,7 @@ public sealed class ReturnByDeath() : IsekaiHeroCard(2, CardType.Skill, CardRari
 
     public override List<(string, string)> Localization => new CardLoc(
         "Return by Death",
-        "At the start of your next turn, return to your HP, Block, and status values from when this was played. Lose all Energy next turn. Exhaust.");
+        "At the start of your next turn, return to your HP, Block, and status values from when this was played. Lose all Energy next turn.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

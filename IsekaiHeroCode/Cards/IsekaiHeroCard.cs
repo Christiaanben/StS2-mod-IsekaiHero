@@ -14,6 +14,7 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     CustomCardModel(cost, type, rarity, target)
 {
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalOverride> ConditionalOverrides = new();
+    private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalTriggerState> ConditionalTriggers = new();
 
     public virtual bool HasConditionalEffects => false;
 
@@ -32,10 +33,29 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
 
     protected bool IsConditionalEffectActive(bool condition)
     {
-        return condition ||
+        var isActive = condition ||
                (CombatState != null &&
                 ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
                 ReferenceEquals(conditionalOverride.CombatState, CombatState));
+
+        if (isActive && CombatState != null)
+            MarkConditionalEffectTriggered();
+
+        return isActive;
+    }
+
+    public bool DidTriggerConditionalEffectThisPlay()
+    {
+        return ConditionalTriggers.TryGetValue(this, out var triggerState) &&
+               ReferenceEquals(triggerState.CombatState, CombatState);
+    }
+
+    public override Task BeforeCardPlayed(CardPlay cardPlay)
+    {
+        if (cardPlay.Card == this)
+            ConditionalTriggers.Remove(this);
+
+        return base.BeforeCardPlayed(cardPlay);
     }
 
     public void EnableConditionalEffectsForCombat()
@@ -48,5 +68,13 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
         CardCmd.ApplyKeyword(this, IsekaiHeroKeywords.Override);
     }
 
+    private void MarkConditionalEffectTriggered()
+    {
+        ConditionalTriggers.Remove(this);
+        ConditionalTriggers.Add(this, new ConditionalTriggerState(CombatState!));
+    }
+
     private sealed record ConditionalOverride(object CombatState);
+
+    private sealed record ConditionalTriggerState(object CombatState);
 }

@@ -17,7 +17,7 @@ public sealed class TruckKun() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Un
 
     public override List<(string, string)> Localization => new CardLoc(
         "Truck-kun",
-        "Deal 12 damage to all enemies. Apply 1 Vulnerable. Exhaust.");
+        "Deal 12 damage to all enemies. Apply 1 Vulnerable.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

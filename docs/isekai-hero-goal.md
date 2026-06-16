@@ -170,10 +170,9 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
   If this kills, permanently increase this card's damage by 3 (4).
 - [x] **Megiddo** - Rare Attack, 2 Energy. Deal 18 (24) damage. If you
   played a Power this turn, deal 9 (12) damage to ALL enemies.
-- [ ] **I Am Atomic** - Rare Attack, 3 Energy. Deal 36 (45) damage to ALL
-  enemies. Costs 1 less this combat whenever you trigger a conditional effect.
-  Upgraded: the first conditional effect you trigger each turn reduces this
-  card's cost by 2 instead. Exhaust.
+- [x] **I Am Atomic** - Rare Attack, 3 Energy. Deal 36 damage to ALL enemies.
+  Costs 1 less this combat whenever you trigger a conditional effect. Upgraded:
+  apply 1 Vulnerable to ALL enemies before dealing damage. Exhaust.
 
 ### Skills
 
