@@ -8,6 +8,7 @@
         <DefaultItemExcludes>packages/**</DefaultItemExcludes>
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <PathMap>$(AppOutputBase)=.\</PathMap>
+        <UseGodotExport>false</UseGodotExport>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -41,10 +42,12 @@
 
     <ItemGroup>
         <Compile Remove="IsekaiHero/**" />
+        <Compile Remove="Scratch/**" />
         <Compile Remove="materials/**" />
         <Compile Remove="shaders/**" />
         <Compile Remove="images/**" />
         <EmbeddedResource Remove="IsekaiHero/**" />
+        <EmbeddedResource Remove="Scratch/**" />
         <EmbeddedResource Remove="materials/**" />
         <EmbeddedResource Remove="shaders/**" />
         <EmbeddedResource Remove="images/**" />
@@ -82,14 +85,36 @@
               DestinationFolder="$(ModsPath)/$(MSBuildProjectName)" />
     </Target>
     
-    <Target Name="NeedGodotForPublish" BeforeTargets="Publish">
+    <Target Name="NeedGodotForPublish" BeforeTargets="Publish" Condition="'$(UseGodotExport)' == 'true'">
         <Error Text=" Godot path must be set up before publishing; Godot not found at path '$(GodotPath)'. Check Directory.Build.props file."
                Condition="'$(GodotPath)' == '' or !Exists('$(GodotPath)')"/>
     </Target>
-    <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
+    
+    <ItemGroup>
+        <GodotExportReference Include="$(Sts2DataDir)/sts2.dll" />
+        <GodotExportReference Include="$(Sts2DataDir)/0Harmony.dll" />
+    </ItemGroup>
+    
+    <Target Name="StageGameReferencesForGodotExport" BeforeTargets="GodotPublish" Condition="'$(UseGodotExport)' == 'true' and '$(IsInnerGodotExport)' != 'true'">
+        <Message Text="Staging game reference assemblies for Godot export." Importance="high" />
+        <Copy SourceFiles="@(GodotExportReference)"
+              DestinationFolder="$(TargetDir)"
+              SkipUnchangedFiles="true"
+              Condition="Exists('%(GodotExportReference.Identity)')" />
+        <Copy SourceFiles="@(GodotExportReference)"
+              DestinationFolder="$(PublishDir)"
+              SkipUnchangedFiles="true"
+              Condition="Exists('%(GodotExportReference.Identity)')" />
+    </Target>
+    
+    <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(UseGodotExport)' == 'true' and '$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
         <Message Text="Exporting Godot .pck to mods folder" Importance="high"/>
         <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;BasicExport&quot; &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;"
-              EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1"
-              ContinueOnError="WarnAndContinue"/>
+              EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1" />
+    </Target>
+    
+    <Target Name="CreateNexusPackage" AfterTargets="Publish" Condition="'$(IsInnerGodotExport)' != 'true'">
+        <Message Text="Creating Nexus package in dist folder." Importance="high" />
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$ErrorActionPreference = 'Stop'; $manifest = Get-Content -LiteralPath '$(MSBuildProjectDirectory)\$(AssemblyName).json' -Raw | ConvertFrom-Json; $releaseName = '$(MSBuildProjectName)-' + $manifest.version; $dist = '$(MSBuildProjectDirectory)\dist'; $stage = Join-Path $dist $releaseName; $modFolder = Join-Path $stage '$(MSBuildProjectName)'; New-Item -ItemType Directory -Force -Path $modFolder | Out-Null; Copy-Item -LiteralPath '$(ModsPath)$(MSBuildProjectName)\$(MSBuildProjectName).dll','$(ModsPath)$(MSBuildProjectName)\$(MSBuildProjectName).pck','$(ModsPath)$(MSBuildProjectName)\$(AssemblyName).json' -Destination $modFolder -Force; $zip = Join-Path $dist ($releaseName + '.zip'); if (Test-Path -LiteralPath $zip) { Remove-Item -LiteralPath $zip -Force }; Compress-Archive -LiteralPath $modFolder -DestinationPath $zip -Force; Write-Host ('Created ' + $zip)&quot;" />
     </Target>
 </Project>

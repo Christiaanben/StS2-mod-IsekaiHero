@@ -17,8 +17,11 @@ Directory.Build.props
 
 # Godot-specific ignores
 .import/
+*.import
+*.uid
 export.cfg
 export_credentials.cfg
+*.lnk
 
 # Imported translations (automatically generated from CSV files)
 *.translation
