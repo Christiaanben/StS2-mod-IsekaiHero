@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
@@ -12,6 +13,8 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 public sealed class SystemMenu() : IsekaiHeroCard(2, CardType.Skill, CardRarity.Rare, TargetType.None)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromKeyword(IsekaiHeroKeywords.Override)];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [];
 
