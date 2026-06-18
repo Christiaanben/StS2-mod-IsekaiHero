@@ -208,7 +208,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 - [ ] **Job: Spellblade** - Uncommon Power, 1 Energy. Once each turn,
   after you play a Skill, your next Attack this turn costs 1 less and deals 4
   (7) more damage.
-- [ ] **Job: Alchemist** - Uncommon Power, 1 Energy. The first time each
+- [x] **Job: Alchemist** - Uncommon Power, 1 Energy. The first time each
   turn you apply a debuff, gain 4 (6) Block and your next Attack against that
   enemy deals 4 (6) more damage.
 - [x] **Grinding Montage** - Rare Power, 2 Energy. At the start of your
