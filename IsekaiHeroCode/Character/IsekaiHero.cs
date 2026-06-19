@@ -5,7 +5,6 @@ using IsekaiHero.IsekaiHeroCode.Extensions;
 using IsekaiHero.IsekaiHeroCode.Relics;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Relics;
 
 namespace IsekaiHero.IsekaiHeroCode.Character;
@@ -21,11 +20,11 @@ public class IsekaiHero : PlaceholderCharacterModel
     public override int StartingHp => 70;
 
     public override IEnumerable<CardModel> StartingDeck => [
-        ModelDb.Card<StrikeIronclad>(),
-        ModelDb.Card<StrikeIronclad>(),
-        ModelDb.Card<StrikeIronclad>(),
-        ModelDb.Card<StrikeIronclad>(),
-        ModelDb.Card<StrikeIronclad>(),
+        ModelDb.Card<StrikeIsekaiHero>(),
+        ModelDb.Card<StrikeIsekaiHero>(),
+        ModelDb.Card<StrikeIsekaiHero>(),
+        ModelDb.Card<StrikeIsekaiHero>(),
+        ModelDb.Card<StrikeIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
