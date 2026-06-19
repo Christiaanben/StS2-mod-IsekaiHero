@@ -25,6 +25,24 @@ Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is 
 - A developing class identity focused on Jobs, Exploits, and Cheat Skills.
 - An alpha foundation that will grow through more cards, mechanics, balance passes, and visual work.[/size]
 
+[size=4][b]Development progress[/b][/size]
+[size=3]The long-term target is a full-sized character comparable to the official classes. In the current game, official character pools contain 87-88 cards, 8 character relics, and 3 character potions. The roadmap may change as Slay the Spire 2 develops.
+
+[b]Overall roadmap: 33 of 212 tracked items complete - 16%[/b]
+
+- [b]Cards:[/b] 15 of 88 implemented - 73 left - 17%
+- [b]Relics:[/b] 1 of 8 implemented - 7 left - 13%
+- [b]Potions:[/b] 0 of 3 implemented - 3 left - 0%
+- [b]Ancient and Architect interactions:[/b] 1 of 8 encounter sets implemented - 7 left - 13%
+- [b]Character animations:[/b] 0 of 6 implemented - 6 left - 0%
+- [b]Gameplay illustrations assigned:[/b] 16 of 99 planned pieces - 83 left - 16%
+
+The story count covers the Architect and the seven Ancient encounters currently used in the game's acts. One Architect conversation is present; the Ancient-specific conversations are still to be written.
+
+The animation target covers the core idle, attack, defend, hit, victory, and defeat animations. The character currently uses Ironclad placeholder visuals for combat, rest sites, merchants, and other character scenes.
+
+Current gameplay art consists of portraits for all 15 implemented cards and an illustration for Veil of the Unseen. Several are temporary reference images or placeholders rather than final original art. No potion artwork exists yet. Character-select and map icons are tracked separately from gameplay illustrations.[/size]
+
 [size=4][b]Requirements[/b][/size]
 [size=3]- Slay the Spire 2.
 - BaseLib for Slay the Spire 2.
