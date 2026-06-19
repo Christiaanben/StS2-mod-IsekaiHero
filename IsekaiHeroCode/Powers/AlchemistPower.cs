@@ -48,6 +48,7 @@ public sealed class AlchemistPower : IsekaiHeroPower
     }
 
     public override async Task AfterPowerAmountChanged(
+        PlayerChoiceContext choiceContext,
         PowerModel power,
         decimal amount,
         Creature? applier,
@@ -98,7 +99,7 @@ public sealed class AlchemistPower : IsekaiHeroPower
         return bonus;
     }
 
-    public override Task AfterAttack(AttackCommand command)
+    public override Task AfterAttack(PlayerChoiceContext choiceContext, AttackCommand command)
     {
         var data = GetInternalData<Data>();
         if (Owner != null &&
@@ -106,6 +107,7 @@ public sealed class AlchemistPower : IsekaiHeroPower
             command.ModelSource is CardModel { Type: CardType.Attack })
         {
             foreach (var target in command.Results
+                         .SelectMany(results => results)
                          .Select(result => result.Receiver)
                          .Distinct()
                          .ToArray())

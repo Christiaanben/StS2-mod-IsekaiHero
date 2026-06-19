@@ -23,6 +23,7 @@ public sealed class GrindingMontage() : IsekaiHeroCard(2, CardType.Power, CardRa
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         await PowerCmd.Apply<GrindingMontagePower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars.Cards.BaseValue,
             Owner.Creature,

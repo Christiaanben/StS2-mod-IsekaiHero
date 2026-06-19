@@ -155,7 +155,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 - [x] **Boss Telegraph** - Common Attack, 1 Energy. Deal 6 (8) damage. If
   the enemy intends to attack, gain 5 Block. Upgraded: when the conditional
   effect triggers, draw 1 card.
-- [ ] **Last-Hit Bonus** - Common Attack, 1 Energy. Deal 8 (11) damage. If
+- [x] **Last-Hit Bonus** - Common Attack, 1 Energy. Deal 8 (11) damage. If
   this kills, draw 1 (2) cards and gain 1 Energy.
 - [ ] **Training Arc** - Common Attack, 1 Energy. Deal 5 damage twice. If
   you played a Skill this turn, gain 4 Block. Upgraded: when the conditional

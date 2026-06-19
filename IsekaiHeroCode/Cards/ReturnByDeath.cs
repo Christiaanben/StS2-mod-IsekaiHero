@@ -31,6 +31,7 @@ public sealed class ReturnByDeath() : IsekaiHeroCard(2, CardType.Skill, CardRari
             .ToArray();
 
         var appliedPower = await PowerCmd.Apply<ReturnByDeathPower>(
+            choiceContext,
             Owner.Creature,
             1m,
             Owner.Creature,

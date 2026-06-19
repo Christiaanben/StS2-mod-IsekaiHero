@@ -50,6 +50,7 @@ public sealed class ReturnByDeathPower : IsekaiHeroPower
         foreach (var snapshot in state.SavedPowers)
         {
             await PowerCmd.Apply(
+                choiceContext,
                 snapshot.Power.ToMutable(snapshot.Amount),
                 Owner,
                 snapshot.Amount,

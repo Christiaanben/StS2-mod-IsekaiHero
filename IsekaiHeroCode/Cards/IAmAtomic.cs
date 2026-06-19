@@ -30,6 +30,7 @@ public sealed class IAmAtomic() : IsekaiHeroCard(3, CardType.Attack, CardRarity.
         if (IsUpgraded)
         {
             await PowerCmd.Apply<VulnerablePower>(
+                choiceContext,
                 combatState.Enemies,
                 DynamicVars.Vulnerable.IntValue,
                 Owner.Creature,

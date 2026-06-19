@@ -25,6 +25,7 @@ public sealed class JobAlchemist() : IsekaiHeroCard(1, CardType.Power, CardRarit
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         await PowerCmd.Apply<AlchemistPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["Amount"].BaseValue,
             Owner.Creature,

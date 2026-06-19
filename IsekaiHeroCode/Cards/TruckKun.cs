@@ -25,7 +25,7 @@ public sealed class TruckKun() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Un
             return;
 
         await CreatureCmd.Damage(choiceContext, CombatState.Enemies.AsEnumerable(), 12m, default(ValueProp), Owner.Creature, this);
-        await PowerCmd.Apply<VulnerablePower>(CombatState.Enemies, 1m, Owner.Creature, this, false);
+        await PowerCmd.Apply<VulnerablePower>(choiceContext, CombatState.Enemies, 1m, Owner.Creature, this, false);
     }
 
     protected override void OnUpgrade()

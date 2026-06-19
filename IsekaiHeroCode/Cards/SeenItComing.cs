@@ -40,6 +40,7 @@ public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarit
             return;
 
         await PowerCmd.Apply<WeakPower>(
+            choiceContext,
             play.Target,
             DynamicVars.Weak.IntValue,
             Owner.Creature,
