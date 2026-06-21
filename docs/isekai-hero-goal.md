@@ -182,7 +182,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
   card in your hand. Retain it. Upgraded: choose up to 2 cards instead.
 - [x] **Seen it Coming** - Common Skill, 1 Energy. Gain 6 (8)
   Block. If the enemy intends to attack, apply 1 (2) Weak.
-- [ ] **Route Guide** - Common Skill, 1 Energy. Gain 5 (7) Block. Look at
+- [x] **Route Guide** - Common Skill, 1 Energy. Gain 5 (7) Block. Look at
   the top 4 cards of your draw pile. Put one on top and the rest on the bottom.
   Upgraded: put up to 2 on top in any order.
 - [ ] **Job Change** - Uncommon Skill, 1 Energy. Choose a Job card from

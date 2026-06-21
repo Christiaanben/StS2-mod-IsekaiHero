@@ -26,10 +26,6 @@ public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarit
         "Seen it Coming",
         "# Gain !Block! Block. If the enemy intends to attack, apply !WeakPower! Weak.");
 
-    // public override string CustomPortraitPath => "card.png".BigCardImagePath();
-    // public override string PortraitPath => "card.png".CardImagePath();
-    // public override string BetaPortraitPath => "card.png".CardImagePath();
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         ArgumentNullException.ThrowIfNull(play.Target);
