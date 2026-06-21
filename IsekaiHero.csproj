@@ -46,6 +46,7 @@
         <Compile Remove="materials/**" />
         <Compile Remove="shaders/**" />
         <Compile Remove="images/**" />
+        <Compile Remove="$(NuGetPackageRoot)\krafs.publicizer\2.3.0\contentfiles\cs\any\Publicizer\IgnoresAccessChecksToAttribute.cs.uid" />
         <EmbeddedResource Remove="IsekaiHero/**" />
         <EmbeddedResource Remove="Scratch/**" />
         <EmbeddedResource Remove="materials/**" />
