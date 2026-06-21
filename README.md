@@ -8,13 +8,13 @@ gain a **Job**, find ways to **Exploit** the Spire's systems, and earn absurd
 
 ## Alpha Status
 
-The `v0.1.0-alpha` release is an early public test build. It currently includes:
+The `v0.4.0-alpha` release is an early public test build. It currently includes:
 
 - The Isekai Hero playable character.
 - A starter deck with Isekai Hero Defends and the starter relic Veil of the
   Unseen.
-- A small custom card set with early cards such as Status Appraisal, Seen it
-  Coming, Truck-kun, Return by Death, Megiddo, and I Am Atomic.
+- A 17-card custom set with cards such as Status Appraisal, Training Arc, Route
+  Guide, Truck-kun, Return by Death, Megiddo, and I Am Atomic.
 
 Expect the card pool, balance, visuals, and mechanics to change while the
 character moves toward its Jobs, Exploits, and Cheat Skills identity.
