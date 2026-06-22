@@ -160,7 +160,7 @@ Parenthetical values show planned upgrades, such as "Gain 5 (8) Block." An
 - [x] **Training Arc** - Common Attack, 1 Energy. Deal 5 damage twice. If
   you played a Skill this turn, gain 4 Block. Upgraded: when the conditional
   effect triggers, deal damage one additional time.
-- [ ] **Truck-kun** - Uncommon Attack, 2 Energy. Deal 15 (19) damage to ALL
+- [x] **Truck-kun** - Uncommon Attack, 2 Energy. Deal 15 (19) damage to ALL
   enemies. If this kills an enemy, gain 1 Energy. Upgraded: also draw 1 card.
   Exhaust.
 - [ ] **Cross-Class Combo** - Uncommon Attack, 1 Energy. Deal 6 damage once
