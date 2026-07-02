@@ -24,17 +24,17 @@ public class IsekaiHero : PlaceholderCharacterModel
         ModelDb.Card<StrikeIsekaiHero>(),
         ModelDb.Card<StrikeIsekaiHero>(),
         ModelDb.Card<StrikeIsekaiHero>(),
-        ModelDb.Card<StrikeIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
-        ModelDb.Card<DefendIsekaiHero>()
+        ModelDb.Card<Grind>(),
+        ModelDb.Card<StatCheck>()
     ];
 
     public override IReadOnlyList<RelicModel> StartingRelics =>
     [
-        ModelDb.Relic<VeilOfTheUnseen>()
+        ModelDb.Relic<TheSystem>()
     ];
 
     public override CardPoolModel CardPool => ModelDb.CardPool<IsekaiHeroCardPool>();

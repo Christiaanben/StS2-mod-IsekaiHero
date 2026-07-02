@@ -142,7 +142,7 @@ Every pair also gets explicit bridge cards (marked **[bridge]** below), per the 
 - **Name:** Isekai Hero (implemented id `ISEKAIHERO-ISEKAI_HERO`) · **HP:** 70 ✅ (as implemented — ties Silent) · **Energy:** 3 · **Color:** purple `#6C3082` ✅ (see §13 — possible clash with Necrobinder's palette) · **Energy icon:** a floating menu-cursor diamond
 - **Story blurb:** *"Died on a crosswalk. Woke up with a status screen. The Spire's rules are just code — and nobody patched it."* (Tie-in: summoned by a very bored Neow, who is canonically an Ancient in STS2.)
 - **Starting relic:** The System (§7) — **replaces the alpha's placeholder Veil of the Unseen** (heal 3 at combat start); its combat-start hook code is reusable.
-- **Starter deck (10):** 4× Strike ✅ · 4× Defend ✅ · 1× Grind · 1× Stat Check *(alpha currently ships 5/5 Strike/Defend — trim one of each when the signature basics land)*
+- **Starter deck (10):** 4× Strike ✅ · 4× Defend ✅ · 1× Grind ✅ · 1× Stat Check ✅
 
 ---
 
@@ -156,8 +156,8 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 - [x] **Strike** ✅ — 1⚡ · Attack · Deal 6 damage. *(U: 9)* · Art: nervous first swing at a slime (Grimgar vibes)
 - [x] **Defend** ✅ — 1⚡ · Skill · Gain 5 Block. *(U: 8)* · Art: arms crossed behind a battered wooden shield
-- [ ] **Grind** — 1⚡ · Attack · Deal 6 damage. Gain 2 EXP. *(U: 8 dmg, 3 EXP)* · Art: field of low-level slimes at sunrise
-- [ ] **Stat Check** — 1⚡ · Skill · Gain 4 Block. Exploit (Level 2+): gain 4 more. *(U: 5/+5)* · Art: translucent status window floating mid-battle (*So I'm a Spider* style)
+- [x] **Grind** ✅ — 1⚡ · Attack · Deal 6 damage. Gain 2 EXP. *(U: 8 dmg, 3 EXP)* · Art needed: field of low-level slimes at sunrise
+- [x] **Stat Check** ✅ — 1⚡ · Skill · Gain 4 Block. Exploit (Level 2+): gain 4 more. *(U: 5/+5)* · Art needed: a guild-issued status plate snapping open on the wrist (*Log Horizon* vibes — the Spider-style system window is taken by System Menu's existing art)
 
 ### 5.2 Commons (20 — 10 Attacks / 10 Skills)
 
@@ -299,7 +299,7 @@ Every archetype touches at least two pillars; no card is dead in a neighboring a
 
 ## 7. Relics (9 — verified tier template: Starter + upgraded Starter + 1C + 2U + 3R + 1 Shop)
 
-- [ ] **The System** *(Starter)* — Enemies grant 3 EXP when they die. Start each combat with 2 EXP. · Art: the blue window only you can see · *Replaces alpha placeholder **Veil of the Unseen** (heal 3 at combat start); reuse its `BeforeCombatStart` hook.*
+- [x] **The System** ✅ *(Starter)* — Enemies grant 3 EXP when they die (minions excluded, matching Fatal rules). Start each combat with 2 EXP. · Art needed: the blue window only you can see · *Replaced alpha placeholder Veil of the Unseen.*
 - [ ] **The System: Admin Mode** *(Ancient-upgraded Starter)* — Enemies grant 4 EXP when they die. Start each combat with 6 EXP. When you Level Up, draw 1. · Art: the same window, now with a password field left blank
 - [ ] **Beginner's Luck Charm** *(Common)* — Your first unmet Exploit condition each combat counts as met. · Art: a four-leaf clover in a smartphone case
 - [ ] **OP Smartphone** *(Uncommon)* — Whenever you Level Up, deal 5 damage to a random enemy. · Art: it has no signal and it doesn't matter (*In Another World With My Smartphone*)
@@ -366,7 +366,7 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 
 The stack is **C# on BaseLib-StS2** (not the raw GDScript loader): cards subclass `IsekaiHeroCard`, localization lives in `IsekaiHero/localization/eng/*.json`, build with `dotnet build` (see `AGENTS.md` for ILSpy decompile workflow and card-text conventions).
 
-- [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Stat Check basics + trim starter deck to 4/4+2. *Exit criterion: a full Act 1 run where leveling visibly happens.*
+- [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Stat Check basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/StatCheck) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
 - [ ] **Phase 2 — Exploit formalization:** extend the existing `HasConditionalEffects`/`IsConditionalEffectActive` hook with the stacking **Exploit** buff (consume-on-unmet), keep **Override** as the permanent state, print all conditions in `Exploit (…)` wording, build the shared condition library (one checker, not per-card logic). Port the 14 alpha cards to the new wording. Audit base-game cards for the compat tag list.
 - [ ] **Phase 3 — Quests:** Quest token type (Unplayable/Retain/objective tracking/exhaust-on-complete), the 8-token pool, Job Board & choose-1-of-3 UI (reuse `CardSelectCmd.FromSimpleGrid`).
 - [ ] **Phase 4 — Full pool:** all 88 cards, 9 relics, 3 potions, 2 Ancient cards wired to Ancient encounters; Job cycle (Spellblade, Appraiser — Alchemist exists).
