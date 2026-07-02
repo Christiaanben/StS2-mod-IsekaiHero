@@ -48,10 +48,11 @@ IsekaiHero/
 
 BaseLib is a dependency and is not bundled with this mod.
 
-## Design Goal
+## Design
 
-The current character goal and design filters live in
-[docs/isekai-hero-goal.md](docs/isekai-hero-goal.md).
+The full character design — mechanics (EXP/Level, Exploit, Quests), the 88-card
+list, relics, potions, balance guardrails, and the implementation roadmap —
+lives in [docs/IsekaiHero_Design.md](docs/IsekaiHero_Design.md).
 
 ## Build
 
