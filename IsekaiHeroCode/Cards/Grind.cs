@@ -21,11 +21,6 @@ public sealed class Grind() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Basi
         "Grind",
         "# Deal !Damage! damage. Gain !Exp! EXP.");
 
-    // Reuse the generic portrait until dedicated Grind art is added.
-    public override string CustomPortraitPath => "card.png".CardImagePath();
-    public override string PortraitPath => "card.png".CardImagePath();
-    public override string BetaPortraitPath => "card.png".CardImagePath();
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         ArgumentNullException.ThrowIfNull(play.Target);
