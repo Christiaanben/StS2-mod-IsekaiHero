@@ -2,8 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Powers;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
@@ -23,12 +23,9 @@ public class TheSystem : IsekaiHeroRelic
 
     public override bool ShouldReceiveCombatHooks => true;
 
-    public override async Task BeforeSideTurnStart(
-        PlayerChoiceContext choiceContext,
-        CombatSide side,
-        CombatState combatState)
+    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (side != Owner.Creature.Side || combatState.RoundNumber > 1)
+        if (player.Creature != Owner.Creature || player.PlayerCombatState?.TurnNumber > 1)
             return;
 
         Flash();
