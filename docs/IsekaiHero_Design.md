@@ -23,7 +23,7 @@ Verified structure of every STS2 character (from slaythespire.wiki.gg data modul
 | Slot | Template | IsekaiHero |
 |---|---|---|
 | Cards | 4 Basic + 20 Common + 36 Uncommon + 26 Rare + 2 Ancient = 88 | ✅ same |
-| Starter deck | 4 Strike + 4 Defend + 2 signature basics (1 generator + 1 spender) | Grind + Stat Check |
+| Starter deck | 4 Strike + 4 Defend + 2 signature basics (1 generator + 1 spender) | Grind + Danger Sense |
 | Relics | 1 Starter + 1 upgraded Starter + 1 C + 2 U + 3 R + 1 Shop = 9 | ✅ same |
 | Potions | 3 (one per rarity) | ✅ same |
 | Mechanics | 1 signature **resource** + 1 signature **keyword** + 1 supporting **package** | EXP/Level + Exploit + Quests |
@@ -142,7 +142,7 @@ Every pair also gets explicit bridge cards (marked **[bridge]** below), per the 
 - **Name:** Isekai Hero (implemented id `ISEKAIHERO-ISEKAI_HERO`) · **HP:** 70 ✅ (as implemented — ties Silent) · **Energy:** 3 · **Color:** purple `#6C3082` ✅ (see §13 — possible clash with Necrobinder's palette) · **Energy icon:** a floating menu-cursor diamond
 - **Story blurb:** *"Died on a crosswalk. Woke up with a status screen. The Spire's rules are just code — and nobody patched it."* (Tie-in: summoned by a very bored Neow, who is canonically an Ancient in STS2.)
 - **Starting relic:** The System (§7) — **replaces the alpha's placeholder Veil of the Unseen** (heal 3 at combat start); its combat-start hook code is reusable.
-- **Starter deck (10):** 4× Strike ✅ · 4× Defend ✅ · 1× Grind ✅ · 1× Stat Check ✅
+- **Starter deck (10):** 4× Strike ✅ · 4× Defend ✅ · 1× Grind ✅ · 1× Danger Sense ✅
 
 ---
 
@@ -157,7 +157,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Strike** ✅ — 1⚡ · Attack · Deal 6 damage. *(U: 9)* · Art: nervous first swing at a slime (Grimgar vibes)
 - [x] **Defend** ✅ — 1⚡ · Skill · Gain 5 Block. *(U: 8)* · Art: arms crossed behind a battered wooden shield
 - [x] **Grind** ✅ — 1⚡ · Attack · Deal 6 damage. Gain 2 EXP. *(U: 8 dmg, 3 EXP)* · Art needed: field of low-level slimes at sunrise
-- [x] **Stat Check** ✅ — 1⚡ · Skill · Gain 4 Block. Exploit (Level 2+): gain 4 more. *(U: 5/+5)* · Art needed: a guild-issued status plate snapping open on the wrist (*Log Horizon* vibes — the Spider-style system window is taken by System Menu's existing art)
+- [x] **Danger Sense** ✅ — 1⚡ · Skill · Gain 4 Block. Exploit (Level 2+): gain 4 more. *(U: 5/+5)* · Art needed: hero sidestepping an attack with an ! above their heads
 
 ### 5.2 Commons (20 — 10 Attacks / 10 Skills)
 
@@ -366,7 +366,7 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 
 The stack is **C# on BaseLib-StS2** (not the raw GDScript loader): cards subclass `IsekaiHeroCard`, localization lives in `IsekaiHero/localization/eng/*.json`, build with `dotnet build` (see `AGENTS.md` for ILSpy decompile workflow and card-text conventions).
 
-- [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Stat Check basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/StatCheck) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
+- [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Danger Sense basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/DangerSense) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
 - [ ] **Phase 2 — Exploit formalization:** extend the existing `HasConditionalEffects`/`IsConditionalEffectActive` hook with the stacking **Exploit** buff (consume-on-unmet), keep **Override** as the permanent state, print all conditions in `Exploit (…)` wording, build the shared condition library (one checker, not per-card logic). Port the 14 alpha cards to the new wording. Audit base-game cards for the compat tag list.
 - [ ] **Phase 3 — Quests:** Quest token type (Unplayable/Retain/objective tracking/exhaust-on-complete), the 8-token pool, Job Board & choose-1-of-3 UI (reuse `CardSelectCmd.FromSimpleGrid`).
 - [ ] **Phase 4 — Full pool:** all 88 cards, 9 relics, 3 potions, 2 Ancient cards wired to Ancient encounters; Job cycle (Spellblade, Appraiser — Alchemist exists).

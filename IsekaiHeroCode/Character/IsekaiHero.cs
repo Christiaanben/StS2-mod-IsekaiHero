@@ -29,7 +29,7 @@ public class IsekaiHero : PlaceholderCharacterModel
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<DefendIsekaiHero>(),
         ModelDb.Card<Grind>(),
-        ModelDb.Card<StatCheck>()
+        ModelDb.Card<DangerSense>()
     ];
 
     public override IReadOnlyList<RelicModel> StartingRelics =>

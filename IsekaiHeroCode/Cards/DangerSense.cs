@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class StatCheck() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Basic, TargetType.None)
+public sealed class DangerSense() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Basic, TargetType.None)
 {
     private const int RequiredLevel = 2;
 
@@ -25,13 +25,8 @@ public sealed class StatCheck() : IsekaiHeroCard(1, CardType.Skill, CardRarity.B
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
-        "Stat Check",
+        "Danger Sense",
         "# Gain !Block! Block. If you are Level 2 or higher, gain !BonusBlock! more Block.");
-
-    // Reuse the generic portrait until dedicated Stat Check art is added.
-    public override string CustomPortraitPath => "card.png".CardImagePath();
-    public override string PortraitPath => "card.png".CardImagePath();
-    public override string BetaPortraitPath => "card.png".CardImagePath();
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
