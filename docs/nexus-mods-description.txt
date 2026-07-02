@@ -6,7 +6,7 @@ Play as a genre-parody protagonist dropped into the Spire with outsider logic, s
 This early alpha is a small test build. Expect an evolving card pool, experimental mechanics, placeholder or changing visuals, and balance changes as the character develops.[/size]
 
 [size=4][b]Installation instructions[/b][/size]
-[size=3]1. Install BaseLib for Slay the Spire 2 first.
+[size=3]1. Install [url=https://www.nexusmods.com/slaythespire2/mods/103]BaseLib[/url] for Slay the Spire 2 first.
 2. Download the latest Isekai Hero main file.
 3. Extract the downloaded archive.
 4. Put the extracted [b]IsekaiHero[/b] folder into your Slay the Spire 2 [b]mods[/b] folder.
