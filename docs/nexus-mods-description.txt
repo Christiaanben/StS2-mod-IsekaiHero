@@ -1,9 +1,9 @@
 [size=4][b]Description[/b][/size]
 [size=3]Isekai Hero is an early alpha playable character mod for Slay the Spire 2.
 
-Play as a genre-parody protagonist dropped into the Spire with outsider logic, status-screen instincts, and far too much confidence in the rules of another world. The character is being built around three themes: taking on Jobs, finding Exploits in the Spire's systems, and earning dramatic Cheat Skill moments through setup and deckbuilding.
+Play as a genre-parody protagonist dropped into the Spire with outsider logic, status-screen instincts, and far too much confidence in the rules of another world. The current alpha begins the character's main combat identity: start each fight small, gain EXP, Level Up, and turn system knowledge into increasingly unfair turns.
 
-This early alpha is a small test build. Expect an evolving card pool, experimental mechanics, placeholder or changing visuals, and balance changes as the character develops.[/size]
+This early alpha is a small test build. Expect an evolving card pool, experimental mechanics, placeholder or changing visuals, and balance changes as the character develops toward the full EXP/Level, Exploit, and Quest design.[/size]
 
 [size=4][b]Installation instructions[/b][/size]
 [size=3]1. Install [url=https://www.nexusmods.com/slaythespire2/mods/103]BaseLib[/url] for Slay the Spire 2 first.
@@ -20,28 +20,29 @@ Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is 
 
 [size=4][b]Main features[/b][/size]
 [size=3]- A new playable Slay the Spire 2 character: the Isekai Hero.
-- A starter deck with Isekai Hero Defends and the starter relic Veil of the Unseen.
-- A 17-card early alpha set with genre-parody cards such as Status Appraisal, Training Arc, Route Guide, Truck-kun, Return by Death, Megiddo, and I Am Atomic.
-- A developing class identity focused on Jobs, Exploits, and Cheat Skills.
-- An alpha foundation that will grow through more cards, mechanics, balance passes, and visual work.[/size]
+- A new EXP and Level core: gain EXP during combat, Level Up, and earn Vigor when you ding.
+- A rebuilt starter package with 4 Strikes, 4 Defends, Grind, Danger Sense, and the starter relic The System.
+- The System grants EXP at combat start and when eligible enemies die.
+- A 19-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, System Menu, Megiddo, and I Am Atomic.
+- A developing class identity focused on EXP/Level snowballing, Exploits, Quests, Jobs, and Cheat Skill finishers.[/size]
 
 [size=4][b]Development progress[/b][/size]
-[size=3]The long-term target is a full-sized character comparable to the official classes. In the current game, official character pools contain 87-88 cards, 8 character relics, and 3 character potions. The roadmap may change as Slay the Spire 2 develops.
+[size=3]The long-term target is a full-sized character comparable to the official classes. In the current design target, the Isekai Hero pool contains 88 cards, 9 character relics, and 3 character potions. The roadmap may change as Slay the Spire 2 develops.
 
-[b]Overall roadmap: 37 of 212 tracked items complete - 17%[/b]
+[b]Overall roadmap: 39 of 213 tracked items complete - 18%[/b]
 
-- [b]Cards:[/b] 17 of 88 implemented - 71 left - 19%
-- [b]Relics:[/b] 1 of 8 implemented - 7 left - 13%
+- [b]Cards:[/b] 19 of 88 implemented - 69 left - 22%
+- [b]Relics:[/b] 1 of 9 implemented - 8 left - 11%
 - [b]Potions:[/b] 0 of 3 implemented - 3 left - 0%
 - [b]Ancient and Architect interactions:[/b] 1 of 8 encounter sets implemented - 7 left - 13%
 - [b]Character animations:[/b] 0 of 6 implemented - 6 left - 0%
-- [b]Gameplay illustrations assigned:[/b] 18 of 99 planned pieces - 81 left - 18%
+- [b]Gameplay illustrations assigned:[/b] 19 of 99 planned pieces - 80 left - 19%
 
 The story count covers the Architect and the seven Ancient encounters currently used in the game's acts. One Architect conversation is present; the Ancient-specific conversations are still to be written.
 
 The animation target covers the core idle, attack, defend, hit, victory, and defeat animations. The character currently uses Ironclad placeholder visuals for combat, rest sites, merchants, and other character scenes.
 
-Current gameplay art consists of portraits for all 17 implemented cards and an illustration for Veil of the Unseen. Several are temporary reference images or placeholders rather than final original art. No potion artwork exists yet. Character-select and map icons are tracked separately from gameplay illustrations.[/size]
+Current gameplay art consists of portraits for the implemented cards and relic art for The System. Several images are temporary reference images or placeholders rather than final original art. No potion artwork exists yet. Character-select and map icons are tracked separately from gameplay illustrations.[/size]
 
 [size=4][b]Requirements[/b][/size]
 [size=3]- Slay the Spire 2.
