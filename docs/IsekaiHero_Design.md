@@ -168,7 +168,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Mob Hunt** — 1⚡ · Deal 8. Fatal: gain 4 EXP. *(U: 11, 6 EXP)* · Art: giant toad hunt (*KonoSuba*)
 - [ ] **Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
 - [ ] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: first wobbly firebolt
-- [ ] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
+- [x] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
 - [ ] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: dual-wield silhouette (*SAO*)
 - [ ] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a certain scummy adventurer's signature move (*KonoSuba*)
 - [ ] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: AoE spell over a monster field, EXP numbers popping
@@ -200,7 +200,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
 - [ ] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: flurry with afterimages
 - [ ] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
-- [ ] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
+- [x] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
 - [ ] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: sword, spell, and scroll in one motion — multiclassing is technically illegal
 - [ ] **Cleave the Horde** — 2⚡ · Deal 8 to ALL. Whenever this kills an enemy, gain 3 EXP. *(U: 11)* · Art: one swing, a dozen EXP popups
 - [ ] **Counter Read** — 1⚡ · Deal 7. Exploit (an enemy intends to Attack): apply 2 Weak. *(U: 9, 3 Weak)* · Art: stepping inside a telegraphed swing
@@ -247,7 +247,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **EXPLOSION!** — 3⚡ · Deal 28 to ALL. You cannot play Attacks next turn. *(U: 36)* · Art: one glorious detonation, caster face-down in the dirt (*KonoSuba* — the obvious one)
 - [ ] **I Am Atomic** ✅ — 3⚡ · Deal 36 to ALL. Costs 1 less this combat whenever an Exploit condition is met. Exhaust. *(U: apply 1 Vulnerable to ALL enemies first)* · **[bridge: Exploit→finisher]** · Art: a black-caped figure whispering something chuunibyou (*Eminence in Shadow*)
 - [ ] **Starburst Stream** — X⚡ · Deal 4 damage X+2 times. *(U: 5)* · Art: sixteen-hit sword skill, screen full of light trails (*SAO*)
-- [ ] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
+- [x] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
 - [ ] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: holy sword at full charge, cape physics at maximum
 - [ ] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: raid-wide buff timers aligning on the final phase
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
