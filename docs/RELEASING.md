@@ -32,17 +32,16 @@ Do not put the Nexus API key, game DLLs, or local paths in the repository.
    python scripts/release.py prepare v0.6.0-alpha
    ```
 
-   This synchronizes the version in `IsekaiHero.json`, `README.md`, and the
-   checked-in Nexus description, then creates a changelog section when needed.
-2. Replace the generated changelog `TODO` with player-facing notes. Review all
-   counts and feature claims in `docs/nexus-mods-description.txt`, then paste
-   that file into the Nexus mod page.
+   This synchronizes the version in `IsekaiHero.json` and `README.md`, then
+   creates a changelog section when needed.
+2. Replace the generated changelog `TODO` with player-facing notes. These notes
+   become both the GitHub release body and the new Nexus file-version
+   description.
 3. Commit the release metadata and merge or push it to `main`. The **CI**
    workflow will compile the mod in GitHub's cloud and reject mismatched
    versions, missing notes, placeholders, and packaging failures.
 4. Open **Actions > Release > Run workflow**, choose `main`, enter the exact
-   version, and check the Nexus-description confirmation. Leave the Nexus
-   upload enabled for a normal public release.
+   version, and leave the Nexus upload enabled for a normal public release.
 
 The release job runs `dotnet build`, packages the generated PCK, creates and
 verifies the three-file installable zip, creates the matching tag and GitHub
@@ -50,9 +49,9 @@ release, and uploads the same zip to Nexus Mods. The changelog section becomes
 both the GitHub release body and the Nexus file-version description. Existing
 Nexus file versions are archived automatically.
 
-The official Nexus upload API currently updates an existing file version, not
-the full mod-page description. The confirmation checkbox is therefore an
-intentional final guardrail for the checked-in BBCode description.
+The workflow leaves the existing Nexus mod-page description alone. It creates
+a new version of the existing Nexus file with the release version, display
+name, installable ZIP, and changelog.
 
 For a GitHub-only recovery or test, uncheck **Upload the package to Nexus
 Mods**. Re-running the same version is safe only while the tag still points to

@@ -26,7 +26,7 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
-      - name: Validate version, changelog, and descriptions
+      - name: Validate version and changelog
         run: python scripts/release.py validate
 
       - name: Build with cloud reference assemblies

@@ -71,5 +71,5 @@ dotnet build
 
 Public releases use a deliberate manual GitHub Actions workflow. The mod is
 built and packaged on a GitHub-hosted runner; version, changelog, README, and
-Nexus-description checks run before publishing to GitHub and Nexus Mods. See
+package checks run before publishing to GitHub and Nexus Mods. See
 [docs/RELEASING.md](docs/RELEASING.md) for setup and the short release checklist.

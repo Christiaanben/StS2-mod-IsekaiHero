@@ -19,7 +19,6 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "IsekaiHero.json"
 README = ROOT / "README.md"
 CHANGELOG = ROOT / "CHANGELOG.md"
-NEXUS_DESCRIPTION = ROOT / "docs" / "nexus-mods-description.txt"
 
 VERSION_PATTERN = (
     r"v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)"
@@ -29,9 +28,6 @@ VERSION_PATTERN = (
 VERSION_RE = re.compile(rf"^{VERSION_PATTERN}$")
 README_VERSION_RE = re.compile(
     rf"^\*\*Current release:\*\* `(?P<version>{VERSION_PATTERN})`$", re.MULTILINE
-)
-NEXUS_VERSION_RE = re.compile(
-    rf"^\[b\]Current version:\[/b\] (?P<version>{VERSION_PATTERN})$", re.MULTILINE
 )
 
 
@@ -123,14 +119,6 @@ def prepare(version: str) -> None:
     )
     write_text(README, readme)
 
-    nexus_description = replace_single_marker(
-        read_text(NEXUS_DESCRIPTION),
-        NEXUS_VERSION_RE,
-        f"[b]Current version:[/b] {version}",
-        "docs/nexus-mods-description.txt",
-    )
-    write_text(NEXUS_DESCRIPTION, nexus_description)
-
     changelog = read_text(CHANGELOG)
     try:
         release_section(changelog, version)
@@ -149,7 +137,7 @@ def prepare(version: str) -> None:
         write_text(CHANGELOG, changelog)
 
     print(f"Prepared release metadata for {version}.")
-    print("Next: replace the CHANGELOG TODO and review the Nexus description.")
+    print("Next: replace the CHANGELOG TODO with player-facing release notes.")
 
 
 def validate(expected_version: str | None = None) -> str:
@@ -165,13 +153,6 @@ def validate(expected_version: str | None = None) -> str:
     if readme_versions != [version]:
         raise ReleaseError(
             f"README.md current release must be {version}; found {readme_versions or 'no marker'}."
-        )
-
-    nexus_versions = NEXUS_VERSION_RE.findall(read_text(NEXUS_DESCRIPTION))
-    if nexus_versions != [version]:
-        raise ReleaseError(
-            "docs/nexus-mods-description.txt current version must be "
-            f"{version}; found {nexus_versions or 'no marker'}."
         )
 
     changelog = read_text(CHANGELOG)
@@ -217,7 +198,7 @@ def export(output: Path, github_output: Path | None) -> None:
         "archive": f"dist/IsekaiHero-{version}.zip",
         "release_notes": output.as_posix(),
         "prerelease": str("-" in version.split("+", 1)[0]).lower(),
-        "nexus_description": nexus_notes,
+        "nexus_changelog": nexus_notes,
     }
 
     if github_output is None and os.environ.get("GITHUB_OUTPUT"):

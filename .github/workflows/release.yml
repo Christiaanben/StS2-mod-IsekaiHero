@@ -13,11 +13,6 @@ on:
         required: true
         default: true
         type: boolean
-      nexus_description_synced:
-        description: "I reviewed docs/nexus-mods-description.txt and synced the Nexus mod page"
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: write
@@ -36,12 +31,6 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: |
           echo "Releases must be run from the main branch."
-          exit 1
-
-      - name: Require Nexus description confirmation
-        if: inputs.publish_to_nexus && !inputs.nexus_description_synced
-        run: |
-          echo "Review and sync docs/nexus-mods-description.txt, then check the confirmation box."
           exit 1
 
       - name: Check out the release commit
@@ -114,7 +103,7 @@ jobs:
           filename: ${{ steps.release_metadata.outputs.archive }}
           version: ${{ steps.release_metadata.outputs.nexus_version }}
           display_name: ${{ steps.release_metadata.outputs.display_name }}
-          description: ${{ steps.release_metadata.outputs.nexus_description }}
+          description: ${{ steps.release_metadata.outputs.nexus_changelog }}
           category: main
           archive_existing_version: true
           primary_mod_manager_download: true
