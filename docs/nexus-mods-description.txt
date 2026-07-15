@@ -1,6 +1,8 @@
 [size=4][b]Description[/b][/size]
 [size=3]Isekai Hero is an early alpha playable character mod for Slay the Spire 2.
 
+[b]Current version:[/b] v0.6.0-alpha
+
 Play as a genre-parody protagonist dropped into the Spire with outsider logic, status-screen instincts, and far too much confidence in the rules of another world. The current alpha begins the character's main combat identity: start each fight small, gain EXP, Level Up, and turn system knowledge into increasingly unfair turns.
 
 This early alpha is a small test build. Expect an evolving card pool, experimental mechanics, placeholder or changing visuals, and balance changes as the character develops toward the full EXP/Level, Exploit, and Quest design.[/size]
@@ -23,20 +25,20 @@ Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is 
 - A new EXP and Level core: gain EXP during combat, Level Up, and earn Vigor when you ding.
 - A rebuilt starter package with 4 Strikes, 4 Defends, Grind, Danger Sense, and the starter relic The System.
 - The System grants EXP at combat start and when eligible enemies die.
-- A 19-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, System Menu, Megiddo, and I Am Atomic.
+- A 22-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, Shield Bash, Duel, Degenerate Tactics, Megiddo, and I Am Atomic.
 - A developing class identity focused on EXP/Level snowballing, Exploits, Quests, Jobs, and Cheat Skill finishers.[/size]
 
 [size=4][b]Development progress[/b][/size]
 [size=3]The long-term target is a full-sized character comparable to the official classes. In the current design target, the Isekai Hero pool contains 88 cards, 9 character relics, and 3 character potions. The roadmap may change as Slay the Spire 2 develops.
 
-[b]Overall roadmap: 39 of 213 tracked items complete - 18%[/b]
+[b]Overall roadmap: 45 of 213 tracked items complete - 21%[/b]
 
-- [b]Cards:[/b] 19 of 88 implemented - 69 left - 22%
+- [b]Cards:[/b] 22 of 88 implemented - 66 left - 25%
 - [b]Relics:[/b] 1 of 9 implemented - 8 left - 11%
 - [b]Potions:[/b] 0 of 3 implemented - 3 left - 0%
 - [b]Ancient and Architect interactions:[/b] 1 of 8 encounter sets implemented - 7 left - 13%
 - [b]Character animations:[/b] 0 of 6 implemented - 6 left - 0%
-- [b]Gameplay illustrations assigned:[/b] 19 of 99 planned pieces - 80 left - 19%
+- [b]Gameplay illustrations assigned:[/b] 22 of 99 planned pieces - 77 left - 22%
 
 The story count covers the Architect and the seven Ancient encounters currently used in the game's acts. One Architect conversation is present; the Ancient-specific conversations are still to be written.
 

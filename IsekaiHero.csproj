@@ -9,6 +9,12 @@
         <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
         <PathMap>$(AppOutputBase)=.\</PathMap>
         <UseGodotExport>false</UseGodotExport>
+        <!-- Use stripped, redistributable reference assemblies in cloud builds. -->
+        <UseGameReferencePackage Condition="'$(UseGameReferencePackage)' == '' and !Exists('$(Sts2DataDir)')">true</UseGameReferencePackage>
+        <!-- Local builds still install directly into the discovered game folder. -->
+        <InstallModOnBuild Condition="'$(InstallModOnBuild)' == '' and Exists('$(Sts2DataDir)')">true</InstallModOnBuild>
+        <!-- StS2.RefLib supplies this attribute itself in portable builds. -->
+        <PublicizerRuntimeStrategies Condition="'$(UseGameReferencePackage)' == 'true'">Unsafe</PublicizerRuntimeStrategies>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -17,7 +23,7 @@
         <NoWarn>$(NoWarn);MSB3270</NoWarn>
     </PropertyGroup>
 
-    <ItemGroup Condition="Exists('$(Sts2DataDir)')" >
+    <ItemGroup Condition="'$(UseGameReferencePackage)' != 'true' and Exists('$(Sts2DataDir)')" >
         <Reference Include="0Harmony">
             <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
             <Private>false</Private>
@@ -33,8 +39,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Book.StS2.RefLib" Version="0.107.1" PrivateAssets="All" Condition="'$(UseGameReferencePackage)' == 'true'" />
         <PackageReference Include="Alchyr.Sts2.BaseLib" Version="3.2.1" PrivateAssets="All" />
-        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="All"/>
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="All">
+            <ExcludeAssets Condition="'$(UseGameReferencePackage)' == 'true'">contentFiles</ExcludeAssets>
+        </PackageReference>
         <PackageReference Include="Alchyr.Sts2.ModAnalyzers" Version="*" />
         <PackageReference Include="BSchneppe.StS2.PckPacker" Version="0.1.1" PrivateAssets="All" />
         <AdditionalFiles Include="IsekaiHero/localization/**/*.json"/> <!-- Used by analyzer -->
@@ -68,19 +77,19 @@
       <Folder Include="IsekaiHero\images\relics\big\" />
     </ItemGroup>
     
-    <Target Name="CheckDependencyPaths" >
+    <Target Name="CheckDependencyPaths" Condition="'$(UseGameReferencePackage)' != 'true'" >
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
                 Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')" />
     </Target>
     
-    <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent">
+    <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent" Condition="'$(InstallModOnBuild)' == 'true'">
         <Message Text="Copying .dll and manifest to mods folder." Importance="high" />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/" />
         <Copy SourceFiles="$(AssemblyName).json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/" />
     </Target>
 
-    <Target Name="CopyQuickPck" AfterTargets="PackPck" Condition="Exists('$(PckPackerOutputPath)') And '$(PckPackerSkipped)' != 'true'">
+    <Target Name="CopyQuickPck" AfterTargets="PackPck" Condition="'$(InstallModOnBuild)' == 'true' And Exists('$(PckPackerOutputPath)') And '$(PckPackerSkipped)' != 'true'">
         <Message Text="Copying quick .pck to mods folder." Importance="high"/>
         <Copy SourceFiles="$(PckPackerOutputPath)"
               DestinationFolder="$(ModsPath)/$(MSBuildProjectName)" />

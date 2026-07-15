@@ -1,0 +1,122 @@
+name: Release
+run-name: Release ${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Exact version from IsekaiHero.json (for example v0.6.0-alpha)"
+        required: true
+        type: string
+      publish_to_nexus:
+        description: "Upload the package to Nexus Mods"
+        required: true
+        default: true
+        type: boolean
+      nexus_description_synced:
+        description: "I reviewed docs/nexus-mods-description.txt and synced the Nexus mod page"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: isekai-hero-release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Require the main branch
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Releases must be run from the main branch."
+          exit 1
+
+      - name: Require Nexus description confirmation
+        if: inputs.publish_to_nexus && !inputs.nexus_description_synced
+        run: |
+          echo "Review and sync docs/nexus-mods-description.txt, then check the confirmation box."
+          exit 1
+
+      - name: Check out the release commit
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Validate release metadata
+        run: python scripts/release.py validate --expected-version "${{ inputs.version }}"
+
+      - name: Check release configuration
+        env:
+          PUBLISH_TO_NEXUS: ${{ inputs.publish_to_nexus }}
+          NEXUSMODS_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}
+          NEXUSMODS_FILE_ID: ${{ vars.NEXUSMODS_FILE_ID }}
+        run: python scripts/release.py check-environment
+
+      - name: Ensure an existing tag belongs to this commit
+        run: >-
+          python scripts/release.py verify-tag
+          "${{ inputs.version }}"
+          "${{ github.sha }}"
+
+      - name: Build
+        run: python scripts/release.py build --configuration Release
+
+      - name: Create installable package
+        run: python scripts/release.py package --configuration Release
+
+      - name: Export release metadata
+        id: release_metadata
+        run: >-
+          python scripts/release.py export
+          --output dist/release-notes.md
+
+      - name: Verify installable package
+        run: >-
+          python scripts/release.py verify-package
+          "${{ steps.release_metadata.outputs.archive }}"
+          --expected-version "${{ inputs.version }}"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@fe965f7af51af5f2602596916f38a38df2e33de0 # v3.0.2
+        with:
+          tag_name: ${{ steps.release_metadata.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ steps.release_metadata.outputs.display_name }}
+          body_path: ${{ steps.release_metadata.outputs.release_notes }}
+          prerelease: ${{ steps.release_metadata.outputs.prerelease }}
+          make_latest: ${{ steps.release_metadata.outputs.prerelease == 'true' && 'false' || 'true' }}
+          fail_on_unmatched_files: true
+          files: ${{ steps.release_metadata.outputs.archive }}
+
+      - name: Upload to Nexus Mods
+        if: inputs.publish_to_nexus
+        uses: Nexus-Mods/upload-action@f6e1e2ea683dfe8f88cccf642c6e0e69ab66825e # v1.0.0-beta.8
+        with:
+          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
+          file_id: ${{ vars.NEXUSMODS_FILE_ID }}
+          filename: ${{ steps.release_metadata.outputs.archive }}
+          version: ${{ steps.release_metadata.outputs.nexus_version }}
+          display_name: ${{ steps.release_metadata.outputs.display_name }}
+          description: ${{ steps.release_metadata.outputs.nexus_description }}
+          category: main
+          archive_existing_version: true
+          primary_mod_manager_download: true
+          allow_mod_manager_download: true
+          show_requirements_pop_up: true
