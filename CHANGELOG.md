@@ -8,9 +8,14 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ### Changed
 
-- Moved release builds and packaging to a repeatable cloud workflow.
-- Added automatic version, changelog, and package validation before publishing.
-- Improved release reliability without changing gameplay or balance.
+- Release builds now run through a repeatable GitHub Actions workflow instead
+  of depending on a local developer machine.
+- Release packages are now built as a verified installable zip containing the
+  mod DLL, PCK, and manifest.
+- GitHub and Nexus Mods releases now reuse the same checked changelog notes,
+  with automatic validation for versions, package contents, and release tags.
+- No gameplay, card, relic, art, or balance changes are included in this
+  release.
 
 ## [v0.5.0-alpha] - 2026-07-15
 
