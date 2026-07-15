@@ -8,15 +8,21 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ### Added
 
+- Added Shield Bash, Duel, and Degenerate Tactics, expanding the early-alpha
+  card pool from 19 to 22 cards.
+
+### Changed
+
+- Updated the character energy UI and map marker art.
+- Moved release builds, package validation, and Nexus publishing to a
+  repeatable GitHub Actions workflow.
+
+## [v0.5.0-alpha] - 2026-07-02
+
+### Added
+
 - Added the EXP and Level combat system, including Vigor rewards when leveling
   up.
 - Added The System starter relic and rebuilt the starter deck around Grind and
   Danger Sense.
-- Expanded the early-alpha card pool to 22 cards with Training Arc, Route
-  Guide, Truck-kun, Grind, Danger Sense, Shield Bash, Duel, and Degenerate
-  Tactics.
-
-### Changed
-
-- Updated character energy UI, the map marker, card portraits, and relic art.
-- Refined the mod description around the EXP/Level, Exploit, Quest, Job, and Cheat Skill identity.
+- Added dedicated card and relic art for Grind and The System.
