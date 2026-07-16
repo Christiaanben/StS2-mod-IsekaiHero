@@ -2,7 +2,7 @@
 
 Isekai Hero is an alpha playable character mod for Slay the Spire 2.
 
-**Current release:** `v0.6.0-alpha`
+**Current release:** `v0.7.0-alpha`
 
 The character is a genre-parody power fantasy built around outsider logic:
 gain a **Job**, find ways to **Exploit** the Spire's systems, and earn absurd
@@ -15,8 +15,8 @@ The current release is an early public test build. It includes:
 - The Isekai Hero playable character.
 - A starter deck with 4 Strikes, 4 Defends, Grind, Danger Sense, and the
   starter relic The System.
-- A 22-card custom set with cards such as Status Appraisal, Training Arc, Route
-  Guide, Truck-kun, Return by Death, Shield Bash, Duel, and I Am Atomic.
+- A 25-card custom set with cards such as Status Appraisal, Training Arc, Route
+  Guide, Truck-kun, Mob Hunt, Growth Slash, EXPLOSION!, and I Am Atomic.
 
 Expect the card pool, balance, visuals, and mechanics to change while the
 character moves toward its Jobs, Exploits, and Cheat Skills identity.

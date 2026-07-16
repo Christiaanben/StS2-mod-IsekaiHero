@@ -4,6 +4,20 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+## [v0.7.0-alpha] - 2026-07-16
+
+### Added
+
+- Added Mob Hunt, Growth Slash, and EXPLOSION!, expanding the early-alpha card
+  pool from 22 to 25 cards.
+- Added card art for Mob Hunt, Growth Slash, and EXPLOSION!.
+
+### Changed
+
+- Updated the BaseLib dependency to 3.3.5.
+- Synced Nexus release metadata automatically during the GitHub Actions release
+  workflow.
+
 ## [v0.6.0-alpha] - 2026-07-16
 
 ### Added

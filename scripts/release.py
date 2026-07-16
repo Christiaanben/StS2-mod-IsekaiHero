@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "IsekaiHero.json"
 README = ROOT / "README.md"
 CHANGELOG = ROOT / "CHANGELOG.md"
+NEXUS_DESCRIPTION = ROOT / "docs" / "nexus-mods-description.txt"
 
 VERSION_PATTERN = (
     r"v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)"
@@ -28,6 +29,10 @@ VERSION_PATTERN = (
 VERSION_RE = re.compile(rf"^{VERSION_PATTERN}$")
 README_VERSION_RE = re.compile(
     rf"^\*\*Current release:\*\* `(?P<version>{VERSION_PATTERN})`$", re.MULTILINE
+)
+NEXUS_VERSION_RE = re.compile(
+    rf"^\[b\]Current version:\[/b\]\s+(?P<version>{VERSION_PATTERN})$",
+    re.MULTILINE,
 )
 
 
@@ -153,6 +158,13 @@ def validate(expected_version: str | None = None) -> str:
     if readme_versions != [version]:
         raise ReleaseError(
             f"README.md current release must be {version}; found {readme_versions or 'no marker'}."
+        )
+
+    nexus_versions = NEXUS_VERSION_RE.findall(read_text(NEXUS_DESCRIPTION))
+    if nexus_versions != [version]:
+        raise ReleaseError(
+            "docs/nexus-mods-description.txt current version must be "
+            f"{version}; found {nexus_versions or 'no marker'}."
         )
 
     changelog = read_text(CHANGELOG)
