@@ -36,12 +36,14 @@ Do not put the Nexus API key, game DLLs, or local paths in the repository.
    creates a changelog section when needed.
 2. Replace the generated changelog `TODO` with player-facing notes. These notes
    become both the GitHub release body and the new Nexus file-version
-   description.
+   description. Update the Nexus mod-page description and its changelog too:
+   the public upload API cannot edit those fields.
 3. Commit the release metadata and merge or push it to `main`. The **CI**
    workflow will compile the mod in GitHub's cloud and reject mismatched
    versions, missing notes, placeholders, and packaging failures.
 4. Open **Actions > Release > Run workflow**, choose `main`, enter the exact
-   version, and leave the Nexus upload enabled for a normal public release.
+   version, confirm that the Nexus mod-page description and changelog are
+   updated, and leave the Nexus upload enabled for a normal public release.
 
 The release job runs `dotnet build`, packages the generated PCK, creates and
 verifies the three-file installable zip, creates the matching tag and GitHub
@@ -49,9 +51,11 @@ release, and uploads the same zip to Nexus Mods. The changelog section becomes
 both the GitHub release body and the Nexus file-version description. Existing
 Nexus file versions are archived automatically.
 
-The workflow leaves the existing Nexus mod-page description alone. It creates
-a new version of the existing Nexus file with the release version, display
-name, installable ZIP, and changelog.
+The workflow creates a new version of the existing Nexus file with the release
+version, display name, installable ZIP, and changelog. It also updates the
+mod-page version to match the uploaded file. Nexus's public upload API does
+not expose the full mod-page description or changelog, so the workflow requires
+confirmation that those fields were updated manually before publishing.
 
 For a GitHub-only recovery or test, uncheck **Upload the package to Nexus
 Mods**. Re-running the same version is safe only while the tag still points to

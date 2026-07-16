@@ -13,6 +13,11 @@ on:
         required: true
         default: true
         type: boolean
+      nexus_description_synced:
+        description: "I updated the Nexus mod-page description and changelog"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -31,6 +36,12 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: |
           echo "Releases must be run from the main branch."
+          exit 1
+
+      - name: Require Nexus description confirmation
+        if: inputs.publish_to_nexus && !inputs.nexus_description_synced
+        run: |
+          echo "Update the Nexus mod-page description and changelog, then check the confirmation box."
           exit 1
 
       - name: Check out the release commit
@@ -96,7 +107,7 @@ jobs:
 
       - name: Upload to Nexus Mods
         if: inputs.publish_to_nexus
-        uses: Nexus-Mods/upload-action@f6e1e2ea683dfe8f88cccf642c6e0e69ab66825e # v1.0.0-beta.8
+        uses: Nexus-Mods/upload-action@19da5c91527877cd0bfedc6e6239c911035846a0 # includes update_mod_version
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_id: ${{ vars.NEXUSMODS_FILE_ID }}
@@ -109,3 +120,4 @@ jobs:
           primary_mod_manager_download: true
           allow_mod_manager_download: true
           show_requirements_pop_up: true
+          update_mod_version: true
