@@ -219,7 +219,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: layered hexagonal ward
 - [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
 - [ ] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: a montage of 400 identical slime kills
-- [ ] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: noble villainess talking her way out of a doom flag (*My Next Life as a Villainess*)
+- [x] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: brown-haired noble girl offering tea as three crimson doom arrows bend harmlessly behind her (*My Next Life as a Villainess*)
 - [ ] **Applied Physics** — 1⚡ · Gain 8 Block. The next Attack you play this turn ignores Block. *(U: 11 Block; draw 1)* · Art: explaining leverage to a knight, moments before demonstrating it (*Bookworm* energy)
 - [ ] **Side Story** — 0⚡ · Add a random Quest to your hand. Gain 1 Exploit. *(U: choose 1 of 3 Quests)* · **[bridge: Quest×Exploit]** · Art: a stranger's subplot becoming your problem
 - [ ] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: waterfall meditation, split-screen training cuts
