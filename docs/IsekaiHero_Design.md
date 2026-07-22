@@ -179,7 +179,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 **Skills**
 
 - [ ] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: pre-dawn practice montage (*Mushoku Tensei*)
-- [ ] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
+- [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
 - [ ] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: sidestep begun before the swing starts (*Cautious Hero*)
