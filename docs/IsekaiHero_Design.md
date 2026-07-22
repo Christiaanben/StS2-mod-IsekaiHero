@@ -183,7 +183,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
 - [ ] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: sidestep begun before the swing starts (*Cautious Hero*)
-- [ ] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: undignified but effective flailing dive (*Re:Zero*)
+- [x] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: Subaru's panicked back-fall beneath Elsa's kukri (*Re:Zero*)
 - [ ] **Side Quest** — 0⚡ · Add a random Quest to your hand. Gain 1 EXP. *(U: 2 EXP)* · Art: villager with an exclamation mark over their head
 - [ ] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: appraisal window over a suspicious potion (*Tensura*)
 - [ ] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: pulling tomorrow's answer out of hammerspace
