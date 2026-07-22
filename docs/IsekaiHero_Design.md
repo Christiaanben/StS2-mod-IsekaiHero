@@ -169,7 +169,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
 - [ ] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: first wobbly firebolt
 - [x] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
-- [ ] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: dual-wield silhouette (*SAO*)
+- [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
 - [ ] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a certain scummy adventurer's signature move (*KonoSuba*)
 - [ ] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: AoE spell over a monster field, EXP numbers popping
 - [ ] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: the kill-credit popup every MMO player fights over
