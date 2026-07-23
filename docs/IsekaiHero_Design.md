@@ -203,7 +203,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
 - [ ] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: sword, spell, and scroll in one motion — multiclassing is technically illegal
 - [ ] **Cleave the Horde** — 2⚡ · Deal 8 to ALL. Whenever this kills an enemy, gain 3 EXP. *(U: 11)* · Art: one swing, a dozen EXP popups
-- [ ] **Counter Read** — 1⚡ · Deal 7. Exploit (an enemy intends to Attack): apply 2 Weak. *(U: 9, 3 Weak)* · Art: stepping inside a telegraphed swing
+- [x] **Counter Read** — 1⚡ · Deal 7. Exploit (an enemy intends to Attack): apply 2 Weak. *(U: 9, 3 Weak)* · Art: a masked mastermind catching a blade bare-handed atop a train (*The Eminence in Shadow*)
 - [ ] **Killing Blow** — 1⚡ · Deal 6. Fatal: Level Up. *(U: 9)* · **[bridge: kill→Level]** · Art: finishing strike dissolving a boss into light
 - [ ] **Skill Chain** — 2⚡ · Deal 5 three times. *(U: 6×)* · Art: system-assisted sword-skill combo, edges glowing
 - [ ] **Monster Grinding** — 1⚡ · Deal 10. Fatal: permanently increase this card's damage by 3. *(U: 13, +4)* · Art: evolution menu after the hundredth kill (*So I'm a Spider*) — run-persistent scaling, see §13
