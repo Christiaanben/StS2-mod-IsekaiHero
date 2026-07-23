@@ -4,6 +4,21 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+## [v0.8.0-alpha] - 2026-07-23
+
+### Added
+
+- Added Daily Training, Study the System, Beginner Magic, Steal, Twin Blades,
+  Farm the Field, Emergency Dodge, Negotiation, Overkill, and Hero's Judgment,
+  expanding the early-alpha card pool from 25 to 35 cards.
+- Added card art for all ten new cards.
+
+### Changed
+
+- Expanded the EXP/Level and Exploit support package with more early commons,
+  direct EXP gain, Fatal EXP rewards, Gold gain, Weak application, AoE farming,
+  and level-gated payoff attacks.
+
 ## [v0.7.0-alpha] - 2026-07-16
 
 ### Added
