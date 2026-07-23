@@ -223,7 +223,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Applied Physics** — 1⚡ · Gain 8 Block. The next Attack you play this turn ignores Block. *(U: 11 Block; draw 1)* · Art: explaining leverage to a knight, moments before demonstrating it (*Bookworm* energy)
 - [ ] **Side Story** — 0⚡ · Add a random Quest to your hand. Gain 1 Exploit. *(U: choose 1 of 3 Quests)* · **[bridge: Quest×Exploit]** · Art: a stranger's subplot becoming your problem
 - [ ] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: waterfall meditation, split-screen training cuts
-- [ ] **Death Flag** — 1⚡ · Apply 2 Vulnerable. Gain 1 EXP. *(U: 3 Vulnerable)* · Art: bandit boasting he'll "end this in one hit" (he won't) — our one Vulnerable card
+- [x] **Death Flag** — 1⚡ · Apply 2 Vulnerable. Gain 1 EXP. *(U: 3 Vulnerable)* · Art: a young villainess uprooting doom flags with a hoe (*My Next Life as a Villainess*) — our one Vulnerable card
 - [ ] **Dodge the Bad End** — 1⚡ · Choose a card in your discard pile. Put it on top of your draw pile. It costs 0 next turn. *(U: put it into your hand instead; it costs 0 this turn)* · Art: frantically steering away from the doomed route (*Villainess*)
 
 **Powers**
