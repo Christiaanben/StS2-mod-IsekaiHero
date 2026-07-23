@@ -196,7 +196,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 **Attacks**
 
 - [x] **Growth Slash** — 1⚡ · Deal damage equal to 3× your Level. *(U: 4×)* · Art: sword swing leaving a level-up light trail (*SAO*)
-- [ ] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: artillery spell vaporizing one goblin (*Tanya the Evil*)
+- [x] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: airborne computation-jewel rifle blast obliterating one goblin (*Saga of Tanya the Evil*)
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
 - [ ] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: flurry with afterimages
 - [ ] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
