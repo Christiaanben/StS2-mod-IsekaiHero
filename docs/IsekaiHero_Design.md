@@ -167,10 +167,10 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 - [x] **Mob Hunt** — 1⚡ · Deal 8. Fatal: gain 4 EXP. *(U: 11, 6 EXP)* · Art: giant toad hunt (*KonoSuba*)
 - [ ] **Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
-- [ ] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: first wobbly firebolt
+- [x] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: a child mage's first oversized Water Ball (*Mushoku Tensei*)
 - [x] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
 - [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
-- [ ] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a certain scummy adventurer's signature move (*KonoSuba*)
+- [x] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
 - [ ] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: AoE spell over a monster field, EXP numbers popping
 - [ ] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: the kill-credit popup every MMO player fights over
 - [ ] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: glowing red AoE marker on the floor
@@ -178,8 +178,8 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 **Skills**
 
-- [ ] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: pre-dawn practice montage (*Mushoku Tensei*)
-- [ ] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
+- [x] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)
+- [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
 - [ ] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: sidestep begun before the swing starts (*Cautious Hero*)
