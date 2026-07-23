@@ -249,7 +249,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Starburst Stream** — X⚡ · Deal 4 damage X+2 times. *(U: 5)* · Art: sixteen-hit sword skill, screen full of light trails (*SAO*)
 - [x] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
 - [x] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
-- [ ] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: raid-wide buff timers aligning on the final phase
+- [x] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: a black-red Machine God cannon array converges on a colossal boss core (*BOFURI*)
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
 - [ ] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: pillar of light called down with theatrical excess (*Overlord*)
 - [ ] **Grand Finale** — 3⚡ · Deal damage equal to 10 plus all EXP you gained this combat. Exhaust. *(U: 15 plus)* · Art: every technique learned this arc, used at once
