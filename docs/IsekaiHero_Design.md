@@ -167,10 +167,10 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 - [x] **Mob Hunt** — 1⚡ · Deal 8. Fatal: gain 4 EXP. *(U: 11, 6 EXP)* · Art: giant toad hunt (*KonoSuba*)
 - [ ] **Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
-- [ ] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: first wobbly firebolt
+- [x] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: a child mage's first oversized Water Ball (*Mushoku Tensei*)
 - [x] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
-- [ ] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: dual-wield silhouette (*SAO*)
-- [ ] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a certain scummy adventurer's signature move (*KonoSuba*)
+- [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
+- [x] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
 - [x] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)
 - [ ] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: the kill-credit popup every MMO player fights over
 - [ ] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: glowing red AoE marker on the floor
@@ -178,12 +178,12 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 **Skills**
 
-- [ ] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: pre-dawn practice montage (*Mushoku Tensei*)
-- [ ] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
+- [x] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)
+- [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
 - [ ] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: sidestep begun before the swing starts (*Cautious Hero*)
-- [ ] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: undignified but effective flailing dive (*Re:Zero*)
+- [x] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: Subaru's panicked back-fall beneath Elsa's kukri (*Re:Zero*)
 - [ ] **Side Quest** — 0⚡ · Add a random Quest to your hand. Gain 1 EXP. *(U: 2 EXP)* · Art: villager with an exclamation mark over their head
 - [ ] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: appraisal window over a suspicious potion (*Tensura*)
 - [ ] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: pulling tomorrow's answer out of hammerspace
@@ -196,7 +196,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 **Attacks**
 
 - [x] **Growth Slash** — 1⚡ · Deal damage equal to 3× your Level. *(U: 4×)* · Art: sword swing leaving a level-up light trail (*SAO*)
-- [ ] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: artillery spell vaporizing one goblin (*Tanya the Evil*)
+- [x] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: airborne computation-jewel rifle blast obliterating one goblin (*Saga of Tanya the Evil*)
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
 - [ ] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: flurry with afterimages
 - [ ] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
@@ -219,7 +219,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: layered hexagonal ward
 - [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
 - [ ] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: a montage of 400 identical slime kills
-- [ ] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: noble villainess talking her way out of a doom flag (*My Next Life as a Villainess*)
+- [x] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: brown-haired noble girl offering tea as three crimson doom arrows bend harmlessly behind her (*My Next Life as a Villainess*)
 - [ ] **Applied Physics** — 1⚡ · Gain 8 Block. The next Attack you play this turn ignores Block. *(U: 11 Block; draw 1)* · Art: explaining leverage to a knight, moments before demonstrating it (*Bookworm* energy)
 - [ ] **Side Story** — 0⚡ · Add a random Quest to your hand. Gain 1 Exploit. *(U: choose 1 of 3 Quests)* · **[bridge: Quest×Exploit]** · Art: a stranger's subplot becoming your problem
 - [ ] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: waterfall meditation, split-screen training cuts
@@ -248,7 +248,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **I Am Atomic** ✅ — 3⚡ · Deal 36 to ALL. Costs 1 less this combat whenever an Exploit condition is met. Exhaust. *(U: apply 1 Vulnerable to ALL enemies first)* · **[bridge: Exploit→finisher]** · Art: a black-caped figure whispering something chuunibyou (*Eminence in Shadow*)
 - [ ] **Starburst Stream** — X⚡ · Deal 4 damage X+2 times. *(U: 5)* · Art: sixteen-hit sword skill, screen full of light trails (*SAO*)
 - [x] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
-- [ ] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: holy sword at full charge, cape physics at maximum
+- [x] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
 - [ ] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: raid-wide buff timers aligning on the final phase
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
 - [ ] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: pillar of light called down with theatrical excess (*Overlord*)
