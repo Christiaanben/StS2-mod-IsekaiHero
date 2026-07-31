@@ -19,12 +19,12 @@ public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Ra
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(18m, ValueProp.Move),
-        new DamageVar("PowerDamage", 9m, ValueProp.Move)
+        new ExtraDamageVar(9m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Megiddo",
-        "# Deal !Damage! damage. If you played a Power this turn, deal !PowerDamage! damage to ALL enemies.");
+        "# Deal !Damage! damage. If you played a Power this turn, deal !ExtraDamage! damage to ALL enemies.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -38,7 +38,7 @@ public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Ra
         if (!IsConditionalEffectActive(PlayedPowerThisTurn()))
             return;
 
-        await DamageCmd.Attack(DynamicVars["PowerDamage"].BaseValue).FromCard(this)
+        await DamageCmd.Attack(DynamicVars.ExtraDamage.BaseValue).FromCard(this)
             .TargetingAllOpponents(combatState)
             .WithHitFx("vfx/vfx_attack_blunt", null, "heavy_attack.mp3")
             .Execute(choiceContext);
@@ -47,7 +47,7 @@ public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Ra
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(6m);
-        DynamicVars["PowerDamage"].UpgradeValueBy(3m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(3m);
     }
 
     private bool PlayedPowerThisTurn()

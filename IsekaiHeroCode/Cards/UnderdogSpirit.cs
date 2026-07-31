@@ -18,12 +18,12 @@ public sealed class UnderdogSpirit() : IsekaiHeroCard(1, CardType.Attack, CardRa
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(5m, ValueProp.Move),
-        new DamageVar("BonusDamage", 5m, ValueProp.Move)
+        new ExtraDamageVar(5m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Underdog Spirit",
-        "# Deal !Damage! damage. Exploit (Level 3+): deal !BonusDamage! more damage.");
+        "# Deal !Damage! damage. Exploit (Level 3+): deal !ExtraDamage! more damage.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -31,7 +31,7 @@ public sealed class UnderdogSpirit() : IsekaiHeroCard(1, CardType.Attack, CardRa
 
         var damage = DynamicVars.Damage.BaseValue;
         if (IsConditionalEffectActive(LevelPower.GetLevel(Owner.Creature) >= RequiredLevel))
-            damage += DynamicVars["BonusDamage"].BaseValue;
+            damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage)
             .FromCard(this)
@@ -43,6 +43,6 @@ public sealed class UnderdogSpirit() : IsekaiHeroCard(1, CardType.Attack, CardRa
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(1m);
-        DynamicVars["BonusDamage"].UpgradeValueBy(2m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(2m);
     }
 }

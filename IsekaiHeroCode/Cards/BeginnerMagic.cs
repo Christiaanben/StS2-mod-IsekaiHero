@@ -18,12 +18,12 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(5m, ValueProp.Move),
-        new DamageVar("SkillDamage", 4m, ValueProp.Move)
+        new ExtraDamageVar(4m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Beginner Magic",
-        "# Deal !Damage! damage. Exploit (you played a Skill this turn): deal !SkillDamage! more damage.");
+        "# Deal !Damage! damage. Exploit (you played a Skill this turn): deal !ExtraDamage! more damage.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -31,7 +31,7 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
         var damage = DynamicVars.Damage.BaseValue;
         if (IsConditionalEffectActive(PlayedSkillThisTurn()))
-            damage += DynamicVars["SkillDamage"].BaseValue;
+            damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage)
             .FromCard(this)
@@ -43,7 +43,7 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(1m);
-        DynamicVars["SkillDamage"].UpgradeValueBy(2m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(2m);
     }
 
     private bool PlayedSkillThisTurn()

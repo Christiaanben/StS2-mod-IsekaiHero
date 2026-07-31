@@ -18,12 +18,12 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(7m, ValueProp.Move),
-        new DamageVar("JobDamage", 4m, ValueProp.Move)
+        new ExtraDamageVar(4m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Tutorial Sword",
-        "# Deal !Damage! damage. If you have a Job, deal !JobDamage! more damage.");
+        "# Deal !Damage! damage. If you have a Job, deal !ExtraDamage! more damage.");
 
     // public override string CustomPortraitPath => "tutorialsword.png".BigCardImagePath();
     // public override string PortraitPath => "tutorialsword.png".CardImagePath();
@@ -35,7 +35,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
         var damage = DynamicVars.Damage.BaseValue;
         if (IsConditionalEffectActive(HasJob()))
-            damage += DynamicVars["JobDamage"].BaseValue;
+            damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage).FromCard(this).Targeting(play.Target)
             .WithHitFx("vfx/vfx_attack_slash")
@@ -45,7 +45,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2m);
-        DynamicVars["JobDamage"].UpgradeValueBy(2m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(2m);
     }
 
     private bool HasJob()
