@@ -216,7 +216,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Cheat Inventory** — 1⚡ · Choose a card in your hand. Add a copy of it to your hand. Exhaust. *(U: no Exhaust)* · Art: pulling a duplicate sword out of thin air (*Tensura* Great Sage vibes)
 - [ ] **Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: draw 3)* · Art: minimap revealing every hidden room
 - [ ] **Save Scum** — 1⚡ · Discard your hand. Draw that many cards. *(U: draw 1 more)* · Art: the same hallway, the seventh attempt (*Re:Zero*)
-- [ ] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: layered hexagonal ward
+- [x] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: Air Strike Shield chaining into three layered wards (*The Rising of the Shield Hero*)
 - [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
 - [ ] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: a montage of 400 identical slime kills
 - [x] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: brown-haired noble girl offering tea as three crimson doom arrows bend harmlessly behind her (*My Next Life as a Villainess*)
