@@ -199,7 +199,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: airborne computation-jewel rifle blast obliterating one goblin (*Saga of Tanya the Evil*)
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
 - [ ] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: flurry with afterimages
-- [ ] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
+- [x] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
 - [x] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
 - [ ] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: sword, spell, and scroll in one motion — multiclassing is technically illegal
 - [ ] **Cleave the Horde** — 2⚡ · Deal 8 to ALL. Whenever this kills an enemy, gain 3 EXP. *(U: 11)* · Art: one swing, a dozen EXP popups
