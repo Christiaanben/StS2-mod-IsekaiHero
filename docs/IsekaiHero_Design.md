@@ -264,7 +264,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Reincarnate** — 2⚡ · Level Up twice. Exhaust. *(U: three times)* · Art: the glowing circle, the new sky, the second chance
 - [ ] **Party Formation** — 1⚡ · Choose 2: deal 8 damage / gain 8 Block / gain 4 EXP. *(U: all three)* · Art: dysfunctional four-person party, somehow functional
 - [ ] **Full Clear** — 3⚡ · Complete ALL Quests in your hand. *(U: 2⚡)* · Art: 100% completion screen, every sidequest ticked
-- [ ] **Slow Life** — 1⚡ · Heal 3 and gain 6 Block. Exhaust. *(U: 4/8)* · Art: farming isekai — turnips, sunshine, zero urgency (*Farming Life in Another World*)
+- [x] **Slow Life** — 1⚡ · Heal 3 and gain 6 Block. Exhaust. *(U: 4/8)* · Art: a first giant-turnip harvest beneath the great tree (*Farming Life in Another World*)
 
 **Powers**
 
