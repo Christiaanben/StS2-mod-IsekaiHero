@@ -4,6 +4,20 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+
+## [v0.9.0-alpha] - 2026-08-25
+
+### Added
+
+- Added Death Flag, Underdog Spirit, Raid Opener, Counter Read, Barrier Magic,
+  Starburst Stream, Slow Life, and Anti-Boss Art, expanding the early-alpha
+  card pool from 35 to 43 cards.
+- Added card art for all eight new cards.
+
+### Changed
+
+- Refined damage-variable handling for Beginner Magic, Duel, Megiddo, and
+  Tutorial Sword so their displayed values and effects stay in sync.
 ## [v0.8.0-alpha] - 2026-07-23
 
 ### Added
