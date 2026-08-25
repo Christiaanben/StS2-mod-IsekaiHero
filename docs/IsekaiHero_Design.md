@@ -198,14 +198,14 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Growth Slash** — 1⚡ · Deal damage equal to 3× your Level. *(U: 4×)* · Art: sword swing leaving a level-up light trail (*SAO*)
 - [x] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: airborne computation-jewel rifle blast obliterating one goblin (*Saga of Tanya the Evil*)
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
-- [ ] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: flurry with afterimages
+- [x] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: Lloyd's gleeful layered spell barrage against Guisarme (*I Was Reincarnated as the 7th Prince* — Guisarme duel)
 - [x] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
 - [x] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
-- [ ] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: sword, spell, and scroll in one motion — multiclassing is technically illegal
+- [x] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: Iruma fires the Pandoroola bow as sword, spell, and scroll motifs converge (*Welcome to Demon School! Iruma-kun* — Harvest Festival bow scene)
 - [ ] **Cleave the Horde** — 2⚡ · Deal 8 to ALL. Whenever this kills an enemy, gain 3 EXP. *(U: 11)* · Art: one swing, a dozen EXP popups
 - [x] **Counter Read** — 1⚡ · Deal 7. Exploit (an enemy intends to Attack): apply 2 Weak. *(U: 9, 3 Weak)* · Art: a masked mastermind catching a blade bare-handed atop a train (*The Eminence in Shadow*)
 - [ ] **Killing Blow** — 1⚡ · Deal 6. Fatal: Level Up. *(U: 9)* · **[bridge: kill→Level]** · Art: finishing strike dissolving a boss into light
-- [ ] **Skill Chain** — 2⚡ · Deal 5 three times. *(U: 6×)* · Art: system-assisted sword-skill combo, edges glowing
+- [x] **Skill Chain** — 2⚡ · Deal 5 three times. *(U: 6×)* · Art: Diablo chains three blue-white spell impacts into a demon opponent (*How Not to Summon a Demon Lord* — high-tier spell duel)
 - [ ] **Monster Grinding** — 1⚡ · Deal 10. Fatal: permanently increase this card's damage by 3. *(U: 13, +4)* · Art: evolution menu after the hundredth kill (*So I'm a Spider*) — run-persistent scaling, see §13
 - [ ] **Steal Technique** — 1⚡ · Deal 7. Exploit (target has a debuff): gain 2 EXP. *(U: 9, 3 EXP)* · Art: copying an enemy skill into the menu (*Shield Hero*)
 
@@ -218,11 +218,11 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Save Scum** — 1⚡ · Discard your hand. Draw that many cards. *(U: draw 1 more)* · Art: the same hallway, the seventh attempt (*Re:Zero*)
 - [x] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: Air Strike Shield chaining into three layered wards (*The Rising of the Shield Hero*)
 - [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
-- [ ] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: a montage of 400 identical slime kills
+- [x] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: Kumoko amid a trail of defeated low-level labyrinth monsters and stacked level-up glows (*So I'm a Spider, So What?* — Great Elroe Labyrinth grind)
 - [x] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: brown-haired noble girl offering tea as three crimson doom arrows bend harmlessly behind her (*My Next Life as a Villainess*)
 - [ ] **Applied Physics** — 1⚡ · Gain 8 Block. The next Attack you play this turn ignores Block. *(U: 11 Block; draw 1)* · Art: explaining leverage to a knight, moments before demonstrating it (*Bookworm* energy)
 - [ ] **Side Story** — 0⚡ · Add a random Quest to your hand. Gain 1 Exploit. *(U: choose 1 of 3 Quests)* · **[bridge: Quest×Exploit]** · Art: a stranger's subplot becoming your problem
-- [ ] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: waterfall meditation, split-screen training cuts
+- [x] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: Kazuya studies maps and reforms while Living Poltergeist drives a fan of floating quills (*How a Realist Hero Rebuilt the Kingdom* — royal paperwork montage)
 - [x] **Death Flag** — 1⚡ · Apply 2 Vulnerable. Gain 1 EXP. *(U: 3 Vulnerable)* · Art: a young villainess uprooting doom flags with a hoe (*My Next Life as a Villainess*) — our one Vulnerable card
 - [ ] **Dodge the Bad End** — 1⚡ · Choose a card in your discard pile. Put it on top of your draw pile. It costs 0 next turn. *(U: put it into your hand instead; it costs 0 this turn)* · Art: frantically steering away from the doomed route (*Villainess*)
 
@@ -361,6 +361,13 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | So I'm a Spider, So What? | A student reincarnates as a lowly dungeon spider and levels through constant survival fights. | Monster evolution, skill grinding, predatory survival, desperate snowballing. |
 | Ascendance of a Bookworm | A book lover reincarnates into a poor sickly child in a world where books are scarce. | Modern knowledge, making technology from constraints, obsessive goals, low-power cleverness. |
 | My Next Life as a Villainess | A girl realizes she is the doomed villainess of an otome game and tries to dodge every bad route. | Doom flags, route prediction, social loopholes, winning by misunderstanding the genre. |
+| Welcome to Demon School! Iruma-kun | A kind human boy is adopted by a demon and enrolled in a school where revealing his humanity would be disastrous. | Rank progression, unusual Jobs, found-party comedy, clever survival, and the Pandoroola bow. |
+| Saga of Tanya the Evil | A ruthless salaryman is reincarnated as a child mage fighting an alternate-world industrial war. | Tactical foresight, aerial combat reads, computation-jewel magic, and terrifying overkill. |
+| I Was Reincarnated as the 7th Prince | A magic obsessive is reborn with the talent and freedom to master every spell he can find. | Spell experimentation, stacked magic circles, rapid skill chains, and gleefully excessive power. |
+| Seirei Gensouki: Spirit Chronicles | A slum orphan awakens memories of a past life and grows into a gifted swordsman navigating divided identities. | Underdog training, spirit arts, academy duels, and disciplined sword technique. |
+| BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. | A new VRMMO player puts every point into defense and accidentally creates a delightfully broken build. | Defense-as-offense, system loopholes, party protection, transformations, and unconventional optimization. |
+| How a Realist Hero Rebuilt the Kingdom | A summoned student rebuilds a struggling kingdom through administration, economics, and practical knowledge. | Modern knowledge applied at scale, paperwork as power, team delegation, and solving fantasy problems systemically. |
+| How Not to Summon a Demon Lord | A socially awkward MMO expert is summoned in the body of his overpowered demon-lord avatar. | Game knowledge, chained high-tier spells, role-playing bravado, and power hidden behind social panic. |
 
 ## 12. Implementation roadmap
 
