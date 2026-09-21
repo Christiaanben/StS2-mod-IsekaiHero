@@ -21,7 +21,7 @@ public sealed class IAmAtomic() : IsekaiHeroCard(3, CardType.Attack, CardRarity.
 
     public override List<(string, string)> Localization => new CardLoc(
         "I Am Atomic",
-        "# {IfUpgraded:show:Apply !VulnerablePower! Vulnerable and deal|Deal} !Damage! damage to ALL enemies. Costs 1 less this combat whenever you trigger a conditional effect.");
+        "# {IfUpgraded:show:Apply !VulnerablePower! Vulnerable to ALL enemies, then deal|Deal} !Damage! damage to ALL enemies. Costs 1 less this combat whenever an Exploit condition is met.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

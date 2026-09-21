@@ -24,7 +24,7 @@ public sealed class Megiddo() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Ra
 
     public override List<(string, string)> Localization => new CardLoc(
         "Megiddo",
-        "# Deal !Damage! damage. If you played a Power this turn, deal !ExtraDamage! damage to ALL enemies.");
+        "# Deal !Damage! damage. Exploit (you played a Power this turn): deal !ExtraDamage! damage to ALL enemies.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

@@ -172,9 +172,9 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
 - [x] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
 - [x] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)
-- [ ] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: the kill-credit popup every MMO player fights over
-- [ ] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: glowing red AoE marker on the floor
-- [ ] **Tutorial Sword** ✅ — 1⚡ · Deal 7. Exploit (you have a Job): deal 4 more. *(U: 9/+6)* · Art: the starter blade every summoned hero outgrows (*SAO* tutorial plaza)
+- [x] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: Maple's absurd finishing bite against the Poison Dragon (*BOFURI*)
+- [x] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: Tanya diving through artillery toward a glowing strike zone (*Saga of Tanya the Evil*)
+- [x] **Tutorial Sword** ✅ — 1⚡ · Deal 7. Exploit (you have a Job): deal 4 more. *(U: 9/+6)* · Art: Rio's disciplined wooden-sword academy duel (*Spirit Chronicles*)
 
 **Skills**
 
@@ -182,12 +182,12 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
-- [ ] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: sidestep begun before the swing starts (*Cautious Hero*)
+- [x] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: Seiya's sidestep begun before the demon's swing starts (*Cautious Hero*)
 - [x] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: Subaru's panicked back-fall beneath Elsa's kukri (*Re:Zero*)
 - [ ] **Side Quest** — 0⚡ · Add a random Quest to your hand. Gain 1 EXP. *(U: 2 EXP)* · Art: villager with an exclamation mark over their head
-- [ ] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: appraisal window over a suspicious potion (*Tensura*)
-- [ ] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: pulling tomorrow's answer out of hammerspace
-- [ ] **Route Guide** ✅ — 1⚡ · Gain 5 Block. Look at the top 4 cards of your draw pile. Put one on top and the rest on the bottom. *(U: 7 Block; up to 2 on top in any order)* · Art: a walkthrough for a world that shouldn't have one
+- [x] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: Great Sage's appraisal window over a suspicious potion (*Tensura*)
+- [x] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: Lloyd drawing a sword from a forbidden-library storage portal (*7th Prince*)
+- [x] **Route Guide** ✅ — 1⚡ · Gain 5 Block. Look at the top 4 cards of your draw pile. Put one on top and the rest on the bottom. *(U: 7 Block; up to 2 on top in any order)* · Art: Shiroe routing a raid across a glowing dungeon map (*Log Horizon*)
 
 ### 5.3 Uncommons (36 — 13 Attacks / 14 Skills / 9 Powers)
 
@@ -245,20 +245,20 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 **Attacks**
 
 - [x] **EXPLOSION!** — 3⚡ · Deal 28 to ALL. You cannot play Attacks next turn. *(U: 36)* · Art: one glorious detonation, caster face-down in the dirt (*KonoSuba* — the obvious one)
-- [ ] **I Am Atomic** ✅ — 3⚡ · Deal 36 to ALL. Costs 1 less this combat whenever an Exploit condition is met. Exhaust. *(U: apply 1 Vulnerable to ALL enemies first)* · **[bridge: Exploit→finisher]** · Art: a black-caped figure whispering something chuunibyou (*Eminence in Shadow*)
+- [x] **I Am Atomic** ✅ — 3⚡ · Deal 36 to ALL. Costs 1 less this combat whenever an Exploit condition is met. Exhaust. *(U: apply 1 Vulnerable to ALL enemies first)* · **[bridge: Exploit→finisher]** · Art: Shadow beneath the violet halo in the underground sanctuary (*Eminence in Shadow*)
 - [x] **Starburst Stream** — X⚡ · Deal 4 damage X+2 times. *(U: 5)* · Art: a dual-wielder spiraling through cyan and orange sixteen-hit trails toward The Gleam Eyes (*SAO*)
 - [x] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
 - [x] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
 - [x] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: a black-red Machine God cannon array converges on a colossal boss core (*BOFURI*)
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
-- [ ] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: pillar of light called down with theatrical excess (*Overlord*)
+- [x] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: Ainz's Fallen Down pillar against Shalltear (*Overlord*)
 - [ ] **Grand Finale** — 3⚡ · Deal damage equal to 10 plus all EXP you gained this combat. Exhaust. *(U: 15 plus)* · Art: every technique learned this arc, used at once
 
 **Skills**
 
 - [ ] **Sequence Break** — 1⚡ · Complete a Quest in your hand. Draw 1. *(U: 0⚡)* · **[bridge: Exploit-philosophy×Quest]** · Art: walking through a wall the developers forgot to finish
 - [ ] **Checkpoint** — 1⚡ · Exhaust. The next time you would die this combat, instead heal 15 HP and gain 8 EXP. *(U: 20 HP, 10 EXP)* · Art: waking up at the save point, memories intact (*Re:Zero*) · *Salvage: the alpha's `ReturnByDeathPower.cs` state-tracking is a starting point (§14).*
-- [ ] **System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: dragging enemy stats into the trash
+- [x] **System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: Sora breaks the living-chess rules by dragging the enemy king into a discard slot (*No Game No Life*)
 - [ ] **Goddess's Blessing** — 2⚡ · Heal 8. Exploit (Level 6+): heal 14 instead. Exhaust. *(U: 10/17)* · Art: divine light, smug goddess demanding gratitude
 - [ ] **Perfect Preparation** — 2⚡ · Gain 15 Block. Exploit (you have a Quest in your hand): gain 10 more. *(U: 18/+12)* · Art: 47 contingency plans, laminated (*Cautious Hero*)
 - [ ] **Reincarnate** — 2⚡ · Level Up twice. Exhaust. *(U: three times)* · Art: the glowing circle, the new sky, the second chance
@@ -368,6 +368,21 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. | A new VRMMO player puts every point into defense and accidentally creates a delightfully broken build. | Defense-as-offense, system loopholes, party protection, transformations, and unconventional optimization. |
 | How a Realist Hero Rebuilt the Kingdom | A summoned student rebuilds a struggling kingdom through administration, economics, and practical knowledge. | Modern knowledge applied at scale, paperwork as power, team delegation, and solving fantasy problems systemically. |
 | How Not to Summon a Demon Lord | A socially awkward MMO expert is summoned in the body of his overpowered demon-lord avatar. | Game knowledge, chained high-tier spells, role-playing bravado, and power hidden behind social panic. |
+
+**Implemented card-art checklist (2026-09-21):** each portrait is an original, simplified redraw that uses the named scene as composition inspiration rather than copying a frame.
+
+| Done | Card | Anime inspiration | Scene used for the card art |
+| --- | --- | --- | --- |
+| [x] | Last-Hit Bonus | *BOFURI* | Maple survives the three-headed Poison Dragon, then lands the absurd finishing bite/devour in the starter dungeon. |
+| [x] | Boss Telegraph | *Saga of Tanya the Evil* | Tanya dives through an aerial artillery barrage while the strike zone burns below her. |
+| [x] | Tutorial Sword | *Seirei Gensouki: Spirit Chronicles* | Rio demonstrates his disciplined wooden-sword stance during Royal Academy training. |
+| [x] | Seen It Coming | *Cautious Hero* | Seiya has already sidestepped before an oversized demon attack finishes its swing. |
+| [x] | Status Appraisal | *That Time I Got Reincarnated as a Slime* | Rimuru asks Great Sage to analyze a suspicious potion and its ingredients. |
+| [x] | Item Box | *I Was Reincarnated as the 7th Prince* | Lloyd explores the forbidden library, calmly drawing a weapon from a violet portal amid floating grimoires. |
+| [x] | Route Guide | *Log Horizon* | Shiroe directs a raid over a glowing dungeon map and routes the party around the obvious approach. |
+| [x] | I Am Atomic | *The Eminence in Shadow* | Shadow's first “I Am Atomic” against Zenon, centered beneath the violet halo in the underground sanctuary. |
+| [x] | Megiddo | *Overlord* | Ainz casts Fallen Down on Shalltear, calling a colossal blue-white pillar into the scorched clearing. |
+| [x] | System Menu | *No Game No Life* | Sora recognizes that the living-chess match is not ordinary chess and exploits the rules mid-game. |
 
 ## 12. Implementation roadmap
 

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using BaseLib.Abstracts;
-using BaseLib.Utils;
 using IsekaiHero.IsekaiHeroCode.Extensions;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -23,11 +22,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
     public override List<(string, string)> Localization => new CardLoc(
         "Tutorial Sword",
-        "# Deal !Damage! damage. If you have a Job, deal !ExtraDamage! more damage.");
-
-    // public override string CustomPortraitPath => "tutorialsword.png".BigCardImagePath();
-    // public override string PortraitPath => "tutorialsword.png".CardImagePath();
-    // public override string BetaPortraitPath => "tutorialsword.png".CardImagePath();
+        "# Deal !Damage! damage. Exploit (you have a Job): deal !ExtraDamage! more damage.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
