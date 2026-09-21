@@ -95,7 +95,7 @@ One keyword, two faces — the clause on cards names exactly what the buff manip
 - **Exploit clause (card keyword):** a conditional rider. `Deal 5 damage. Exploit (Level 3+): deal 5 more.` Base effect ~15% under rate; met effect ~15% over rate. This formalizes both the Nexus alpha's design *and* the goal doc's "conditional effect" shorthand — the goal doc explicitly asked for "an explicit implementation hook instead of relying on rules text parsing," and this is it.
 - **Exploit (player buff, stacks):** *"When you play a card with an unmet Exploit condition, consume 1 stack: the condition counts as met."* Key detail: **a stack is only consumed when the condition is actually unmet** — you never waste one, so stacking is never a feel-bad.
 - **Override (card state keyword — already in the alpha ✅):** *"This card's Exploit conditions always count as met."* The permanent, per-card big brother of the Exploit buff. Granted by System Menu ✅; **OP Protagonist** is functionally Override-on-everything. Keyword id `ISEKAIHERO-OVERRIDE` and localization already exist.
-- **Implementation status:** the hook is real code today — `IsekaiHeroCard.HasConditionalEffects`, `IsConditionalEffectActive(bool)`, and `EnableConditionalEffectsForCombat()` — used by Tutorial Sword, Boss Telegraph, System Menu, I Am Atomic, et al. Remaining work is the *stacking buff* (checking/consuming Exploit stacks inside `IsConditionalEffectActive`) and printing conditions in the `Exploit (…)` format.
+- **Implementation status:** the hook is real code today — `IsekaiHeroCard.HasConditionalEffects`, `IsConditionalEffectActive(bool)`, and `EnableConditionalEffectsForCombat()` — used by Tutorial Sword, Boss Telegraph, System Menu, I Am Atomic, et al. The stacking `ExploitPower` now checks and consumes stacks only for unmet conditions; remaining Phase 2 work is the curated base-game compatibility list.
 - **Base-game support:** the buff is not limited to our cards. A compatibility layer tags a **curated** list of base-game "Do X. If you did Y, do Z." cards with the Exploit clause. Per-card, because conditions are code — there is no generic hook that can flip an arbitrary `if` on someone else's card. Curated, because some conditionals must stay un-exploitable: forcing Fatal-style "if this kills" payoffs (heal, max-HP, permanent stats) without a kill would be degenerate. Candidate audit happens in Phase 2.
 - Flavor: you're not getting stronger, you're *abusing the game's code*. The clause is the rule; the buff is the cheat.
 
@@ -172,7 +172,7 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
 - [x] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
 - [x] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)
-- [x] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: Maple's absurd finishing bite against the Poison Dragon (*BOFURI*)
+- [x] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: Kirito's finishing strike against the goblin boss (*SAO*)
 - [x] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: Tanya diving through artillery toward a glowing strike zone (*Saga of Tanya the Evil*)
 - [x] **Tutorial Sword** ✅ — 1⚡ · Deal 7. Exploit (you have a Job): deal 4 more. *(U: 9/+6)* · Art: Rio's disciplined wooden-sword academy duel (*Spirit Chronicles*)
 
@@ -181,13 +181,13 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)
 - [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
-- [ ] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: smug gamer grin in a fantasy tavern (*No Game No Life*)
+- [x] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: Sora physically breaking the rules of the living-chess match (*No Game No Life*)
 - [x] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: Seiya's sidestep begun before the demon's swing starts (*Cautious Hero*)
 - [x] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: Subaru's panicked back-fall beneath Elsa's kukri (*Re:Zero*)
 - [ ] **Side Quest** — 0⚡ · Add a random Quest to your hand. Gain 1 EXP. *(U: 2 EXP)* · Art: villager with an exclamation mark over their head
 - [x] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: Great Sage's appraisal window over a suspicious potion (*Tensura*)
 - [x] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: Lloyd drawing a sword from a forbidden-library storage portal (*7th Prince*)
-- [x] **Route Guide** ✅ — 1⚡ · Gain 5 Block. Look at the top 4 cards of your draw pile. Put one on top and the rest on the bottom. *(U: 7 Block; up to 2 on top in any order)* · Art: Shiroe routing a raid across a glowing dungeon map (*Log Horizon*)
+- [x] **Route Guide** ✅ — 1⚡ · Gain 5 Block. Look at the top 4 cards of your draw pile. Put one on top and the rest on the bottom. *(U: 7 Block; up to 2 on top in any order)* · Art: Catarina mapping the branching death and exile routes (*My Next Life as a Villainess*)
 
 ### 5.3 Uncommons (36 — 13 Attacks / 14 Skills / 9 Powers)
 
@@ -207,14 +207,14 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [ ] **Killing Blow** — 1⚡ · Deal 6. Fatal: Level Up. *(U: 9)* · **[bridge: kill→Level]** · Art: finishing strike dissolving a boss into light
 - [x] **Skill Chain** — 2⚡ · Deal 5 three times. *(U: 6×)* · Art: Diablo chains three blue-white spell impacts into a demon opponent (*How Not to Summon a Demon Lord* — high-tier spell duel)
 - [ ] **Monster Grinding** — 1⚡ · Deal 10. Fatal: permanently increase this card's damage by 3. *(U: 13, +4)* · Art: evolution menu after the hundredth kill (*So I'm a Spider*) — run-persistent scaling, see §13
-- [ ] **Steal Technique** — 1⚡ · Deal 7. Exploit (target has a debuff): gain 2 EXP. *(U: 9, 3 EXP)* · Art: copying an enemy skill into the menu (*Shield Hero*)
+- [x] **Steal Technique** — 1⚡ · Deal 7. Exploit (target has a debuff): gain 2 EXP. *(U: 9, 3 EXP)* · Art: Maple acquires poison resistance and Devour from the Poison Dragon (*BOFURI*)
 
 **Skills**
 
 - [ ] **Read the Code** — 1⚡ · Gain 2 Exploit. *(U: 3)* · Art: the world dissolving into green glyphs
 - [ ] **Guild Reception** — 1⚡ · Gain 6 Block. Choose 1 of 3 Quests and add it to your hand. *(U: 8 Block)* · Art: beaming guild receptionist stamping paperwork
 - [ ] **Cheat Inventory** — 1⚡ · Choose a card in your hand. Add a copy of it to your hand. Exhaust. *(U: no Exhaust)* · Art: pulling a duplicate sword out of thin air (*Tensura* Great Sage vibes)
-- [ ] **Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: draw 3)* · Art: minimap revealing every hidden room
+- [x] **Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: draw 3)* · Art: Shiroe reroutes a raid across a glowing dungeon map (*Log Horizon*)
 - [ ] **Save Scum** — 1⚡ · Discard your hand. Draw that many cards. *(U: draw 1 more)* · Art: the same hallway, the seventh attempt (*Re:Zero*)
 - [x] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: Air Strike Shield chaining into three layered wards (*The Rising of the Shield Hero*)
 - [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
@@ -251,14 +251,14 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
 - [x] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: a black-red Machine God cannon array converges on a colossal boss core (*BOFURI*)
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
-- [x] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: Ainz's Fallen Down pillar against Shalltear (*Overlord*)
+- [x] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: Rimuru's water lenses focus sunlight onto the Falmuth army (*Tensura*)
 - [ ] **Grand Finale** — 3⚡ · Deal damage equal to 10 plus all EXP you gained this combat. Exhaust. *(U: 15 plus)* · Art: every technique learned this arc, used at once
 
 **Skills**
 
 - [ ] **Sequence Break** — 1⚡ · Complete a Quest in your hand. Draw 1. *(U: 0⚡)* · **[bridge: Exploit-philosophy×Quest]** · Art: walking through a wall the developers forgot to finish
 - [ ] **Checkpoint** — 1⚡ · Exhaust. The next time you would die this combat, instead heal 15 HP and gain 8 EXP. *(U: 20 HP, 10 EXP)* · Art: waking up at the save point, memories intact (*Re:Zero*) · *Salvage: the alpha's `ReturnByDeathPower.cs` state-tracking is a starting point (§14).*
-- [x] **System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: Sora breaks the living-chess rules by dragging the enemy king into a discard slot (*No Game No Life*)
+- [x] **System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: Kumoko rearranging her visible skill tree in the Great Elroe Labyrinth (*So I'm a Spider, So What?*)
 - [ ] **Goddess's Blessing** — 2⚡ · Heal 8. Exploit (Level 6+): heal 14 instead. Exhaust. *(U: 10/17)* · Art: divine light, smug goddess demanding gratitude
 - [ ] **Perfect Preparation** — 2⚡ · Gain 15 Block. Exploit (you have a Quest in your hand): gain 10 more. *(U: 18/+12)* · Art: 47 contingency plans, laminated (*Cautious Hero*)
 - [ ] **Reincarnate** — 2⚡ · Level Up twice. Exhaust. *(U: three times)* · Art: the glowing circle, the new sky, the second chance
@@ -369,27 +369,30 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | How a Realist Hero Rebuilt the Kingdom | A summoned student rebuilds a struggling kingdom through administration, economics, and practical knowledge. | Modern knowledge applied at scale, paperwork as power, team delegation, and solving fantasy problems systemically. |
 | How Not to Summon a Demon Lord | A socially awkward MMO expert is summoned in the body of his overpowered demon-lord avatar. | Game knowledge, chained high-tier spells, role-playing bravado, and power hidden behind social panic. |
 
-**Implemented card-art checklist (2026-09-21):** each portrait is an original, simplified redraw that uses the named scene as composition inspiration rather than copying a frame.
+**Implemented card-art checklist (updated 2026-09-22):** each generated portrait is an original, simplified redraw that uses the named scene as composition inspiration rather than copying a frame. Restored custom art is called out explicitly.
 
 | Done | Card | Anime inspiration | Scene used for the card art |
 | --- | --- | --- | --- |
-| [x] | Last-Hit Bonus | *BOFURI* | Maple survives the three-headed Poison Dragon, then lands the absurd finishing bite/devour in the starter dungeon. |
+| [x] | Last-Hit Bonus | *Sword Art Online* | Restored existing custom art of Kirito's finishing strike against the goblin boss. |
 | [x] | Boss Telegraph | *Saga of Tanya the Evil* | Tanya dives through an aerial artillery barrage while the strike zone burns below her. |
 | [x] | Tutorial Sword | *Seirei Gensouki: Spirit Chronicles* | Rio demonstrates his disciplined wooden-sword stance during Royal Academy training. |
 | [x] | Seen It Coming | *Cautious Hero* | Seiya has already sidestepped before an oversized demon attack finishes its swing. |
 | [x] | Status Appraisal | *That Time I Got Reincarnated as a Slime* | Rimuru asks Great Sage to analyze a suspicious potion and its ingredients. |
 | [x] | Item Box | *I Was Reincarnated as the 7th Prince* | Lloyd explores the forbidden library, calmly drawing a weapon from a violet portal amid floating grimoires. |
-| [x] | Route Guide | *Log Horizon* | Shiroe directs a raid over a glowing dungeon map and routes the party around the obvious approach. |
+| [x] | Route Guide | *My Next Life as a Villainess* | Restored existing custom art of Catarina plotting the branching death and exile routes. |
 | [x] | I Am Atomic | *The Eminence in Shadow* | Shadow's first “I Am Atomic” against Zenon, centered beneath the violet halo in the underground sanctuary. |
-| [x] | Megiddo | *Overlord* | Ainz casts Fallen Down on Shalltear, calling a colossal blue-white pillar into the scorched clearing. |
-| [x] | System Menu | *No Game No Life* | Sora recognizes that the living-chess match is not ordinary chess and exploits the rules mid-game. |
+| [x] | Megiddo | *That Time I Got Reincarnated as a Slime* | Rimuru hovers above Falmuth with black wings while suspended water lenses focus sunlight into precise beams. |
+| [x] | System Menu | *So I'm a Spider, So What?* | Kumoko manipulates her visible status screen and branching skill tree in the Great Elroe Labyrinth. |
+| [x] | Steal Technique | *BOFURI* | Maple survives the Poison Dragon, then acquires poison resistance and Devour from the encounter. |
+| [x] | Map Hack | *Log Horizon* | Shiroe routes the raid party around the obvious path using a glowing dungeon map. |
+| [x] | Game Knowledge | *No Game No Life* | Sora realizes the living-chess match does not follow ordinary chess rules and exploits that discovery. |
 
 ## 12. Implementation roadmap
 
 The stack is **C# on BaseLib-StS2** (not the raw GDScript loader): cards subclass `IsekaiHeroCard`, localization lives in `IsekaiHero/localization/eng/*.json`, build with `dotnet build` (see `AGENTS.md` for ILSpy decompile workflow and card-text conventions).
 
 - [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Danger Sense basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/DangerSense) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
-- [ ] **Phase 2 — Exploit formalization:** extend the existing `HasConditionalEffects`/`IsConditionalEffectActive` hook with the stacking **Exploit** buff (consume-on-unmet), keep **Override** as the permanent state, print all conditions in `Exploit (…)` wording, build the shared condition library (one checker, not per-card logic). Port the 14 alpha cards to the new wording. Audit base-game cards for the compat tag list.
+- [ ] **Phase 2 — Exploit formalization:** stacking **Exploit** with consume-on-unmet, permanent per-card **Override**, and `Exploit (…)` wording are implemented. Remaining work: finish the shared condition library, port any remaining alpha wording, and audit base-game cards for the compatibility tag list.
 - [ ] **Phase 3 — Quests:** Quest token type (Unplayable/Retain/objective tracking/exhaust-on-complete), the 8-token pool, Job Board & choose-1-of-3 UI (reuse `CardSelectCmd.FromSimpleGrid`).
 - [ ] **Phase 4 — Full pool:** all 88 cards, 9 relics, 3 potions, 2 Ancient cards wired to Ancient encounters; Job cycle (Spellblade, Appraiser — Alchemist exists).
 - [ ] **Phase 5 — Balance & release:** §9 targets, Ascension scaling, art pass, Workshop + Nexus release; retire alpha card texts.

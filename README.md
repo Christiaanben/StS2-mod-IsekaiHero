@@ -15,7 +15,7 @@ The current release is an early public test build. It includes:
 - The Isekai Hero playable character.
 - A starter deck with 4 Strikes, 4 Defends, Grind, Danger Sense, and the
   starter relic The System.
-- A 43-card custom set with cards such as Status Appraisal, Training Arc, Route
+- A 46-card custom set with cards such as Status Appraisal, Training Arc, Route
   Guide, Truck-kun, Mob Hunt, Daily Training, Death Flag, Underdog Spirit,
   Raid Opener, Counter Read, Barrier Magic, Starburst Stream, Slow Life, and
   Anti-Boss Art.
