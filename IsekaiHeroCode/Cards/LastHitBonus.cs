@@ -13,8 +13,6 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
-    public override bool HasConditionalEffects => true;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
@@ -30,9 +28,7 @@ public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRari
 
     public override List<(string, string)> Localization => new CardLoc(
         "Last-Hit Bonus",
-        "# Deal !Damage! damage. Fatal: Draw !Cards! {IfUpgraded:show:cards|card} and gain !Energy! Energy.");
-
-    // Use the generic portrait until dedicated Last-Hit Bonus art is added.
+        "# Deal !Damage! damage. Fatal: draw !Cards! {IfUpgraded:show:cards|card} and gain !Energy! Energy.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -45,7 +41,7 @@ public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRari
 
         var killedTarget = shouldTriggerFatal &&
                            attack.Results.SelectMany(results => results).Any(result => result.WasTargetKilled);
-        if (!IsConditionalEffectActive(killedTarget))
+        if (!killedTarget)
             return;
 
         await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);

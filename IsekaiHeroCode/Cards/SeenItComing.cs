@@ -24,7 +24,7 @@ public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarit
 
     public override List<(string, string)> Localization => new CardLoc(
         "Seen it Coming",
-        "# Gain !Block! Block. If the enemy intends to attack, apply !WeakPower! Weak.");
+        "# Gain !Block! Block. Exploit (an enemy intends to Attack): apply !WeakPower! Weak.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

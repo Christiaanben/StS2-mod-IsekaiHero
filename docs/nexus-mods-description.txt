@@ -25,15 +25,15 @@ Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is 
 - A new EXP and Level core: gain EXP during combat, Level Up, and earn Vigor when you ding.
 - A rebuilt starter package with 4 Strikes, 4 Defends, Grind, Danger Sense, and the starter relic The System.
 - The System grants EXP at combat start and when eligible enemies die.
-- A 43-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, Mob Hunt, Daily Training, Death Flag, Underdog Spirit, Raid Opener, Counter Read, Barrier Magic, Starburst Stream, Slow Life, and Anti-Boss Art.
+- A 46-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, Mob Hunt, Daily Training, Death Flag, Underdog Spirit, Raid Opener, Counter Read, Barrier Magic, Starburst Stream, Slow Life, and Anti-Boss Art.
 - A developing class identity focused on EXP/Level snowballing, Exploits, Quests, Jobs, and Cheat Skill finishers.[/size]
 
 [size=4][b]Development progress[/b][/size]
 [size=3]The long-term target is a full-sized character comparable to the official classes. In the current design target, the Isekai Hero pool contains 88 cards, 9 character relics, and 3 character potions. The roadmap may change as Slay the Spire 2 develops.
 
-[b]Overall roadmap: 88 of 213 tracked items complete - 41%[/b]
+[b]Overall roadmap: 91 of 213 tracked items complete - 43%[/b]
 
-- [b]Cards:[/b] 43 of 88 implemented - 45 left - 49%
+- [b]Cards:[/b] 46 of 88 implemented - 42 left - 52%
 - [b]Relics:[/b] 1 of 9 implemented - 8 left - 11%
 - [b]Potions:[/b] 0 of 3 implemented - 3 left - 0%
 - [b]Ancient and Architect interactions:[/b] 1 of 8 encounter sets implemented - 7 left - 13%

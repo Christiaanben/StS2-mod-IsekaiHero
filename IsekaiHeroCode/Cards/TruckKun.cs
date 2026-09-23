@@ -12,8 +12,6 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class TruckKun() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
 {
-    public override bool HasConditionalEffects => true;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -47,7 +45,7 @@ public sealed class TruckKun() : IsekaiHeroCard(2, CardType.Attack, CardRarity.U
 
         var killedEnemy = attack.Results.SelectMany(results => results).Any(result =>
             result.WasTargetKilled && fatalEligibleEnemies.Contains(result.Receiver));
-        if (!IsConditionalEffectActive(killedEnemy))
+        if (!killedEnemy)
             return;
 
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
