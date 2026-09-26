@@ -3,6 +3,7 @@ using BaseLib.Extensions;
 using BaseLib.Utils;
 using IsekaiHero.IsekaiHeroCode.Character;
 using IsekaiHero.IsekaiHeroCode.Extensions;
+using IsekaiHero.IsekaiHeroCode.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,7 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
 {
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalOverride> ConditionalOverrides = new();
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalTriggerState> ConditionalTriggers = new();
+    private static readonly ConditionalWeakTable<IsekaiHeroCard, ExploitConsumptionState> ExploitConsumptions = new();
 
     public virtual bool HasConditionalEffects => false;
 
@@ -33,10 +35,19 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
 
     protected bool IsConditionalEffectActive(bool condition)
     {
-        var isActive = condition ||
-               (CombatState != null &&
-                ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
-                ReferenceEquals(conditionalOverride.CombatState, CombatState));
+        var hasOverride = CombatState != null &&
+                          ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
+                          ReferenceEquals(conditionalOverride.CombatState, CombatState);
+        var exploitPower = !condition && !hasOverride
+            ? Owner?.Creature.Powers.OfType<ExploitPower>().FirstOrDefault(power => power.Amount > 0m)
+            : null;
+        var isActive = condition || hasOverride || exploitPower != null;
+
+        if (exploitPower != null && CombatState != null)
+        {
+            ExploitConsumptions.Remove(this);
+            ExploitConsumptions.Add(this, new ExploitConsumptionState(CombatState));
+        }
 
         if (isActive && CombatState != null)
             MarkConditionalEffectTriggered();
@@ -50,10 +61,19 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
                ReferenceEquals(triggerState.CombatState, CombatState);
     }
 
+    public bool DidConsumeExploitThisPlay()
+    {
+        return ExploitConsumptions.TryGetValue(this, out var consumptionState) &&
+               ReferenceEquals(consumptionState.CombatState, CombatState);
+    }
+
     public override Task BeforeCardPlayed(CardPlay cardPlay)
     {
         if (cardPlay.Card == this)
+        {
             ConditionalTriggers.Remove(this);
+            ExploitConsumptions.Remove(this);
+        }
 
         return base.BeforeCardPlayed(cardPlay);
     }
@@ -77,4 +97,6 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     private sealed record ConditionalOverride(object CombatState);
 
     private sealed record ConditionalTriggerState(object CombatState);
+
+    private sealed record ExploitConsumptionState(object CombatState);
 }

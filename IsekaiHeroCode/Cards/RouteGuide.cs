@@ -25,8 +25,8 @@ public sealed class RouteGuide() : IsekaiHeroCard(1, CardType.Skill, CardRarity.
 
     public override List<(string, string)> Localization => new CardLoc(
         "Route Guide",
-        "# Gain !Block! Block. Look at the top !Cards! cards of your draw pile. Put !TopCards! on top and the rest at the bottom.",
-        ("selectionScreenPrompt", "Choose the next card to draw."),
+        "# Gain !Block! Block. Look at the top !Cards! cards of your draw pile. Put {IfUpgraded:show:up to 2|one} on top{IfUpgraded:show:, in any order|}, and the rest on the bottom.",
+        ("selectionScreenPrompt", "Choose the next card to draw first."),
         ("secondSelectionScreenPrompt", "Choose the second card to draw, or skip."));
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)

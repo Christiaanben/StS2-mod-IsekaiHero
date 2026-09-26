@@ -25,8 +25,8 @@ public sealed class ItemBox() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Com
 
     public override List<(string, string)> Localization => new CardLoc(
         "Item Box",
-        "# Gain !Block! Block. Add Retain to {IfUpgraded:show:2 cards|a card} in your Hand.",
-        ("selectionScreenPrompt", "Choose a card to Retain."));
+        "# Gain !Block! Block. Choose {IfUpgraded:show:up to 2 cards|a card} in your hand and Retain {IfUpgraded:show:them|it}.",
+        ("selectionScreenPrompt", "Choose cards to Retain."));
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -34,6 +34,11 @@ public sealed class ItemBox() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Com
 
         var owner = Owner;
         if (owner == null)
+            return;
+
+        var hand = CardPile.Get(PileType.Hand, owner);
+        if (hand == null || !hand.Cards.Any(card =>
+                !ReferenceEquals(card, this) && !card.Keywords.Contains(CardKeyword.Retain)))
             return;
 
         var selectedCards = await CardSelectCmd.FromHand(

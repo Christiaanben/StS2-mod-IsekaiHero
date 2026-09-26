@@ -23,7 +23,7 @@ public sealed class BossTelegraph() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
     public override List<(string, string)> Localization => new CardLoc(
         "Boss Telegraph",
-        "# Deal !Damage! damage. If the enemy intends to attack, gain !Block! Block{IfUpgraded:show: and draw 1 card|}.");
+        "# Deal !Damage! damage. Exploit (an enemy intends to Attack): gain !Block! Block{IfUpgraded:show: and draw 1 card|}.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
