@@ -5,6 +5,21 @@ Player-facing changes for each Isekai Hero release are recorded here.
 ## [Unreleased]
 
 
+## [v0.10.0-alpha] - 2026-09-27
+
+### Added
+
+- Added Combo Rush, Cross-Class Combo, Level Grinding, Power-Up Montage, Skill
+  Chain, Game Knowledge, Map Hack, and Steal Technique, expanding the early-alpha
+  card pool from 43 to 51 cards.
+- Added card art for all eight new cards.
+
+### Changed
+
+- Refined several existing cards and refreshed card art across the set.
+- Updated the BaseLib dependency to 3.4.7.
+
+
 ## [v0.9.0-alpha] - 2026-08-25
 
 ### Added
