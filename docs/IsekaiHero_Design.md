@@ -2,7 +2,8 @@
 
 > **Mod:** IsekaiHero · **Game:** Slay the Spire 2 (Early Access) · **Stack:** C# / [BaseLib-StS2](https://github.com/Alchyr/BaseLib-StS2) · Steam Workshop since game v0.107.1
 > **Character:** Isekai Hero (`ISEKAIHERO-ISEKAI_HERO`)
-> **Status:** Design v2.0 — merges the `v0.4.0-alpha` card set and the old [goal doc](isekai-hero-goal.md) into one plan. This file is the **single source of truth**; update its checkboxes as features land.
+> **Status:** Design v3.0 — revised 2026-09-28 from the [fun and balance review](IsekaiHero_Fun_And_Balance_Review.md). This file is the **single source of truth** for implementation. New values are committed design targets for the next prototype, not measured balance results.
+> **Tracking:** checked active entries already exist; unchecked active entries need implementation. Struck-through checked entries preserve superseded implemented versions and do **not** count toward the 88 active card slots. Implement the unchecked replacement immediately below each such entry. This revision changes the plan, not game code.
 
 ---
 
@@ -16,39 +17,32 @@ The alpha's North Star still governs everything: *the hero becomes powerful by u
 
 ---
 
-## 2. What the research says (and how we obey it)
+## 2. Design commitments and comparison baseline
 
-Verified structure of every STS2 character (from slaythespire.wiki.gg data modules):
+The following is **our chosen scope**, not a universal base-game template. The review checked the installed game DLL; its numerical comparisons are version-specific. Strike/Defend are removal baselines, not the standard for drafted reward cards.
 
-| Slot | Template | IsekaiHero |
-|---|---|---|
-| Cards | 4 Basic + 20 Common + 36 Uncommon + 26 Rare + 2 Ancient = 88 | ✅ same |
-| Starter deck | 4 Strike + 4 Defend + 2 signature basics (1 generator + 1 spender) | Grind + Danger Sense |
-| Relics | 1 Starter + 1 upgraded Starter + 1 C + 2 U + 3 R + 1 Shop = 9 | ✅ same |
-| Potions | 3 (one per rarity) | ✅ same |
-| Mechanics | 1 signature **resource** + 1 signature **keyword** + 1 supporting **package** | EXP/Level + Exploit + Quests |
-| Starting relic | Automates the signature resource turn 1 | "The System" grants EXP passively |
-| Baselines | 1⚡ ≈ 6 dmg / 5 Block; riders push to ~9–10; upgrades add ~+3; 3⚡/turn, draw 5 | ✅ same |
+| Slot | Planned scope |
+|---|---|
+| Cards | 4 Basic + 20 Common + 36 Uncommon + 26 Rare + 2 Ancient = 88 active designs |
+| Starter deck | 4 Strike + 4 Defend + Grind + Danger Sense |
+| Relics | 1 Starter + 1 upgraded Starter + 1 Common + 2 Uncommon + 3 Rare + 1 Shop = 9 |
+| Potions | 3, one per rarity |
+| Mechanics | EXP/Level + Exploit + combat Quests; Jobs remain three supporting Powers |
+| First-turn identity | The System grants 2 EXP; Grind can immediately reach Level 2 |
 
-**Fun lessons stolen from MegaCrit (each one is a hard design rule here):**
+**Fun requirements:**
 
-1. **The Regent lesson.** Pure delayed-payoff felt terrible at launch; the fix was immediate-value riders on setup cards. → *Every EXP/setup card in this set does something NOW (damage, block, or draw) in addition to feeding the engine.*
-2. **The Silent lesson.** Sly is S-tier because one action (discard) feeds three payoffs simultaneously. → *One action here — gaining EXP — feeds Level scaling, Level-Up triggers, and Exploit-condition thresholds simultaneously.*
-3. **The Necrobinder lesson.** Her three mechanics all trade in one currency (time). → *Our three mechanics all trade in one currency: **progress**. Quests produce EXP, EXP produces Levels, Levels unlock Exploit conditions, and Exploit stacks skip the queue.*
-4. **The new-keyword pricing rule.** Doom waits a turn, Sly is overcosted to hard-cast, Stars don't refill — every new mechanic pays for above-rate numbers with a time-shaped drawback. → *Exploit-clause cards are ~15% below rate unmet and ~15% above rate met; Quests are dead hand-slots until completed.*
-5. **The Tyranny rule.** One deliberately off-philosophy card per class is healthy when it patches the class's core weakness rather than importing another win condition. → *Ours is **Training Arc** (a turn-start exhaust power, pure Ironclad grammar) because our weakness is hand clog from Quests.*
+1. **Prepare a breakthrough.** Level-Up Vigor benefits every hit of a multi-hit attack. Retention, EXP timing, and the choice of Vigor consumer must create different good turns.
+2. **Keep decisions after setup.** Limited Exploit bypasses help solve a turn; no global Power permanently makes every condition irrelevant.
+3. **Give objectives different uses.** Complete, hold, or abandon a Quest for different benefits. Rewards vary between EXP, draw, defense, and Energy.
+4. **Pay for setup honestly.** Judge an effect's whole turn, card-slot cost, threshold timing, and eventual return. A small rider does not automatically make expensive setup playable. Pure setup is allowed when its burst window justifies it.
+5. **Avoid rewarded busywork.** Gold and healing cannot be farmed without limit. Quest menus must offer meaningful choices, not mandatory repetitive clicks.
+6. **Allow different drafts.** At least three successful deck shapes must disagree about useful cards and upgrades. Fatal is a support package until single-target tests establish more.
+7. **Preserve clear staples.** Not every card needs a novel effect; remove near-duplicates before adding complexity or more slots.
 
-**Passive playstyle lean** (the "Ironclad quietly gets more Vulnerable" trick): Isekai Hero leans on **Weak** and **on-kill (Fatal) triggers**. The rhythm is *stall → grind → snowball*: Weak buys the early turns you need to level, Fatal effects reward sequencing kills in multi-enemy fights. We get almost no Vulnerable — big numbers come from Levels, not debuff multiplication.
+**Playstyle:** defend or apply Weak, engineer a Level Up, then exploit the opening. Death Flag and Atomic+ supply limited Vulnerable. The character pays tempo and sometimes hand space for growth; intentional death is not the intended setup engine.
 
-**Distinctness check** — why this isn't a mish-mash (this table restates the goal doc's "should not define itself through existing class identities" rule):
-
-| Character | Their engine | Why ours is different |
-|---|---|---|
-| Ironclad | Pays HP/cards for power | We pay **time and hand-slots** for power; we never self-harm |
-| Silent | Velocity — many cheap cards per turn | Our snowball is a **state** (Level), not a per-turn combo count |
-| Defect | Passive slot machine (orbs + Focus) | Level is earned through *play patterns*, not channel actions; no slots |
-| Regent | Banks resources for one big turn | Levels **never get spent** — we snowball monotonically, no bank-and-dump |
-| Necrobinder | Board state (Osty) + execute clock | No companion, no execute; our clock runs *up*, not down |
+**Distinct identity:** Levels persist within combat, while their Vigor is allocated to a particular attack; limited cheats bypass selected rules; Quests create objectives the player can manipulate. This combination, rather than a claim that other characters have only one engine, distinguishes the hero. Jobs do not gain Level scaling.
 
 ### 2.1 Merging the alpha — old pillars → new pillars
 
@@ -56,9 +50,9 @@ The goal doc's three pillars survive; they just stop being three separate system
 
 | Old pillar (goal doc) | Where it lives now |
 |---|---|
-| **Jobs** — "What class did I get?" | A **cycle of 3 uncommon `Job:` Powers** (Alchemist ✅, Spellblade, Appraiser) plus the Exploit condition *"you have a Job"* (Tutorial Sword ✅). Jobs read as roles because cards *check* for them — build meaning without a fourth mechanic. If the cycle proves popular, it can grow (see §13). |
-| **Exploits** — "How do I break the systems?" | Split in two: the **formal Exploit clause/buff** (§3.2 — the "explicit implementation hook" the goal doc asked for, and the alpha's `HasConditionalEffects` code already provides), plus the **knowledge/manipulation card family** (Status Appraisal ✅, Route Guide ✅, Map Hack, Save Scum, Applied Physics, Dodge the Bad End). |
-| **Cheat Skills** — "When does the protagonist moment happen?" | The **rare payoff suite**: I Am Atomic ✅, Megiddo ✅, System Menu ✅, Grinding Montage ✅, EXPLOSION!, Grand Finale, OP Protagonist, Protagonist Privilege. Earned via Level thresholds, Exploit setup, or Quest completion — never free. |
+| **Jobs** — "What class did I get?" | A **cycle of 3 uncommon `Job:` Powers** (Alchemist, Spellblade, Appraiser) plus supporting conditions such as Tutorial Sword's. Jobs create draft preferences without a fourth mechanic; expansion is deferred. Implementation status is tracked in §5. |
+| **Exploits** — "How do I break the systems?" | The **formal Exploit clause/buff** (§3.2) plus knowledge/manipulation cards: Status Appraisal, Route Guide, Map Hack, Save Scum, Applied Physics, and Dodge the Bad End. The existing condition hooks are the starting point for the v3 event contracts. |
+| **Cheat Skills** — "When does the protagonist moment happen?" | The **rare payoff suite**: I Am Atomic, Megiddo, System Menu, Grinding Montage, EXPLOSION!, Season Finale, OP Protagonist, and Protagonist Privilege. Acquisition, setup, timing, or limited uses must justify their power. Implementation status is tracked in §5. |
 
 **Design filters** (kept from the goal doc — ask these of every new card):
 
@@ -68,72 +62,71 @@ The goal doc's three pillars survive; they just stop being three separate system
 4. Would the same mechanic make more sense on an existing STS2 class?
 5. Is the power fantasy earned through choices, risk, setup, or deckbuilding?
 
-**Acceptance checks** (adapted): future card sets should support runs that feel like — **Level Run** (grind and snowball), **Cheat Run** (Exploit consistency, every card at max text), **Quest Run** (objectives into engines), **Fatal Run** (kill-sequencing), and hybrids of any two.
+**Acceptance checks** (adapted): future card sets should support runs that feel like — **Level Run** (grind and snowball), **Cheat Run** (allocate bypasses and fulfill other conditions naturally), **Quest Run** (objectives into engines), **Fatal support** (kill-sequencing with a single-target plan), and hybrids of any two.
 
 ---
 
 ## 3. The three mechanics
 
-### 3.1 EXP & Level — the signature resource
+### 3.1 EXP & Level — persistent progress, timed breakthroughs
 
-- You start every combat at **Level 1** with 0 EXP. **Every 4 EXP = 1 Level Up** (EXP rolls over). **Level cap: 10.**
-- **When you Level Up: gain 2 Vigor** (your next Attack deals +2). Small, aggressive, always feels good — the "ding!" moment.
-- Cards reference Level two ways: scaling ("deal 3× Level damage") and thresholds ("Exploit (Level 4+): …").
-- **Enemies grant EXP when they die** (via the starting relic) — killing mobs to level up is *literally the gameplay*.
-- Expected curve on a normal hallway fight: Level 3–4. Elite: 5–6. Boss with a dedicated deck: 8–10. Tune generators to this curve.
+- Start each combat at **Level 1**, 0 EXP, before starting-relic effects. Every **4 EXP** grants one Level Up; unspent progress rolls over. Normal cap: **Level 10**.
+- Every actual Level Up grants **2 Vigor**. It increases each hit of the next eligible attack command, then is consumed. Multiple hits are one command; a later separate attack does not reuse the consumed Vigor. Preview actual damage.
+- Cards check current Level, scale with Level, or reward **leveling this turn**. These are deliberately different roles.
+- At the cap, EXP remains banked but grants no further Level Ups or Vigor. Maintain a separate **total EXP gained this combat** counter, including starting EXP and overflow, for Season Finale. Direct Level Ups do not add to this total and preserve the EXP remainder.
+- A direct Level Up cannot exceed the normal cap unless it has been removed. Break the Level Cap first installs its rewards, then removes the cap, then processes banked EXP in four-point increments. Each actual increase fires one Level-Up event; no retroactive rewards for earlier increases.
+- The System grants kill EXP for actual non-minion enemy deaths, regardless of who killed them. Card Fatal rewards require that card's eligible kill; repeated death-prevention notifications do not count. Once combat ends, do not begin further draw/damage/Level-trigger chains.
+- Process a Level Up, its Vigor, and queued reactions in deterministic order before the next player action. A death inside a reaction can queue further EXP; it cannot re-credit the same death.
 
-**Time-shaped drawback:** Level is worthless on turn 1 and monstrous on turn 7. The character is intrinsically weak early — every fight re-runs the zero-to-hero arc.
+**Pacing targets to test:** record first useful Level Up, Level on turns 1–3, and Level **before lethal**. Hallway Level 3–4, elite 5–6, and dedicated boss 8–10 are provisional developed-deck expectations, not promises for the starter. With no kills, starting EXP plus Grind reaches Level 2 after one Grind, Level 3 after three, and Level 4 after five. Do not tune using post-lethal progress.
 
-**Persistence:** Level resets to 1 every combat — like Stars, orbs, and Block, only relics persist. Re-running the zero-to-hero arc *is* the fantasy, and the per-combat reset is what lets mid-combat numbers stay big: a run-persistent Level would force balancing every fight around Level 10. The run-long "I'm getting stronger" feeling comes from the usual place — upgrades, relics, and Admin Mode's bigger starting EXP.
+**Persistence:** all combat progress resets. Permanent growth comes from deck upgrades, relics, and the explicitly bounded Monster Grinding card. Level alone is not automatic damage or defense; cards and Vigor realize its value.
 
-**Other classes:** EXP, Level, and the Level-Up Vigor ding are implemented as **class-agnostic player buffs** (the way Doom and Poison aren't hard-wired to Necrobinder/Silent). Any character who obtains an EXP card — co-op, events, shared-pool modes — gains EXP, levels up, and gets the Vigor. Without our payoff cards each level is just a pleasant 2-Vigor drip, so cross-class EXP cards are never dead and never broken. Kill-EXP lives on The System relic, so other classes never level passively.
+**Cross-class:** EXP remains a class-agnostic buff. Its multi-hit interaction and zero-cost generators need shared-pool tests; availability does not guarantee safety or usefulness.
 
-### 3.2 Exploit — the signature keyword
+### 3.2 Exploit — conditions and limited bypasses
 
-One keyword, two faces — the clause on cards names exactly what the buff manipulates. (Earlier drafts used a separate "Bonus" keyword for the clause; merged, because one name keeps the mental model tight.)
+- **Exploit clause:** a base effect followed by a defined conditional bonus. Price the bonus by its actual context, not a fixed Energy-per-stack exchange rate.
+- **Exploit buff:** when an unmet condition is forced by a stack, consume one stack for that card play. Never spend on naturally met conditions. The preview shows the reason a clause is active and whether a stack or limited bypass will be spent.
+- **Override:** this particular card's clauses count as met for this combat. System Menu grants it. It does not make conditions naturally true.
+- **OP Protagonist:** supplies only two free unmet-condition bypasses each turn. Duplicate copies do not increase this allowance. Remaining cards still need natural conditions, Override, or stacks.
+- **Resolution precedence:** natural condition → card Override → Beginner's Luck Charm → OP Protagonist allowance → Exploit stack. Spend only the first applicable limited source. Recompute after each completed card play; never consume resources while previewing.
+- Emit exactly one **condition-satisfied** event per eligible original card play, whether natural or forced. Track **naturally satisfied**, **forced**, and **stack consumed** separately. Fast Learner and Atomic use satisfied; Mana Sense uses stack consumed.
+- **Privilege repeats only the explicit bonus**, never the base, a replacement, or the condition event. Added-hit bonuses increase the same attack command's hit count; flat damage bonuses modify that command. Repeated draw/Block/EXP applies once more without creating another satisfaction event. Distinct later attack commands, such as Megiddo's AoE after its first hit, do not inherit already-consumed Vigor. Limits are reserved before resolving rewards to prevent re-entry.
+- Healing and other alternative values use base-plus-bonus wording, not “instead,” so repeating the bonus has one meaning. Actual card replays are separate plays and may trigger events again; effect-only repeats are not replays.
+- **Fatal is never an Exploit condition.** No cheat, Override, or forced Quest completion fabricates a kill for Fatal, gold, or permanent-card-growth credit.
+- Base-game compatibility is future work: audit and tag individual safe cards rather than trying to flip arbitrary conditions. Do not include permanent-reward or eligibility checks.
 
-- **Exploit clause (card keyword):** a conditional rider. `Deal 5 damage. Exploit (Level 3+): deal 5 more.` Base effect ~15% under rate; met effect ~15% over rate. This formalizes both the Nexus alpha's design *and* the goal doc's "conditional effect" shorthand — the goal doc explicitly asked for "an explicit implementation hook instead of relying on rules text parsing," and this is it.
-- **Exploit (player buff, stacks):** *"When you play a card with an unmet Exploit condition, consume 1 stack: the condition counts as met."* Key detail: **a stack is only consumed when the condition is actually unmet** — you never waste one, so stacking is never a feel-bad.
-- **Override (card state keyword — already in the alpha ✅):** *"This card's Exploit conditions always count as met."* The permanent, per-card big brother of the Exploit buff. Granted by System Menu ✅; **OP Protagonist** is functionally Override-on-everything. Keyword id `ISEKAIHERO-OVERRIDE` and localization already exist.
-- **Implementation status:** the hook is real code today — `IsekaiHeroCard.HasConditionalEffects`, `IsConditionalEffectActive(bool)`, and `EnableConditionalEffectsForCombat()` — used by Tutorial Sword, Boss Telegraph, System Menu, I Am Atomic, et al. The stacking `ExploitPower` now checks and consumes stacks only for unmet conditions; remaining Phase 2 work is the curated base-game compatibility list.
-- **Base-game support:** the buff is not limited to our cards. A compatibility layer tags a **curated** list of base-game "Do X. If you did Y, do Z." cards with the Exploit clause. Per-card, because conditions are code — there is no generic hook that can flip an arbitrary `if` on someone else's card. Curated, because some conditionals must stay un-exploitable: forcing Fatal-style "if this kills" payoffs (heal, max-HP, permanent stats) without a kill would be degenerate. Candidate audit happens in Phase 2.
-- Flavor: you're not getting stronger, you're *abusing the game's code*. The clause is the rule; the buff is the cheat.
+**Condition library:** `Level X+` · `an enemy intends to Attack` · `a Quest is in your hand` · `you completed a Quest this turn` · `you Leveled Up this turn` · `first Attack this turn` · `N+ cards played this turn` · `only one enemy remains` · `target at full HP` · `target has a debuff` · `you have Block` · `you played a Skill this turn` · `you played a Power this turn` · `you have a Job`. Tutorial Sword alone uses the explicit alternative “you have a Job or played a Power this turn.”
 
-**Standard Exploit condition library** (reuse these; don't invent one-off conditions):
-`Level X+` · `an enemy intends to Attack` · `you have a Quest in your hand` · `you completed a Quest this turn` · `you Leveled Up this turn` · `this is the first Attack this turn` · `you played N+ cards this turn` · `only one enemy remains` · `target is at full HP` · `target has a debuff` · `you have Block` · `you played a Skill this turn` · `you played a Power this turn` · `you have a Job`
+### 3.3 Quests — complete, hold, or abandon
 
-### 3.3 Quests — the supporting package
+The installed game has a Quest card type with map/event/rest-site uses. These **combat objectives** are a new system using that type, not an existing colorless combat package.
 
-STS2 already has a **Quest card type** (unplayable objective cards, 3 in the colorless pool). We build the archetype the base game only teased — great modding pitch.
+**Rules and timing:**
 
-- **Rules text:** Quests are **Unplayable. Retain.** While in your hand they track an objective. When the objective completes, the Quest **exhausts itself and grants its Reward** (this counts as "completing a Quest" for other triggers).
-- **Drawback:** a Quest is a dead hand-slot until you finish it. That's the cost; rewards are above-rate to compensate. Uncompleted Quests simply vanish at end of combat — no penalty, no feel-bad.
-- Quests mostly reward **EXP** (feeding pillar 1) plus a small kicker.
-- The token pool below is deliberately **open-ended**: Job Board / Guild Reception / Guild Master offer *choose 1 of 3 from the full pool*, so new Quests added later widen variety without costing any of the 88 card slots.
+- Quest tokens are **Unplayable. Retain.** They track only events while held, after acquisition. Counters never claim earlier actions. A generator's own play does not count for a Quest it creates.
+- A player may hold at most one Quest of each title. Once a title completes, it cannot be generated again until the start of that player's next turn. All forced completions obey this limit. Different already-held objectives may share a future event.
+- Complete once: mark completed and remove from hand, Exhaust it, then grant the reward and emit one completion event. A reward-created Quest cannot claim the event or reward that created it. Snapshot held Quests before Full Clear; resolve in hand order.
+- **Abandon** means Exhaust without reward or completion event. Ordinary discard pauses progress; returning to hand resumes stored cumulative progress, but turn-based counters reset each player turn. Copies never inherit objective progress, have no permanent-deck existence, and obey title eligibility.
+- Normal generators draw from the seven ordinary titles below. Offers contain distinct eligible titles; show fewer than three if needed, and skip only the generation effect if none qualify. Exclude Slay when fewer than two enemies remain. Boss Slayer is exclusive to Legend in the Making.
+- A generated Quest occupies hand space but does not replace the normal draw. At the ten-card hand limit, skip generation with a clear preview; do not hide the Quest in the discard pile. Draw and other card effects still resolve normally.
+- Turn-based objectives count only qualifying events after acquisition in that turn. **Hoarder** checks before end-turn discard and counts all held cards, including Quests. Its delayed draw occurs after the next normal draw. **Flawless** observes a full enemy turn beginning after acquisition; it completes at that enemy turn's end if the owner remained alive and lost no HP during that enemy turn. Its delayed Block occurs after next-turn Block removal. Delayed rewards vanish if combat ends.
+- Slay counts an eligible non-minion enemy killed by the owner's card or owned effect while the Quest is held. Damage objectives count actual enemy HP lost from the owner's cards/effects, not blocked damage or allies' output. Boss Slayer accumulates against living Elite/Boss enemies only; it does not require lethal.
+- All uncompleted Quests vanish at combat end. Completing the final enemy's kill may not produce useful combat rewards; do not promise otherwise.
 
-**Quest token pool** (added by cards/relics, not part of the 88):
+**Quest tokens — 8, outside the 88-card pool:**
 
-- [ ] **Slay** — *Kill an enemy.* → Reward: 6 EXP, draw 1.
-- [ ] **Guard Duty** — *Gain 12+ Block in a single turn.* → 5 EXP, gain 5 Block.
-- [ ] **Combo Chain** — *Play 4+ cards in a single turn.* → 5 EXP, gain 1 Energy.
-- [ ] **Flawless** — *End your turn having taken no unblocked damage.* → 4 EXP, heal 2.
-- [ ] **Critical Blow** — *Deal 15+ damage with a single hit.* → 5 EXP, gain 2 Vigor.
-- [ ] **Spellcaster** — *Play 3+ Skills in a single turn.* → 4 EXP, gain 3 Block.
-- [ ] **Hoarder** — *End your turn with 6+ cards in hand.* → 4 EXP, draw 1.
-- [ ] **Boss Slayer** *(only from Main Quest effects)* — *Kill an Elite or Boss.* → Level Up ×3, heal 8.
+- [ ] **Slay** — Kill an eligible non-minion enemy. → Gain **4 EXP; draw 1**. Offered only with two or more enemies remaining.
+- [ ] **Guard Duty** — Gain **12 Block in one player turn** after acquisition. → Gain **2 EXP and 8 Block**.
+- [ ] **Combo Chain** — Play **4 cards in one player turn** after acquisition. → Gain **2 EXP and 1 Energy**.
+- [ ] **Flawless** — Survive a full subsequent enemy turn without losing HP. → Gain **2 EXP**; gain **8 Block at the start of your next turn**, after Block removal.
+- [ ] **Critical Blow** — Deal **15 HP damage in a single hit** after acquisition. → Gain **4 EXP and 4 Vigor**. Damage resolution completes before reward Vigor applies.
+- [ ] **Spellcaster** — Play **3 Skills in one player turn** after acquisition. → Gain **2 EXP; draw 2**.
+- [ ] **Hoarder** — End your player turn with **6+ cards in hand**, checked before discard. → Gain **4 EXP**; draw **1 additional card next turn**, after the normal draw.
+- [ ] **Boss Slayer** — Deal **40 cumulative HP damage to Elite/Boss enemies** after acquisition. → **Level Up twice; draw 2**. Only generated by Legend in the Making while an Elite/Boss is alive. No healing reward.
 
-### The synergy triangle
-
-```
-        QUESTS ──complete──▶ EXP/LEVEL
-           ▲                    │
-   dead hand-slots        thresholds unlock
-   need skipping          Exploit conditions
-           │                    ▼
-   EXPLOIT stacks ◀──skip── unmet conditions
-```
-
-Every pair also gets explicit bridge cards (marked **[bridge]** below), per the Time's-Up/Devour-Life pattern.
+**Connections:** EXP unlocks thresholds and times Vigor; limited Exploit bypasses support difficult clauses; Quests supply distinct combat rewards; holding one enables Perfect Preparation, completing one enables Objective Cleared, and abandonment enables contingency cards. Plain Exploit stacks do not themselves complete Quests—Sequence Break and Full Clear explicitly do that.
 
 ---
 
@@ -149,8 +142,34 @@ Every pair also gets explicit bridge cards (marked **[bridge]** below), per the 
 ## 5. Card list — 88 cards
 
 Format: `Name — cost · type · effect (upgrade) · art`. Art = stylized homage scene (see §11 on IP).
-**Legend:** ✅ = already implemented in the alpha (`IsekaiHeroCode/Cards/*.cs`) — needs only the Exploit-clause wording/localization port and any noted tweak. Checkboxes track the *new-framework* implementation.
-Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-rate base / over-rate met.
+**Legend:** `[x]` = active effect already implemented; `[ ]` = pending effect. `~~Struck-through~~` checked entries are **historical implemented versions**, immediately followed by the pending replacement; exclude historical entries from all totals. Existing code is evidence of implementation, not full playtest approval. Art is retained when an effect changes. Shared engine/UI tasks remain tracked in §12 even for unchanged cards.
+
+**Numbers:** all changed values are prototype targets. Compare whole turns and actual drafted base-game cards; validate Vigor, rarity, sustain, and draw together. Cards without changed effects stay checked and go on the §9 watchlist instead of being falsely marked for reimplementation.
+
+### Implemented cards awaiting revised implementations
+
+**These changes are already written into the card designs below, but have not been applied to the C# implementations.** Each old implemented entry is struck through and followed immediately by its unchecked replacement. The 34 other implemented cards retain their effects deliberately; they are not missing replacements. This table summarizes changes, not additional card slots.
+
+| Card | Existing implementation | Revised design to implement |
+|---|---|---|
+| Underdog Spirit | 5 damage + 5 conditional | 6 damage + 6 conditional; upgrade becomes 8 + 7 |
+| Shield Bash | 6 damage; existing Block enables 3 Block | Always gain 3 Block; having Block before play enables 3 more; upgrade becomes 8 damage and 4 + 4 Block |
+| Steal | Gold on every play | One gold payout per combat, shared across all copies |
+| Farm the Field | Costs 2 Energy | Costs 1 Energy |
+| Tutorial Sword | Bonus requires a Job | Bonus requires a Job **or a Power played this turn** |
+| Daily Training | 5 Block, 1 EXP | 6 Block, 2 EXP; upgrade becomes 8 Block, 3 EXP |
+| Combo Rush | Third hit requires Level 4+ | Third hit requires **leveling this turn**, separating it from Twin Blades |
+| Map Hack | Upgrade draws an extra card | Upgrade grants Retain instead; draw stays at 2 |
+| Level Grinding | 2 Energy, repeatable | 1 Energy, Exhaust; retains 6/8 EXP |
+| Power-Up Montage | Costs 2 Energy | Costs 1 Energy |
+| Training Arc | Common multi-hit Attack with conditional Block | Uncommon Power: optionally Exhaust a card after each turn's draw to gain 2/3 EXP |
+| EXPLOSION! | 28/36 AoE damage | 36/44 AoE damage; retains the next-turn Attack restriction |
+| Degenerate Tactics | Gold on every play | One gold payout per combat, shared across all copies |
+| Hero's Judgment | 16 damage, replaced by 32 at Level 7+ | Retain; 16 damage **plus 20 if you leveled this turn**; upgrade becomes 20 + 24 |
+| System Menu | Costs 2 Energy | Costs 1 Energy |
+| Truck-kun | 2-Energy uncommon; 15/19 AoE; one Fatal payout | 3-Energy Ancient; Level Up before 32/40 AoE; Energy and Level Up for each eligible kill |
+
+The legacy **Return by Death** Skill is separately struck through in §12, with its migration to the pending **Checkpoint** design. Unimplemented cards were revised in place, including OP Protagonist, Dodge the Bad End, the Quest package, and the replacements **Emergency Commission** and **Season Finale**.
 
 ### 5.1 Basics (4)
 
@@ -166,25 +185,31 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 **Attacks**
 
 - [x] **Mob Hunt** — 1⚡ · Deal 8. Fatal: gain 4 EXP. *(U: 11, 6 EXP)* · Art: giant toad hunt (*KonoSuba*)
-- [x] **Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
+- [x] ~~**Underdog Spirit** — 1⚡ · Deal 5. Exploit (Level 3+): deal 5 more. *(U: 6/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)~~ **Superseded implemented version.**
+- [ ] **Underdog Spirit** — 1⚡ · Deal 6 damage. Exploit (Level 3+): deal 6 more. *(U: 8/+7)* · Art: child prodigy's wooden-sword drills (*Mushoku Tensei*)
 - [x] **Beginner Magic** — 1⚡ · Deal 5. Exploit (you played a Skill this turn): deal 4 more. *(U: 6/+6)* · Art: a child mage's first oversized Water Ball (*Mushoku Tensei*)
-- [x] **Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)
+- [x] ~~**Shield Bash** — 1⚡ · Deal 6. Exploit (you have Block): gain 3 Block. *(U: 8/+4)* · Art: shield-first counterattack (*Shield Hero*)~~ **Superseded implemented version.**
+- [ ] **Shield Bash** — 1⚡ · Deal 6 damage. Gain 3 Block. Exploit (you had Block before playing this): gain 3 additional Block. *(U: 8 damage, 4/+4 Block)* · Art: shield-first counterattack (*Shield Hero*)
 - [x] **Twin Blades** — 1⚡ · Deal 3 twice. Exploit (Level 4+): deal 3 a third time. *(U: 4×)* · Art: crossed cyan/orange blades against The Gleam Eyes (*SAO*)
-- [x] **Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
-- [x] **Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)
+- [x] ~~**Steal** — 1⚡ · Deal 6. Gain 4 Gold. *(U: 9, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)~~ **Superseded implemented version.**
+- [ ] **Steal** — 1⚡ · Deal 6 damage. The first time you play Steal each combat, gain 4 Gold. All copies share this limit. *(U: 9 damage, 6 Gold)* · Art: a smug green-caped adventurer catching a blue-ribbon coin pouch, with his shocked goddess companion behind (*KonoSuba*)
+- [x] ~~**Farm the Field** — 2⚡ · Deal 4 to ALL. Gain 2 EXP. *(U: 6, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)~~ **Superseded implemented version.**
+- [ ] **Farm the Field** — 1⚡ · Deal 4 damage to ALL enemies. Gain 2 EXP. *(U: 6 damage, 3 EXP)* · Art: water arrow splitting into a wave across a monster field (*Tsukimichi*)
 - [x] **Last-Hit Bonus** ✅ — 1⚡ · Deal 8. Fatal: draw 1 and gain 1 Energy. *(U: 11, draw 2)* · Art: Kirito's finishing strike against the goblin boss (*SAO*)
 - [x] **Boss Telegraph** ✅ — 1⚡ · Deal 6. Exploit (an enemy intends to Attack): gain 5 Block. *(U: 8; when triggered, also draw 1)* · Art: Tanya diving through artillery toward a glowing strike zone (*Saga of Tanya the Evil*)
-- [x] **Tutorial Sword** ✅ — 1⚡ · Deal 7. Exploit (you have a Job): deal 4 more. *(U: 9/+6)* · Art: Rio's disciplined wooden-sword academy duel (*Spirit Chronicles*)
+- [x] ~~**Tutorial Sword** ✅ — 1⚡ · Deal 7. Exploit (you have a Job): deal 4 more. *(U: 9/+6)* · Art: Rio's disciplined wooden-sword academy duel (*Spirit Chronicles*)~~ **Superseded implemented version.**
+- [ ] **Tutorial Sword** — 1⚡ · Deal 7 damage. Exploit (you have a Job or played a Power this turn): deal 4 more. *(U: 9/+6)* · Art: Rio's disciplined wooden-sword academy duel (*Spirit Chronicles*)
 
 **Skills**
 
-- [x] **Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)
+- [x] ~~**Daily Training** — 1⚡ · Gain 5 Block. Gain 1 EXP. *(U: 7, 2 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)~~ **Superseded implemented version.**
+- [ ] **Daily Training** — 1⚡ · Gain 6 Block. Gain 2 EXP. *(U: 8 Block, 3 EXP)* · Art: absurd weighted push-ups before dawn (*Cautious Hero*)
 - [x] **Study the System** — 0⚡ · Gain 2 EXP. *(U: 3 EXP)* · Art: scrolling through a skill menu mid-dungeon (*So I'm a Spider*)
 - [ ] **Job Board** — 1⚡ · Choose 1 of 3 Quests and add it to your hand. Draw 1. *(U: also gain 1 EXP)* · Art: corkboard of bounty posters at the guild (*Log Horizon*)
 - [x] **Game Knowledge** — 1⚡ · Gain 1 Exploit. Draw 1. *(U: 2 Exploit)* · Art: Sora physically breaking the rules of the living-chess match (*No Game No Life*)
 - [x] **Seen It Coming** ✅ — 1⚡ · Gain 6 Block. Exploit (an enemy intends to Attack): apply 1 Weak. *(U: 8, 2 Weak)* · Art: Seiya's sidestep begun before the demon's swing starts (*Cautious Hero*)
 - [x] **Emergency Dodge** — 0⚡ · Gain 3 Block. Exploit (Level 3+): gain 3 more. *(U: 4/+4)* · Art: Subaru's panicked back-fall beneath Elsa's kukri (*Re:Zero*)
-- [ ] **Side Quest** — 0⚡ · Add a random Quest to your hand. Gain 1 EXP. *(U: 2 EXP)* · Art: villager with an exclamation mark over their head
+- [ ] **Side Quest** — 0⚡ · Add a random eligible Quest to your hand. Draw 1. Exhaust. *(U: choose 1 of up to 3 eligible Quests instead)* · Art: villager with an exclamation mark over their head
 - [x] **Status Appraisal** ✅ — 0⚡ · Look at the top 3 cards of your draw pile. Put one into your hand and discard the others. *(U: top 5)* · Art: Great Sage's appraisal window over a suspicious potion (*Tensura*)
 - [x] **Item Box** ✅ — 1⚡ · Gain 7 Block. Choose a card in your hand and Retain it. *(U: 10 Block, up to 2 cards)* · Art: Lloyd drawing a sword from a forbidden-library storage portal (*7th Prince*)
 - [x] **Route Guide** ✅ — 1⚡ · Gain 5 Block. Look at the top 4 cards of your draw pile. Put one on top and the rest on the bottom. *(U: 7 Block; up to 2 on top in any order)* · Art: Catarina mapping the branching death and exile routes (*My Next Life as a Villainess*)
@@ -198,43 +223,48 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 - [x] **Growth Slash** — 1⚡ · Deal damage equal to 3× your Level. *(U: 4×)* · Art: sword swing leaving a level-up light trail (*SAO*)
 - [x] **Overkill** — 2⚡ · Deal 14. Fatal: gain 8 EXP. *(U: 18, 10 EXP)* · Art: airborne computation-jewel rifle blast obliterating one goblin (*Saga of Tanya the Evil*)
 - [ ] **Objective Cleared** — 1⚡ · Deal 9. Exploit (you completed a Quest this turn): draw 2. *(U: 12)* · **[bridge: Quest→tempo]** · Art: "QUEST COMPLETE" banner mid-swing
-- [x] **Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: Lloyd's gleeful layered spell barrage against Guisarme (*I Was Reincarnated as the 7th Prince* — Guisarme duel)
+- [x] ~~**Combo Rush** — 1⚡ · Deal 4 twice. Exploit (Level 4+): deal 4 a third time. *(U: 5×)* · Art: Lloyd's gleeful layered spell barrage against Guisarme (*I Was Reincarnated as the 7th Prince* — Guisarme duel)~~ **Superseded implemented version.**
+- [ ] **Combo Rush** — 1⚡ · Deal 4 damage twice. Exploit (you Leveled Up this turn): deal 4 damage a third time. *(U: 5 per hit)* · Art: Lloyd's gleeful layered spell barrage against Guisarme (*I Was Reincarnated as the 7th Prince* — Guisarme duel)
 - [x] **Raid Opener** — 2⚡ · Deal 15. Exploit (target at full HP): deal 8 more. *(U: 18/+10)* · Art: 24-player raid's first strike (*Log Horizon*)
 - [x] **Duel** — 1⚡ · Deal 8. Exploit (only one enemy remains): deal 6 more. *(U: 10/+8)* · Art: arena duel before a roaring crowd (*Overlord*)
 - [x] **Cross-Class Combo** — 1⚡ · Deal 6 damage once for each different card type you played this turn before this card. *(U: count this card too)* · Art: Iruma fires the Pandoroola bow as sword, spell, and scroll motifs converge (*Welcome to Demon School! Iruma-kun* — Harvest Festival bow scene)
 - [ ] **Cleave the Horde** — 2⚡ · Deal 8 to ALL. Whenever this kills an enemy, gain 3 EXP. *(U: 11)* · Art: one swing, a dozen EXP popups
 - [x] **Counter Read** — 1⚡ · Deal 7. Exploit (an enemy intends to Attack): apply 2 Weak. *(U: 9, 3 Weak)* · Art: a masked mastermind catching a blade bare-handed atop a train (*The Eminence in Shadow*)
-- [ ] **Killing Blow** — 1⚡ · Deal 6. Fatal: Level Up. *(U: 9)* · **[bridge: kill→Level]** · Art: finishing strike dissolving a boss into light
+- [ ] **Killing Blow** — 1⚡ · Retain. Deal 6 damage. Fatal: Level Up. *(U: 9 damage)* · Art: finishing strike dissolving a boss into light
 - [x] **Skill Chain** — 2⚡ · Deal 5 three times. *(U: 6×)* · Art: Diablo chains three blue-white spell impacts into a demon opponent (*How Not to Summon a Demon Lord* — high-tier spell duel)
-- [ ] **Monster Grinding** — 1⚡ · Deal 10. Fatal: permanently increase this card's damage by 3. *(U: 13, +4)* · Art: evolution menu after the hundredth kill (*So I'm a Spider*) — run-persistent scaling, see §13
+- [ ] **Monster Grinding** — 1⚡ · Deal 10 damage. The first eligible Fatal with this original card each combat permanently increases its damage by 3. *(U: 13 damage, +4 growth)* Copies inherit current damage but cannot earn or transfer permanent growth; minions never qualify. · Art: evolution menu after the hundredth kill (*So I'm a Spider*) — run-persistent scaling, see §13
 - [x] **Steal Technique** — 1⚡ · Deal 7. Exploit (target has a debuff): gain 2 EXP. *(U: 9, 3 EXP)* · Art: Maple acquires poison resistance and Devour from the Poison Dragon (*BOFURI*)
 
 **Skills**
 
-- [ ] **Read the Code** — 1⚡ · Gain 2 Exploit. *(U: 3)* · Art: the world dissolving into green glyphs
+- [ ] **Read the Code** — 0⚡ · Gain 2 Exploit. Exhaust. *(U: 3 Exploit)* · Art: the world dissolving into green glyphs
 - [ ] **Guild Reception** — 1⚡ · Gain 6 Block. Choose 1 of 3 Quests and add it to your hand. *(U: 8 Block)* · Art: beaming guild receptionist stamping paperwork
-- [ ] **Cheat Inventory** — 1⚡ · Choose a card in your hand. Add a copy of it to your hand. Exhaust. *(U: no Exhaust)* · Art: pulling a duplicate sword out of thin air (*Tensura* Great Sage vibes)
-- [x] **Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: draw 3)* · Art: Shiroe reroutes a raid across a glowing dungeon map (*Log Horizon*)
-- [ ] **Save Scum** — 1⚡ · Discard your hand. Draw that many cards. *(U: draw 1 more)* · Art: the same hallway, the seventh attempt (*Re:Zero*)
+- [ ] **Cheat Inventory** — 1⚡ · Choose an Attack or Skill in your hand without Exhaust. Add a combat-only copy to your hand; the copy gains Exhaust. Cannot copy Cheat Inventory or Monster Grinding. Exhaust. *(U: costs 0; both Exhaust restrictions remain)* · Art: pulling a duplicate sword out of thin air (*Tensura* Great Sage vibes)
+- [x] ~~**Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: draw 3)* · Art: Shiroe reroutes a raid across a glowing dungeon map (*Log Horizon*)~~ **Superseded implemented version.**
+- [ ] **Map Hack** — 0⚡ · Draw 2, then discard 1. *(U: Retain; no additional draw)* · Art: Shiroe reroutes a raid across a glowing dungeon map (*Log Horizon*)
+- [ ] **Save Scum** — 1⚡ · You may abandon any Quests in your hand. Then discard your remaining hand and draw that many cards plus the number of Quests abandoned. *(U: draw 1 additional card)* · Art: the same hallway, the seventh attempt (*Re:Zero*)
 - [x] **Barrier Magic** — 2⚡ · Gain 13 Block. Exploit (Level 4+): gain 5 more. *(U: 15/+6)* · Art: Air Strike Shield chaining into three layered wards (*The Rising of the Shield Hero*)
-- [ ] **Healing Circle** — 1⚡ · Heal 3. Exploit (Level 6+): heal 6 instead. Exhaust. *(U: 4/8)* · Art: warm green glyph underfoot (*KonoSuba*)
-- [x] **Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: Kumoko amid a trail of defeated low-level labyrinth monsters and stacked level-up glows (*So I'm a Spider, So What?* — Great Elroe Labyrinth grind)
+- [ ] **Emergency Commission** — 1⚡ · Gain 8 Block. You may abandon a Quest in your hand; if you do, choose 1 of up to 3 eligible Quests to add to your hand. *(U: 11 Block)* · Art: a guild receptionist tears up an impossible contract and stamps an emergency replacement (*KonoSuba* guild comedy)
+- [x] ~~**Level Grinding** — 2⚡ · Gain 6 EXP. *(U: 8)* · Art: Kumoko amid a trail of defeated low-level labyrinth monsters and stacked level-up glows (*So I'm a Spider, So What?* — Great Elroe Labyrinth grind)~~ **Superseded implemented version.**
+- [ ] **Level Grinding** — 1⚡ · Gain 6 EXP. Exhaust. *(U: 8 EXP)* · Art: Kumoko amid a trail of defeated low-level labyrinth monsters and stacked level-up glows (*So I'm a Spider, So What?* — Great Elroe Labyrinth grind)
 - [x] **Negotiation** — 1⚡ · Apply 2 Weak. Gain 1 EXP. *(U: 3 Weak, 2 EXP)* · Art: brown-haired noble girl offering tea as three crimson doom arrows bend harmlessly behind her (*My Next Life as a Villainess*)
 - [ ] **Applied Physics** — 1⚡ · Gain 8 Block. The next Attack you play this turn ignores Block. *(U: 11 Block; draw 1)* · Art: explaining leverage to a knight, moments before demonstrating it (*Bookworm* energy)
-- [ ] **Side Story** — 0⚡ · Add a random Quest to your hand. Gain 1 Exploit. *(U: choose 1 of 3 Quests)* · **[bridge: Quest×Exploit]** · Art: a stranger's subplot becoming your problem
-- [x] **Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: Kazuya studies maps and reforms while Living Poltergeist drives a fan of floating quills (*How a Realist Hero Rebuilt the Kingdom* — royal paperwork montage)
-- [x] **Death Flag** — 1⚡ · Apply 2 Vulnerable. Gain 1 EXP. *(U: 3 Vulnerable)* · Art: a young villainess uprooting doom flags with a hoe (*My Next Life as a Villainess*) — our one Vulnerable card
-- [ ] **Dodge the Bad End** — 1⚡ · Choose a card in your discard pile. Put it on top of your draw pile. It costs 0 next turn. *(U: put it into your hand instead; it costs 0 this turn)* · Art: frantically steering away from the doomed route (*Villainess*)
+- [ ] **Side Story** — 0⚡ · Abandon a Quest in your hand. If you do, gain 2 Exploit and draw 1. *(U: 3 Exploit)* · Art: the hero discovers a loophole in a sidequest contract and walks away with its hidden knowledge
+- [x] ~~**Power-Up Montage** — 2⚡ · Gain 4 EXP and 4 Block. *(U: 5/6)* · Art: Kazuya studies maps and reforms while Living Poltergeist drives a fan of floating quills (*How a Realist Hero Rebuilt the Kingdom* — royal paperwork montage)~~ **Superseded implemented version.**
+- [ ] **Power-Up Montage** — 1⚡ · Gain 4 EXP and 4 Block. *(U: 5 EXP, 6 Block)* · Art: Kazuya studies maps and reforms while Living Poltergeist drives a fan of floating quills (*How a Realist Hero Rebuilt the Kingdom* — royal paperwork montage)
+- [x] **Death Flag** — 1⚡ · Apply 2 Vulnerable. Gain 1 EXP. *(U: 3 Vulnerable)* · Art: a young villainess uprooting doom flags with a hoe (*My Next Life as a Villainess*) — one of our two planned Vulnerable sources, alongside Atomic+
+- [ ] **Dodge the Bad End** — 1⚡ · Choose a card in your discard pile. Put it on top of your draw pile; it costs 0 next turn. Exhaust. *(U: put it into your hand instead; it costs 0 this turn. Still Exhaust.)* · Art: frantically steering away from the doomed route (*Villainess*)
 
 **Powers**
 
 - [ ] **Genre Savvy** — 1⚡ · At the start of your turn, gain 1 Exploit. *(U: Innate)* · Art: hero side-eyeing an obvious mimic chest
-- [ ] **Quest Log** — 1⚡ · Whenever you complete a Quest, draw 2. *(U: also gain 2 Block)* · Art: an immaculately organized journal (*Log Horizon*)
-- [ ] **Training Arc** — 1⚡ · At the start of your turn, Exhaust a card from your hand and gain 2 EXP. *(U: 3 EXP)* · **[the off-philosophy card — Ironclad grammar, patches our hand-clog weakness, Tyranny-style]** · Art: burning yesterday's techniques to forge better ones · *Note: the alpha's "Training Arc" was an unrelated common Attack, now dropped (§14) — the name belongs to this power.*
-- [ ] **Fast Learner** — 1⚡ · Whenever one of your Exploit conditions is met, gain 1 EXP. *(U: 0⚡)* · **[bridge: Exploit→Level]** · Art: skill notifications stacking faster than they can be read
-- [ ] **Job: Alchemist** ✅ — 1⚡ · The first time each turn you apply a debuff, gain 4 Block and your next Attack against that enemy deals 4 more damage. *(U: 6/6)* · Art: transmutation circle mid-brawl (*Arifureta* crafting-into-combat)
-- [ ] **Job: Spellblade** — 1⚡ · Once each turn, after you play a Skill, your next Attack this turn costs 1 less and deals 4 more damage. *(U: +7)* · Art: spell wrapped around a blade edge
-- [ ] **Job: Appraiser** — 1⚡ · At the start of your turn, look at the top 3 cards of your draw pile and put them back in any order. *(U: you may put one on the bottom)* · Art: the world's stats, always visible
+- [ ] **Quest Log** — 1⚡ · Whenever you complete a Quest, draw 2. *(U: also gain 2 Block)* Once per actual completion; abandonment and ordinary Exhaust do not trigger it. · Art: an immaculately organized journal (*Log Horizon*)
+- [x] ~~**Training Arc** — 1⚡ · Common Attack · Deal 5 damage twice. If you played a Skill this turn, gain 4 Block. *(U: 3 hits)*~~ **Superseded implemented version.**
+- [ ] **Training Arc** — 1⚡ · At the start of your turn, after drawing, you may Exhaust a card from your hand. If you do, gain 2 EXP. *(U: 3 EXP)* Exhausting a Quest abandons it without reward; no card means no EXP. · Art: burning yesterday's techniques to forge better ones
+- [ ] **Fast Learner** — 1⚡ · Whenever an original card play satisfies an Exploit clause, gain 1 EXP. *(U: costs 0)* Natural or forced satisfaction counts; effect-only repeats do not. · Art: skill notifications stacking faster than they can be read
+- [x] **Job: Alchemist** ✅ — 1⚡ · The first time each turn you apply a debuff, gain 4 Block and your next Attack against that enemy deals 4 more damage. *(U: 6/6)* · Art: transmutation circle mid-brawl (*Arifureta* crafting-into-combat)
+- [ ] **Job: Spellblade** — 1⚡ · Once each turn, after you play a Skill, your next Attack this turn costs 1 less and deals 4 more damage per hit. *(U: +7 damage)* The discount and bonus expire at turn end. Duplicate Powers add damage but still grant only one 1-Energy discount per turn; X-cost Attacks receive damage but no discount. · Art: spell wrapped around a blade edge
+- [ ] **Job: Appraiser** — 1⚡ · At the start of your turn, before drawing, look at the top 3 cards of your draw pile. You may put 1 on the bottom; put the rest back in any order. *(U: may put up to 2 on the bottom)* One selection per turn; duplicate copies increase neither inspection count nor menus. · Art: the world's stats, always visible
 - [ ] **Skill Tree** — 1⚡ · Level Ups grant 2 additional Vigor. *(U: 3)* · Art: constellation of unlocked nodes
 - [ ] **Mana Sense** — 1⚡ · Whenever you consume an Exploit, draw 1. *(U: also gain 2 Block)* · Art: seeing the seams in reality
 
@@ -244,98 +274,115 @@ Baselines respected: 1⚡ ≈ 6 dmg / 5 Block; Exploit-clause cards run under-ra
 
 **Attacks**
 
-- [x] **EXPLOSION!** — 3⚡ · Deal 28 to ALL. You cannot play Attacks next turn. *(U: 36)* · Art: one glorious detonation, caster face-down in the dirt (*KonoSuba* — the obvious one)
+- [x] ~~**EXPLOSION!** — 3⚡ · Deal 28 to ALL. You cannot play Attacks next turn. *(U: 36)* · Art: one glorious detonation, caster face-down in the dirt (*KonoSuba* — the obvious one)~~ **Superseded implemented version.**
+- [ ] **EXPLOSION!** — 3⚡ · Deal 36 damage to ALL enemies. You cannot play Attacks next turn. *(U: 44 damage)* · Art: one glorious detonation, caster face-down in the dirt (*KonoSuba* — the obvious one)
 - [x] **I Am Atomic** ✅ — 3⚡ · Deal 36 to ALL. Costs 1 less this combat whenever an Exploit condition is met. Exhaust. *(U: apply 1 Vulnerable to ALL enemies first)* · **[bridge: Exploit→finisher]** · Art: Shadow beneath the violet halo in the underground sanctuary (*Eminence in Shadow*)
 - [x] **Starburst Stream** — X⚡ · Deal 4 damage X+2 times. *(U: 5)* · Art: a dual-wielder spiraling through cyan and orange sixteen-hit trails toward The Gleam Eyes (*SAO*)
-- [x] **Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
-- [x] **Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
+- [x] ~~**Degenerate Tactics** — 1⚡ · Deal 8. Apply 2 Weak. Gain 8 Gold. *(U: 10, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)~~ **Superseded implemented version.**
+- [ ] **Degenerate Tactics** — 1⚡ · Deal 8 damage. Apply 2 Weak. The first time you play Degenerate Tactics each combat, gain 8 Gold. All copies share this limit. *(U: 10 damage, 10 Gold)* · Art: winning as dishonorably as physically possible (*KonoSuba*)
+- [x] ~~**Hero's Judgment** — 2⚡ · Deal 16. Exploit (Level 7+): deal 32 instead. *(U: 20/40)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)~~ **Superseded implemented version.**
+- [ ] **Hero's Judgment** — 2⚡ · Retain. Deal 16 damage. Exploit (you Leveled Up this turn): deal 20 more damage in the same hit. *(U: 20/+24)* · Art: white-and-gold skeletal knight raises a blue-white judgment sword as his purple-black cape fills a forest clearing (*Skeleton Knight in Another World*)
 - [x] **Anti-Boss Art** — 2⚡ · Deal 20. Exploit (target is an Elite or Boss): deal 10 more. *(U: 24/+12)* · Art: a black-red Machine God cannon array converges on a colossal boss core (*BOFURI*)
 - [ ] **Ultimate Skill: Sage** — 2⚡ · Deal 12. Gain 2 Exploit. *(U: 15, 3 Exploit)* · **[bridge: damage×Exploit]** · Art: calm blue analysis text over a chaotic battlefield (*Tensura*)
 - [x] **Megiddo** ✅ — 2⚡ · Deal 18. Exploit (you played a Power this turn): deal 9 to ALL enemies. *(U: 24/12)* · Art: Rimuru's water lenses focus sunlight onto the Falmuth army (*Tensura*)
-- [ ] **Grand Finale** — 3⚡ · Deal damage equal to 10 plus all EXP you gained this combat. Exhaust. *(U: 15 plus)* · Art: every technique learned this arc, used at once
+- [ ] **Season Finale** — 2⚡ · Deal damage equal to 10 plus all EXP gained this combat, including overflow. Exhaust. *(U: 15 plus total EXP)* Direct Level Ups add no EXP to this total. · Art: every technique learned this arc, used at once
 
 **Skills**
 
 - [ ] **Sequence Break** — 1⚡ · Complete a Quest in your hand. Draw 1. *(U: 0⚡)* · **[bridge: Exploit-philosophy×Quest]** · Art: walking through a wall the developers forgot to finish
-- [ ] **Checkpoint** — 1⚡ · Exhaust. The next time you would die this combat, instead heal 15 HP and gain 8 EXP. *(U: 20 HP, 10 EXP)* · Art: waking up at the save point, memories intact (*Re:Zero*) · *Salvage: the alpha's `ReturnByDeathPower.cs` state-tracking is a starting point (§14).*
-- [x] **System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: Kumoko rearranging her visible skill tree in the Great Elroe Labyrinth (*So I'm a Spider, So What?*)
-- [ ] **Goddess's Blessing** — 2⚡ · Heal 8. Exploit (Level 6+): heal 14 instead. Exhaust. *(U: 10/17)* · Art: divine light, smug goddess demanding gratitude
+- [ ] **Checkpoint** — 1⚡ · The next time you would die this combat, survive with 15 HP and gain 8 EXP. Exhaust. *(U: 20 HP, 10 EXP)* Only one Checkpoint rescue per player per combat, shared by all copies; cannot stack charges or re-arm after use. Does not prevent later hits. · Art: waking up at the save point, memories intact (*Re:Zero*) · *Salvage: the alpha's `ReturnByDeathPower.cs` state-tracking is a starting point (§14).*
+- [x] ~~**System Menu** ✅ — 2⚡ · Choose a card in your hand. Add **Override** to it for the rest of combat. Exhaust. *(U: may choose from your discard pile instead)* · **[the per-card permanent cheat]** · Art: Kumoko rearranging her visible skill tree in the Great Elroe Labyrinth (*So I'm a Spider, So What?*)~~ **Superseded implemented version.**
+- [ ] **System Menu** — 1⚡ · Choose a card in your hand. Add **Override** to it for this combat. Exhaust. *(U: may also choose from your discard pile)* · Art: Kumoko rearranging her visible skill tree in the Great Elroe Labyrinth (*So I'm a Spider, So What?*)
+- [ ] **Goddess's Blessing** — 2⚡ · Heal 8. Exploit (Level 6+): heal 6 more. Exhaust. *(U: heal 10/+7)* · Art: divine light, smug goddess demanding gratitude
 - [ ] **Perfect Preparation** — 2⚡ · Gain 15 Block. Exploit (you have a Quest in your hand): gain 10 more. *(U: 18/+12)* · Art: 47 contingency plans, laminated (*Cautious Hero*)
-- [ ] **Reincarnate** — 2⚡ · Level Up twice. Exhaust. *(U: three times)* · Art: the glowing circle, the new sky, the second chance
-- [ ] **Party Formation** — 1⚡ · Choose 2: deal 8 damage / gain 8 Block / gain 4 EXP. *(U: all three)* · Art: dysfunctional four-person party, somehow functional
-- [ ] **Full Clear** — 3⚡ · Complete ALL Quests in your hand. *(U: 2⚡)* · Art: 100% completion screen, every sidequest ticked
+- [ ] **Reincarnate** — 2⚡ · Level Up twice. Draw 2. Exhaust. *(U: Level Up three times; still draw 2)* · Art: the glowing circle, the new sky, the second chance
+- [ ] **Party Formation** — 1⚡ · Choose 2 different effects: deal 8 damage / gain 8 Block / gain 4 EXP. *(U: 11 damage / 11 Block / 6 EXP; still choose 2)* · Art: dysfunctional four-person party, somehow functional
+- [ ] **Full Clear** — 2⚡ · Complete all Quests currently in your hand, in hand order. Exhaust. *(U: costs 1; still Exhaust)* Does not complete Quests generated by these rewards. · Art: 100% completion screen, every sidequest ticked
 - [x] **Slow Life** — 1⚡ · Heal 3 and gain 6 Block. Exhaust. *(U: 4/8)* · Art: a first giant-turnip harvest beneath the great tree (*Farming Life in Another World*)
 
 **Powers**
 
-- [ ] **OP Protagonist** — 3⚡ · Your Exploit conditions always count as met. *(U: 2⚡)* · **[the capstone — Override on everything]** · Art: enemies checking the hero's stats and quietly leaving
-- [ ] **Break the Level Cap** — 2⚡ · Remove your Level cap. When you Level Up, gain 1 Strength. *(U: also 1 Dexterity every 2nd Level Up)* · Art: the number 10 shattering like glass
-- [ ] **Guild Master** — 2⚡ · At the start of your turn, add a random Quest to your hand. Quests grant double EXP. *(U: choose 1 of 3)* · Art: the desk where every adventurer's story starts
-- [ ] **Grinding Montage** ✅ — 2⚡ · At the start of your turn, upgrade 1 random Attack or Skill in your hand for this combat. If it's already upgraded, reduce its cost by 1 this turn. *(U: 2 cards)* · Art: the training episode, permanently
+- [ ] **OP Protagonist** — 3⚡ · The first 2 unmet Exploit clauses each turn count as met without spending stacks. *(U: costs 2)* Card Override and naturally met clauses do not spend this allowance; duplicate copies do not increase it. · Art: enemies checking the hero's stats and quietly leaving
+- [ ] **Break the Level Cap** — 2⚡ · Remove your Level cap. Whenever you Level Up after playing this, gain 1 Strength. *(U: also gain 1 Dexterity on every second subsequent Level Up)* Process banked EXP after installing these effects. Duplicate copies do not multiply rewards or reset the Dexterity counter. · Art: the number 10 shattering like glass
+- [ ] **Guild Master** — 2⚡ · At the start of your turn, after drawing, if you have no Quest in hand, add a random eligible Quest. Quest EXP rewards are doubled. *(U: may choose 1 of up to 3 eligible Quests instead, or skip generation)* Duplicate copies do not multiply generation or the EXP multiplier. · Art: the desk where every adventurer's story starts
+- [x] **Grinding Montage** ✅ — 2⚡ · At the start of your turn, upgrade 1 random Attack or Skill in your hand for this combat. If it's already upgraded, reduce its cost by 1 this turn. *(U: 2 cards)* · Art: the training episode, permanently
 - [ ] **Mana Overflow** — 2⚡ · While you are Level 5 or higher, gain 1 additional Energy at the start of your turn. *(U: Level 4+)* · Art: mana circuits glowing through skin
 - [ ] **Plot Armor** — 2⚡ · The first time you would take unblocked damage each turn, reduce it by your Level. *(U: first two times)* · **[bridge: Level→defense]** · Art: the blade that stops exactly one millimeter short
-- [ ] **Legend in the Making** — 2⚡ · Whenever a non-minion enemy dies, Level Up. *(U: also draw 1)* · Art: bards already writing the song mid-battle
-- [ ] **Protagonist Privilege** — 2⚡ · Once each turn, when one of your Exploit conditions is met, repeat that clause's effect. *(U: twice)* · **[the other capstone — Exploit doubling, from the goal doc]** · Art: the rules apply to everyone else
+- [ ] **Legend in the Making** — 2⚡ · Gain 8 Block. Add Boss Slayer to your hand if an Elite/Boss is alive; otherwise add Slay if eligible. Whenever a non-minion enemy dies, Level Up. *(U: 11 Block)* The generated objective follows §3.3 limits; generation failure does not cancel Block or the Power. · Art: bards already writing the song mid-battle
+- [ ] **Protagonist Privilege** — 2⚡ · Once each turn, when an original card play satisfies an Exploit clause, repeat only its explicit bonus. *(U: first 2 such plays each turn)* Follow §3.2 repeat semantics. Duplicate copies do not increase the per-turn limit. · Art: the rules apply to everyone else
 
 ### 5.5 Ancient cards (2 — full-art specials, obtainable only from Ancients)
 
-- [ ] **Truck-kun** ✅→rework — 3⚡ · Attack · Deal 28 damage to ALL enemies. Whenever this kills an enemy, gain 1 Energy and Level Up. Exhaust. *(U: 36)* · Art: **existing alpha art — reuse** (adapt to the Ancient full-art frame) · *Merge note: promoted from the alpha's 2⚡ uncommon (15 ALL, kill→energy) to Ancient — the genre's inciting incident deserves the full-art slot. The NAME is fixed (art exists); the effect is fair game to retune freely in playtests.*
-- [ ] **NEW GAME+** — 2⚡ · Power · At the start of your turn, gain 2 EXP. When you Level Up, gain 1 Exploit. *(U: 3 EXP)* · **[the triangle in one card: Level engine that feeds Exploit]** · Art: title screen with a save file that remembers everything
+- [x] ~~**Truck-kun** — 2⚡ · Uncommon Attack · Deal 15 damage to ALL enemies. Fatal: gain 1 Energy once if any eligible enemy dies. Exhaust. *(U: 19 damage; Fatal also draws 1)*~~ **Superseded implemented version.**
+- [ ] **Truck-kun** — 3⚡ · Attack · Level Up, then deal 32 damage to ALL enemies. For each eligible non-minion enemy this kills, gain 1 Energy and Level Up. Exhaust. *(U: 40 damage)* Initial Vigor applies to the attack; kill-granted Vigor is for later attacks. Retain existing art in the Ancient frame. · Art: **existing alpha art — reuse** (adapt to the Ancient full-art frame)
+- [ ] **NEW GAME+** — 2⚡ · Power · Gain 4 EXP. At the start of your turn, gain 2 EXP; if already at your Level cap instead, gain 1 Exploit. Whenever you Level Up, gain 1 Exploit. *(U: recurring EXP becomes 3)* Install the Power before its initial EXP. Duplicate copies do not multiply these effects; replaying it does not grant another initial 4 EXP. · Art: title screen with a save file that remembers everything
 
-**Set totals:** 35 Attacks / 35 Skills / 18 Powers — matches the verified STS2 envelope (Necrobinder is exactly 35/35/18).
+**Active set totals:** 35 Attacks / 35 Skills / 18 Powers = 88. Historical struck-through entries are excluded. These are our scope targets, not proof of balance.
 
----
-
-## 6. Archetypes this pool supports
-
-1. **Level Rush** (Grind, Level Grinding, Killing Blow, Reincarnate → Growth Slash, Hero's Judgment, Mana Overflow, Break the Level Cap) — pure snowball; the "become the demon lord" run.
-2. **Cheat Engine** (Game Knowledge, Read the Code, Genre Savvy, Ultimate Skill: Sage → heavy Exploit-clause cards + Mana Sense, System Menu, I Am Atomic, OP Protagonist, Protagonist Privilege) — consistency deck; every card always at max text.
-3. **Quest Completionist** (Job Board, Guild Reception, Side Story → Quest Log, Sequence Break, Full Clear, Guild Master) — engine deck; converts hand-slots into card advantage and EXP bursts.
-4. **Fatal Sweeper** (Mob Hunt, Last-Hit Bonus, Cleave the Horde, Overkill, Monster Grinding, Legend in the Making, Truck-kun) — multi-enemy specialist; sequencing kills for chain level-ups.
-
-Every archetype touches at least two pillars; no card is dead in a neighboring archetype — that's the internal-synergy bar the base characters set. (These four are the goal doc's "acceptance check" run types, reified.)
+**Unchanged implementation clarifications:** Item Box grants Retain for the rest of combat, not only this turn. Alchemist’s target-specific bonus persists until the next attack against that enemy and benefits its hits; unused bonuses may accumulate. Grinding Montage triggers after the normal draw, chooses distinct Attack/Skill cards, upgrades an upgradable card, otherwise discounts a non-X-cost card for this turn. Cross-Class Combo counts played card types, not character classes; unplayable Quests do not count. Confirm all four in the shared acceptance pass.
 
 ---
 
-## 7. Relics (9 — verified tier template: Starter + upgraded Starter + 1C + 2U + 3R + 1 Shop)
+## 6. Distinct draft and combat plans
+
+1. **Breakthrough timing:** Grind/Study the System/Level Grinding → Item Box/Combo Rush/Hero's Judgment/Starburst Stream. Arrange the next Level Up and choose the right Vigor consumer. Growth Slash provides dependable sustained scaling; Season Finale converts cumulative progress into one burst.
+2. **Cheat allocation:** Game Knowledge/Read the Code/Genre Savvy → System Menu/Mana Sense/Atomic/Privilege. Fulfill easy conditions naturally and reserve finite bypasses for expensive conditions. OP Protagonist helps two unmet clauses per turn without solving the entire deck.
+3. **Quest management:** Job Board/Guild Reception/Legend → Quest Log/Objective Cleared/Sequence Break/Full Clear. Hold a Quest for Perfect Preparation, complete it for tempo, or abandon it with Side Story/Emergency Commission/Training Arc. The useful objective changes with the hand.
+4. **Fatal support:** Mob Hunt/retained Killing Blow/Last-Hit Bonus/Monster Grinding/Truck-kun reward kill sequencing. Bring Duel, Growth Slash, Hero's Judgment, or a Quest plan for isolated bosses. This is a support package, not a promised standalone archetype.
+
+Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors Skill-to-Attack turns, and Appraiser improves future draws. None scales from Level. Successful runs should differ in picks, upgrades, retention targets, and combat order; a universal best deck of filtering plus EXP plus multi-hit attacks fails the replayability check.
+
+---
+
+## 7. Relics (9 — chosen distribution: Starter + upgraded Starter + 1C + 2U + 3R + 1 Shop)
 
 - [x] **The System** ✅ *(Starter)* — Enemies grant 3 EXP when they die (minions excluded, matching Fatal rules). Start each combat with 2 EXP. · Art needed: the blue window only you can see · *Replaced alpha placeholder Veil of the Unseen.*
-- [ ] **The System: Admin Mode** *(Ancient-upgraded Starter)* — Enemies grant 4 EXP when they die. Start each combat with 6 EXP. When you Level Up, draw 1. · Art: the same window, now with a password field left blank
+- [ ] **The System: Admin Mode** *(Ancient-upgraded Starter)* — Replace The System. Non-minion enemy deaths grant 4 EXP. Start each combat with 6 EXP. Whenever you Level Up, draw 1. The initial Level Up counts; resolve its draw after the normal opening draw. Exclude duplicate/death-prevented notifications. · Art: the same window, now with a password field left blank
 - [ ] **Beginner's Luck Charm** *(Common)* — Your first unmet Exploit condition each combat counts as met. · Art: a four-leaf clover in a smartphone case
 - [ ] **OP Smartphone** *(Uncommon)* — Whenever you Level Up, deal 5 damage to a random enemy. · Art: it has no signal and it doesn't matter (*In Another World With My Smartphone*)
-- [ ] **Quest Board** *(Uncommon)* — At the start of each combat, add a random Quest to your hand. · Art: portable corkboard, suspiciously well-stocked
+- [ ] **Quest Board** *(Uncommon)* — After your opening draw, choose 1 of up to 3 eligible ordinary Quests to add to your hand, or skip. Does not replace a normal draw; use §3.3 offer and hand-cap rules. · Art: portable corkboard, suspiciously well-stocked
 - [ ] **Forbidden Walkthrough** *(Rare)* — At the start of each combat, gain 3 Exploit. · Art: a strategy guide for a world that shouldn't have one
 - [ ] **Hero's Insignia** *(Rare)* — Whenever you Level Up, gain 1 Strength. · Art: the royal crest they hand out with the summoning
 - [ ] **Return by Death** *(Rare)* — When you would die, instead heal to 30% of your max HP and gain 10 EXP and 3 Exploit. Once per run. · Art: the smell of the loop (*Re:Zero* — the Lizard Tail slot, but you come back *stronger and knowing more*) · *The alpha's Return by Death rare **skill** is dropped; the name and fantasy live here (§14).*
-- [ ] **Reborn Vending Machine** *(Shop)* — Whenever you Level Up, gain 5 Gold. · Art: it fell into another world and it's thriving (*Reborn as a Vending Machine*)
+- [ ] **Reborn Vending Machine** *(Shop)* — The first 3 times you Level Up each combat, gain 5 Gold. Display remaining payouts; cap removal, copies, and direct Level Ups cannot exceed the 15-Gold combat limit. · Art: it fell into another world and it's thriving (*Reborn as a Vending Machine*)
 
 ---
 
-## 8. Potions (3 — one per rarity, verified template)
+## 8. Potions (3 — one per rarity)
 
 - [ ] **Jar of Slime** *(Common)* — Gain 6 EXP. · Art: it's friendly and it's delicious EXP (*Tensura*)
 - [ ] **Bottled Cheat Code** *(Uncommon)* — Gain 3 Exploit. · Art: fizzing liquid full of tiny glyphs
-- [ ] **Truck Summoning Ritual** *(Rare)* — Deal 25 damage to a random enemy. Fatal: Level Up twice. · Art: chalk circle, tire tracks — the random target is the joke
+- [ ] **Truck Summoning Ritual** *(Rare)* — Choose an enemy. Level Up, then deal 25 unpowered damage to that enemy. Fatal: Level Up once more. Potion damage does not consume Vigor; preview the target and resulting Level. · Art: chalk circle and tire tracks; the joke is in the animation, not an uncontrollable target.
 
 ---
 
-## 9. Balance guardrails
+**Relic/potion event rules:** Smartphone damage is an owned relic effect and can complete Slay, but never credits a card's Fatal. Finish the current action before resolving queued relic damage so previews and kill attribution remain consistent. Return by Death is once per run, does not grant immunity to later hits, and checks after an unused Checkpoint rescue; only one rescue fires for one lethal event. Jar of Slime previews resulting Level/Vigor and cap waste; Bottled Cheat Code previews current eligible uses and follows bypass precedence. All combat-only resources reset at combat end.
 
-- [ ] Exploit-clause pricing: base ≈ 15% under rate, met ≈ 15% over rate; the *average* assuming ~60% natural trigger rate should sit exactly at rate.
-- [ ] Exploit is budgeted at ~0.5⚡ per stack (Game Knowledge: 1⚡ = 1 Exploit + draw 1 is the anchor).
-- [ ] EXP is budgeted at ~3 EXP per 1⚡ when it's the whole card (Level Grinding), ~1–2 EXP as a rider.
-- [ ] Level curve targets: hallway fight ends ~Level 3–4, elite ~5–6, boss ~8–10. If playtests exceed this, raise the 4-EXP threshold to 5, not the card numbers.
-- [ ] Anti-infinite checks: Level cap 10 gates Growth Slash/Hero's Judgment; Strength-per-Level lives only on rares (Hero's Insignia, Break the Level Cap); Mana Overflow is level-gated energy, strictly worse than Ancient-tier energy relics early.
-- [ ] Anti-frustration: Exploit never consumed on met conditions; uncompleted Quests vanish silently at combat end; Level Up Vigor means EXP riders never feel like dead text.
-- [ ] The Regent test: audit every setup card — each must produce damage, Block, or a draw the turn it's played. (Level Grinding and Study the System are the two allowed pure-setup exceptions, both cheap.)
-- [ ] Capstone stacking: OP Protagonist + Protagonist Privilege + Fast Learner is the intended "engine ascension"; make sure repeated clauses (Privilege) don't double EXP triggers into a runaway (Fast Learner reads *met*, Privilege *repeats effects* — repeats should not re-fire "condition met" events).
+## 9. Balance and fun acceptance checklist
 
-## 10. Cross-class synergy (the "could I draft this?" test)
+- [ ] **Early tempo:** test revised Farm the Field, Daily Training, Power-Up Montage, Level Grinding, and Read the Code against real Act 1 hands without rare engines. Track HP lost and actions enabled, not only printed value.
+- [ ] **Progress while useful:** record first useful Level Up, turn 1–3 Levels, Level before lethal, and post-lethal EXP separately. Change generators only after identifying the actual pacing failure; do not automatically raise EXP-per-Level globally.
+- [ ] **Vigor allocation:** verify Twin Blades, Combo Rush, Skill Chain, Starburst Stream at X=0/3/high X, and AoE consumers. Single-hit finishers must retain a reason to exist.
+- [ ] **Finite cheats:** preview natural/Override/relic/Power/stack resolution. Test unwanted automatic spending, OP Protagonist + Mana Sense, and bonus-only Privilege repeats. Copies of non-stacking Powers must say so in tooltips.
+- [ ] **Quest rules:** test acquisition windows, duplicate titles, same-event completion of different held titles, full hands, Hoarder/Flawless delayed rewards, abandonment, discard/return, and Full Clear snapshots. No reward may retroactively complete a newly generated Quest.
+- [ ] **No easy recursion:** two Dodge the Bad End+ copies both Exhaust. Test free retrieval, actual card replays, copying copies, and external duplication. A Level cap is not an anti-infinite mechanism.
+- [ ] **Finite permanent rewards:** Steal and Degenerate Tactics each share their one-payout-per-combat limit across all copies; Vending Machine caps at 15 Gold; Monster Grinding copies cannot grow or mutate the original. No Quest heals. Audit generation/copying of the remaining healing and rescue cards.
+- [ ] **Sustain:** record healing per run and intentional Checkpoint activations. Test Checkpoint with Return by Death and multi-attacks; no stacked or rearmed Checkpoint saves.
+- [ ] **Cap removal:** verify overflow conversion, event order, direct Level Ups versus EXP totals, Smartphone/Insignia/Admin chains, and finite gold. Break the Level Cap cannot be required for every successful deck.
+- [ ] **Rate/rarity watchlist:** unchanged Status Appraisal, Growth Slash, Anti-Boss Art, Counter Read, Slow Life, Skill Tree, Grinding Montage, Mana Overflow, Plot Armor, and relic Insignia need comparative playtests before further changes. Revised Map Hack must not remain an automatic pick across all deck plans.
+- [ ] **Distinct payoffs:** compare revised Explosion, Hero's Judgment, Season Finale, Reincarnate, and Truck-kun against Atomic, including turns where they do not kill. Record when a player actually chooses each over alternatives.
+- [ ] **Menu value:** record Quest selection time and Appraiser decisions. If choices repeatedly have an obvious answer, simplify rather than expand the token pool.
+- [ ] **Replayability:** at least three successful deck shapes disagree on useful rewards/upgrades and turn order; two memorable payoffs must work without Insignia or cap removal.
 
-- **They'd want ours:** Training Arc (Ironclad would kill for turn-start exhaust), Status Appraisal/Map Hack (Silent-grade card quality), Seen It Coming/Negotiation (any defensive deck), Steal/Degenerate Tactics (gold-gen is universal).
-- **We'd want theirs:** Silent draw velocity (more Exploit triggers per turn); Ironclad's Vulnerable package multiplies Hero's Judgment; Regent's colorless generation feeds Cross-Class Combo and Quest-turn card counts; Necrobinder's Souls cantrips accelerate our engine assembly.
-- **Safe cross-pool rule:** an Exploit-clause card in a non-IsekaiHero deck simply plays at base rate — never dead, never broken.
-- **Compat patch dividend:** once curated base-game conditionals carry Exploit tags (§3.2), Bottled Cheat Code and Forbidden Walkthrough become draftable value for *any* class in shared-pool modes.
+**Playtest sequence:** deterministic interaction checks first; six exploratory Act 1 runs; then at least twelve full runs per revision split between low Ascension and the tester's usual difficulty. Log comparable base-game runs, but do not interpret small samples or shared seeds as precise controlled win-rate evidence. Record one clever turn, one frustrating turn, useful rewards skipped, turns intentionally prolonged for rewards, and what changed the draft plan. Full procedure and original evidence: [review §§12–14](IsekaiHero_Fun_And_Balance_Review.md#12-recommended-redesign-experiments).
+
+## 10. Cross-class and co-op acceptance
+
+- EXP/Vigor, filtering, Weak, copying, and bounded economy can all be useful outside this class. They must be tested, not described as automatically safe.
+- Naturally satisfied conditions still work outside this character; unmet clauses can use audited Exploit compatibility. A card without relevant support may be a poor draft despite having a base effect.
+- Curate base-game conditional compatibility individually. Exclude Fatal, permanent rewards, and playability restrictions; do not make an illegal target or unplayable card legal via Exploit.
+- The System sees actual eligible enemy deaths from any player; individual Fatal rewards belong to the killing card. Quest counters are owner-local. Test simultaneous deaths, damage-over-time kills, revival, shared enemies, and prevented deaths.
+- Validate external draw, cost reduction, duplication, and multi-hit modifiers against §9 limits. Quest completion never fabricates Fatal credit, and copies never reset economy limits.
 
 ## 11. Art & tone direction
 
@@ -387,31 +434,39 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | [x] | Map Hack | *Log Horizon* | Shiroe routes the raid party around the obvious path using a glowing dungeon map. |
 | [x] | Game Knowledge | *No Game No Life* | Sora realizes the living-chess match does not follow ordinary chess rules and exploits that discovery. |
 
-## 12. Implementation roadmap
+## 12. Implementation roadmap and definition of done
 
-- [x] **Combat character animations:** original office-worker adventurer art, with Idle, Relaxed, Attack, Cast, Hit, Dead and Revive animations. See [art, preview and validation notes](CharacterAnimations.md). Build and native Godot checks pass; in-game visual acceptance remains part of Phase 5.
+- [x] **Combat character animations:** original office-worker adventurer art and existing animation work; see [CharacterAnimations](CharacterAnimations.md). Retain assets when revising card effects.
+- [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
+- [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate Vigor with multi-hit and separate attack commands.
+- [ ] **Phase 2 — Implement the struck-through replacements:** apply the engine-independent unchecked successors in §5, including bounded gold, revised early tempo, Map Hack, Combo Rush, Hero's Judgment, Explosion, and System Menu. Finish Quest-dependent Training Arc in Phase 3 and Ancient Truck-kun acquisition in Phase 4. Keep the history lines; check successors only after implementation and verification.
+- [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
+- [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack and Return by Death Skill in the active pool; do not leave historical versions obtainable alongside replacements.
+- [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.
+- [ ] **Phase 6 — Release:** refresh card text/tooltips/art references, README pool counts, and changelog; verify all active counts and acquisition rules before release.
 
-The stack is **C# on BaseLib-StS2** (not the raw GDScript loader): cards subclass `IsekaiHeroCard`, localization lives in `IsekaiHero/localization/eng/*.json`, build with `dotnet build` (see `AGENTS.md` for ILSpy decompile workflow and card-text conventions).
+**Per-entry completion:** implement the active text and upgrade; use named DynamicVars for upgradeable values and exact CardLoc references; verify targeting, selection prompts, event timing, copy/replay behavior, and localization; run `dotnet build` for implementation changes and relevant in-game checks. A documentation edit alone does not complete implementation. Do not check untested shared engine contracts just because a card class compiles.
 
-- [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Danger Sense basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/DangerSense) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
-- [ ] **Phase 2 — Exploit formalization:** stacking **Exploit** with consume-on-unmet, permanent per-card **Override**, and `Exploit (…)` wording are implemented. Remaining work: finish the shared condition library, port any remaining alpha wording, and audit base-game cards for the compatibility tag list.
-- [ ] **Phase 3 — Quests:** Quest token type (Unplayable/Retain/objective tracking/exhaust-on-complete), the 8-token pool, Job Board & choose-1-of-3 UI (reuse `CardSelectCmd.FromSimpleGrid`).
-- [ ] **Phase 4 — Full pool:** all 88 cards, 9 relics, 3 potions, 2 Ancient cards wired to Ancient encounters; Job cycle (Spellblade, Appraiser — Alchemist exists).
-- [ ] **Phase 5 — Balance & release:** §9 targets, Ascension scaling, art pass, Workshop + Nexus release; retire alpha card texts.
+**Legacy Return by Death migration:**
+
+- [x] ~~**Return by Death** — 2⚡ Rare Skill. At the start of your next turn restore the HP, Block, and status values captured when played; lose all Energy next turn. Exhaust. Upgrade has no effect.~~ **Superseded implemented version; outside the 88 active slots.**
+- [ ] **Checkpoint** — implement the bounded rescue Skill in §5.4 and remove legacy ReturnByDeath from card rewards. This task references that existing active slot; it is not a second card. The separate Return by Death relic remains pending in §7.
 
 ## 13. Open questions (for future sessions)
 
 - [ ] Does the STS2 mod API expose Ancient-encounter reward pools (needed for the 2 Ancient cards + Admin Mode upgrade)?
 - [ ] Should EXP-on-kill live on the character (safe from relic loss) or on The System relic (matches Bound Phylactery precedent)? Currently: relic.
 - [ ] The clause and the buff share one name (Exploit). If playtests show players think a clause *requires* the buff, rename the **buff** to **Cheat** (genre-perfect: "Gain 2 Cheat") and keep Exploit on cards. Override stays either way.
-- [ ] Which base-game conditionals make the initial Exploit compat list? Audit during Phase 2.
-- [ ] Level-Up intrinsic bonus: 2 Vigor (current) vs 2 Block (defensive) vs nothing (pure card-driven) — playtest.
+- [ ] Which base-game conditionals make the initial Exploit compatibility list? Audit after Phase 1 event contracts are stable; shared-pool tests are part of Phase 5.
+- [x] **Level-Up identity — decided 2026-09-28:** retain 2 Vigor and its multi-hit interaction. Tune supporting cards before replacing this source of tactical depth.
 - [ ] **Color:** implemented `#6C3082` purple may read as Necrobinder-adjacent; consider shifting toward teal/cyan ("another world" portal palette) during the art pass.
-- [ ] **Monster Grinding** run-persistent damage: the goal doc flagged save-data complexity; keep only if per-card persistent state serializes cleanly, otherwise change to "this combat."
-- [x] **Jobs scope — decided (2026-07-02):** Jobs stay a 3-power cycle + the "you have a Job" condition, with **no Level integration** — tying Job effects to Level would stack two scaling systems on one power and blow the complexity budget; the Exploit condition is already the bridge. Job: Alchemist's existing art stays. If players love Jobs, grow to ~5 powers and 2–3 more payoffs — never into a 4th core mechanic.
+- [ ] **Monster Grinding persistence:** serialize growth on the original deck card, cap growth to one eligible Fatal per original per combat, and prevent copies from changing permanent state. If persistence cannot be verified, reopen the design instead of silently changing its run-long role.
+- [x] **Jobs scope — decided (2026-07-02):** Jobs stay a 3-power cycle + the "you have a Job" condition, with **no Level integration** — tying Job effects to Level would stack two scaling systems on one power and blow the complexity budget; the Exploit condition is already the bridge. Job: Alchemist's existing art stays. Expansion beyond three Jobs is deferred until the v3 replayability checks pass; it is not current implementation scope.
 - [ ] Give the hero an in-world name/portrait identity, or keep the anonymous "Isekai Hero" genre-blank? Currently: anonymous.
 
-## 14. Alpha merge ledger (v0.4.0-alpha → this design)
+## 14. Historical alpha merge ledger (v0.4.0-alpha → v2)
+
+**Historical context only.** Active v3 effects, statuses, and successors in §§3–12 supersede this ledger. Names in this section are not additional active slots or implementation claims.
 
 **Kept nearly verbatim (14)** — code exists; needs Exploit-clause wording + §9 number check:
 Strike, Defend, Tutorial Sword, Boss Telegraph, Last-Hit Bonus, Seen It Coming, Status Appraisal, Item Box, Route Guide, Megiddo, I Am Atomic, System Menu, Job: Alchemist, Grinding Montage.
@@ -428,3 +483,24 @@ Strike, Defend, Tutorial Sword, Boss Telegraph, Last-Hit Bonus, Seen It Coming, 
 **Dropped from the goal doc's plans (2):** Job Change (tutoring 3 Jobs isn't worth a slot yet — revisit if the Job cycle grows), the Jobs-as-pillar framing (now a cycle, see §2.1).
 
 **Dropped from Design v1 in favor of alpha cards (11):** Lucky Crit, Cheap Shot, Warm-Up Swing, Cautious Guard, Appraisal, Party Cheer, Feint, Rapid Cast, Enchanted Arsenal, Strategic Retreat, Otherworld Common Sense — each displaced by a strictly more interesting alpha/goal-doc card in the same slot; plus Atomic (superseded by I Am Atomic), Artillery Barrage (→ Megiddo), Menu Editing (→ System Menu), Status Open (→ Grinding Montage), Demon Lord Form & Protagonist Aura & Familiar & Guild Sponsorship (cut for Protagonist Privilege + the Job cycle).
+
+## 15. v3 revision ledger — 2026-09-28
+
+The [research report](IsekaiHero_Fun_And_Balance_Review.md) remains an unchanged review of v2. This plan resolves its experiments into the following prototype choices:
+
+| Review concern | Adopted revision / tracking location |
+|---|---|
+| Weak early tempo | Farm the Field and Power-Up Montage cost 1; Daily Training becomes 6 Block/2 EXP; Level Grinding becomes 1-Energy burst with Exhaust; Read the Code becomes a zero-cost Exhaust burst. |
+| Duplicate attacks / delayed rares | Combo Rush checks a Level Up this turn; Hero's Judgment becomes retained timed burst; Killing Blow gains Retain; Season Finale replaces the unimplemented Grand Finale and costs 2. |
+| Explosion overshadowed by Atomic | Test 36/44 AoE with the existing next-turn restriction; compare nonlethal turns before any further buffs. |
+| Permanent cheat removes decisions | OP Protagonist only forces two unmet clauses per turn; System Menu costs 1; Privilege repeats explicit bonuses with separate event semantics. |
+| Unclear Quest costs / repetitive rewards | Distinct token rewards, no healing, explicit progress windows, one title held/completed per turn window, and a named Boss Slayer generator. |
+| Holding / abandoning objectives | Side Quest becomes one-shot generation plus draw; Side Story converts abandonment into cheats/draw; Emergency Commission replaces unimplemented Healing Circle; Save Scum replaces abandoned Quest slots with fresh cards. |
+| Gold, copying, recursion, rescue | Shared per-name gold limits, capped Vending Machine, bounded Monster Grinding, Exhaust-preserving Cheat Inventory/Dodge, and one Checkpoint rescue per combat. |
+| Filtering dominance | Map Hack upgrade grants Retain instead of additional draw; Status Appraisal stays unchanged pending measured dominance checks. |
+| Low-value choices / upgrade removes choice | Appraiser can bottom cards before drawing; Party Formation+ strengthens the chosen two modes; Guild Master only generates when no Quest is held. |
+| Capstone and Ancient impact | Reincarnate draws 2; Legend supplies immediate Block and a relevant objective; Truck-kun grants an initial Level Up before attacking; NEW GAME+ has immediate EXP and a cap fallback. |
+| Relic / potion usefulness | Quest Board offers a choice, Admin opening draw order is explicit, Truck potion targets an enemy and grants one Level before impact. |
+| Unknown balance / role overlap | §9 retains watchlists for unchanged cards and relics instead of speculative blanket changes. §12 requires implementation and playtests before checks become complete. |
+
+Struck-through predecessors are preserved only for effects that already existed in code. Unimplemented proposals were replaced directly. Future revisions should follow the same rule, retain art assets, keep exactly 88 active slots unless scope is explicitly changed, and record new evidence before declaring balance solved.
