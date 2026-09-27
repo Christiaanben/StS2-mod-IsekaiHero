@@ -58,6 +58,9 @@ The full character design — mechanics (EXP/Level, Exploit, Quests), the 88-car
 list, relics, potions, balance guardrails, and the implementation roadmap —
 lives in [docs/IsekaiHero_Design.md](docs/IsekaiHero_Design.md).
 
+Combat character art, animation timing, and a local interactive preview are
+documented in [docs/CharacterAnimations.md](docs/CharacterAnimations.md).
+
 ## Build
 
 The PCK packer runs as part of the normal build. Local builds automatically use

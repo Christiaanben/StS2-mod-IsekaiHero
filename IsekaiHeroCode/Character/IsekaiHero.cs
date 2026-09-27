@@ -6,6 +6,7 @@ using IsekaiHero.IsekaiHeroCode.Relics;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Relics;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace IsekaiHero.IsekaiHeroCode.Character;
 
@@ -18,6 +19,12 @@ public class IsekaiHero : PlaceholderCharacterModel
     public override Color NameColor => Color;
     public override CharacterGender Gender => CharacterGender.Neutral;
     public override int StartingHp => 70;
+
+    public override NCreatureVisuals CreateCustomVisuals() => IsekaiHeroVisuals.Create();
+    public override float DeathAnimTime => 1.2f;
+
+    protected override IEnumerable<string> ExtraAssetPaths => base.ExtraAssetPaths.Concat(
+        [IsekaiHeroVisuals.AtlasPath]);
 
     public override IEnumerable<CardModel> StartingDeck => [
         ModelDb.Card<StrikeIsekaiHero>(),
