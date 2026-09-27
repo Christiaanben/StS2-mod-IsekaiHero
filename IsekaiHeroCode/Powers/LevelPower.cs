@@ -6,6 +6,8 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 
@@ -32,10 +34,26 @@ public sealed class LevelPower : IsekaiHeroPower
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
+    public int Experience => IsMutable ? GetInternalData<Data>().Exp : 0;
+    public bool IsMaxLevel => Amount >= MaxLevel;
+
     public override List<(string, string)> Localization => new PowerLoc(
         "Level",
         "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you Level Up, gain 2 Vigor.",
-        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you Level Up, gain 2 Vigor.");
+        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you Level Up, gain 2 Vigor.",
+        ("expTitle", "EXP Progress"),
+        ("expProgress", "{Exp}/4 EXP toward the next level. Each filled segment represents 1 EXP."),
+        ("expMax", "Maximum level reached. {Exp} EXP banked. The gold bar indicates the level cap."));
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips
+    {
+        get
+        {
+            var description = new LocString("powers", Id.Entry + (IsMaxLevel ? ".expMax" : ".expProgress"));
+            description.Add("Exp", Experience);
+            yield return new HoverTip(new LocString("powers", Id.Entry + ".expTitle"), description);
+        }
+    }
 
     protected override object InitInternalData()
     {
@@ -67,7 +85,6 @@ public sealed class LevelPower : IsekaiHeroPower
 
         var data = power.GetInternalData<Data>();
         data.Exp += amount;
-        power.Flash();
 
         // At MaxLevel, surplus EXP stays banked (a future "Break the Level Cap"
         // effect can spend it) instead of being consumed for nothing.
@@ -77,5 +94,8 @@ public sealed class LevelPower : IsekaiHeroPower
             await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
             await PowerCmd.Apply<VigorPower>(choiceContext, creature, VigorPerLevelUp, creature, source, false);
         }
+
+        // EXP-only gains must refresh the UI even when the level did not change.
+        power.InvokeDisplayAmountChanged();
     }
 }
