@@ -63,7 +63,25 @@ public class IsekaiHero : PlaceholderCharacterModel
         override all the other methods that define those assets.
         These are just some of the simplest assets, given some placeholders to differentiate your character with.
         You don't have to, but you're suggested to rename these images. */
-    public override string CustomIconTexturePath => "character_icon_char_name.png".CharacterUiPath();
+    public override string CustomIconTexturePath => "hero_headshot_v1.png".CharacterUiPath();
+    // The top bar uses Icon (a Control), not IconTexture. Override the
+    // placeholder's Ironclad scene for the top bar and shared run-history UI.
+    public override Control CustomIcon
+    {
+        get
+        {
+            var icon = new TextureRect
+            {
+                Name = "IsekaiHeroIcon",
+                Texture = GD.Load<Texture2D>(CustomIconTexturePath),
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+                MouseFilter = Control.MouseFilterEnum.Ignore
+            };
+            icon.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+            return icon;
+        }
+    }
     public override string CustomCharacterSelectIconPath => "char_select_char_name.png".CharacterUiPath();
     public override string CustomCharacterSelectLockedIconPath => "char_select_char_name_locked.png".CharacterUiPath();
     public override string CustomMapMarkerPath => "map_marker_char_name.png".CharacterUiPath();
