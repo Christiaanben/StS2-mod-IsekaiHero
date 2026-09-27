@@ -23,8 +23,19 @@ public class IsekaiHero : PlaceholderCharacterModel
     public override NCreatureVisuals CreateCustomVisuals() => IsekaiHeroVisuals.Create();
     public override float DeathAnimTime => 1.2f;
 
+    // The quick PCK packer cannot ship .tscn files. Use BaseLib's simple counter
+    // with one painted layer and transparent placeholders for the other layers.
+    public override string CustomEnergyCounterPath => null!;
+    public override CustomEnergyCounter? CustomEnergyCounter => new(
+        layer => layer == 1 ? EnergyDiamondPath : EmptyEnergyLayerPath,
+        new Color("182D50"), new Color("55DDE8"));
+    public override Color EnergyLabelOutlineColor => new("182D50");
+
+    private const string EnergyDiamondPath = "res://IsekaiHero/images/charui/energy_diamond_v1.png";
+    private const string EmptyEnergyLayerPath = "res://IsekaiHero/images/charui/energy_empty_layer.png";
+
     protected override IEnumerable<string> ExtraAssetPaths => base.ExtraAssetPaths.Concat(
-        [IsekaiHeroVisuals.AtlasPath, IsekaiHeroSelectArt.TexturePath]);
+        [IsekaiHeroVisuals.AtlasPath, IsekaiHeroSelectArt.TexturePath, EnergyDiamondPath, EmptyEnergyLayerPath]);
 
     public override IEnumerable<CardModel> StartingDeck => [
         ModelDb.Card<StrikeIsekaiHero>(),
