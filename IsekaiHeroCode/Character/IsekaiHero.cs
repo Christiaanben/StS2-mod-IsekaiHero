@@ -24,7 +24,7 @@ public class IsekaiHero : PlaceholderCharacterModel
     public override float DeathAnimTime => 1.2f;
 
     protected override IEnumerable<string> ExtraAssetPaths => base.ExtraAssetPaths.Concat(
-        [IsekaiHeroVisuals.AtlasPath]);
+        [IsekaiHeroVisuals.AtlasPath, IsekaiHeroSelectArt.TexturePath]);
 
     public override IEnumerable<CardModel> StartingDeck => [
         ModelDb.Card<StrikeIsekaiHero>(),
