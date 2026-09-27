@@ -389,6 +389,8 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 
 ## 12. Implementation roadmap
 
+- [x] **Combat character animations:** original office-worker adventurer art, with Idle, Relaxed, Attack, Cast, Hit, Dead and Revive animations. See [art, preview and validation notes](CharacterAnimations.md). Build and native Godot checks pass; in-game visual acceptance remains part of Phase 5.
+
 The stack is **C# on BaseLib-StS2** (not the raw GDScript loader): cards subclass `IsekaiHeroCard`, localization lives in `IsekaiHero/localization/eng/*.json`, build with `dotnet build` (see `AGENTS.md` for ILSpy decompile workflow and card-text conventions).
 
 - [ ] **Phase 1 — Resource core:** EXP/Level player buffs + Level-Up Vigor + **The System** starter relic (replace Veil of the Unseen) + Grind & Danger Sense basics + trim starter deck to 4/4+2. *Code complete (LevelPower/TheSystem/Grind/DangerSense) — written on macOS without the game DLLs, so it needs a Windows `dotnet build` + in-game check. Exit criterion: a full Act 1 run where leveling visibly happens.*
