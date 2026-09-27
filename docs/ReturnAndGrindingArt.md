@@ -1,0 +1,14 @@
+# Return by Death and Grinding Montage art
+
+Created with the built-in image generation tool using the supplied base-game art
+references as visual direction. Both cards replace anime screenshots with original
+illustrations. Standard portraits are 250 × 190 PNGs; large portraits are 1000 × 760
+PNGs. Both sizes use the same centered crop of each generated illustration.
+
+## Return by Death prompt
+
+Use case: stylized-concept. Create original full-bleed landscape card illustration for Return by Death in a Slay the Spire 2 mod, roughly 4:3 aspect ratio. Subject: Subaru Natsuki from Re:Zero, recognizable short spiky black hair, expressive frightened yet determined eyes, black and white tracksuit jacket with orange trim. Waist-up three-quarter view, clutching his chest as a large sinister shadow hand curls around a glowing crimson heart-shaped light over his chest; an angular violet and crimson counterclockwise spiral and fragmented silhouettes of his past self evoke death resetting time. Non-graphic, no gore. Readable central character, face and heart comfortably inside central 70 percent. Style inspired by supplied base-game references: chunky near-black ink contours, sharply faceted cel-shaded shapes, exaggerated silhouette, flat limited saturated palette, deep indigo background, crimson and violet magic accents, spare angular background shapes. Hand-painted graphic fantasy card art, NOT an anime screenshot, not glossy anime rendering. Dramatic asymmetrical composition, strong readability at thumbnail size. No lettering, no border, no card frame, no watermark.
+
+## Grinding Montage prompt
+
+Use case: stylized-concept. Create original full-bleed landscape card illustration for Grinding Montage in a Slay the Spire 2 mod, roughly 4:3 aspect ratio. Subject: Seiya Ryuuguuin from Cautious Hero, recognizable handsome stern adult man with long shaggy black hair framing his face, muscular athletic build, shirtless wearing dark training trousers. Low dramatic three-quarter view of him doing an intense push-up on a simple stone training floor, both palms planted, anatomically coherent arms bent, serious focused face, exertion. Two simplified translucent angular afterimages behind his shoulders imply endless repeated training; bold golden rising motion slashes suggest improving strength. Style inspired by supplied Slay the Spire base-game art references: thick dark ink contours, crisp angular cel-shaded planes, exaggerated graphic silhouette, flat limited saturated palette, warm amber highlights against deep teal and navy shadows, sparse stylized stone backdrop. Fresh original painted game card illustration, NOT anime screenshot, not glossy anime rendering. Keep face, torso and hands inside central 80 percent for readable thumbnail crop. No text, no numbers, no lettering, no borders, no card frame, no watermark.
