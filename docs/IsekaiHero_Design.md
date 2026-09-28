@@ -379,10 +379,10 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 - [x] **The System** ✅ *(Starter)* — Enemies grant 3 EXP when they die (minions excluded, matching Fatal rules). Start each combat with 2 EXP. · Art needed: the blue window only you can see · *Replaced alpha placeholder Veil of the Unseen.*
 - [ ] **The System: Admin Mode** *(Ancient-upgraded Starter)* — Replace The System. Non-minion enemy deaths grant 4 EXP. Start each combat with 6 EXP. Whenever you Level Up, draw 1. The initial Level Up counts; resolve its draw after the normal opening draw. Exclude duplicate/death-prevented notifications. · Art: the same window, now with a password field left blank
-- [ ] **Beginner's Luck Charm** *(Common)* — Your first unmet Exploit condition each combat counts as met. · Art: a four-leaf clover in a smartphone case
-- [ ] **OP Smartphone** *(Uncommon)* — Whenever you Level Up, deal 5 damage to a random enemy. · Art: it has no signal and it doesn't matter (*In Another World With My Smartphone*)
+- [x] **Beginner's Luck Charm** *(Common)* — Your first unmet Exploit condition each combat counts as met. · Art: a four-leaf clover in a smartphone case
+- [x] **OP Smartphone** *(Uncommon)* — Whenever you Level Up, deal 5 damage to a random enemy. · Art: it has no signal and it doesn't matter (*In Another World With My Smartphone*)
 - [ ] **Quest Board** *(Uncommon)* — After your opening draw, choose 1 of up to 3 eligible ordinary Quests to add to your hand, or skip. Does not replace a normal draw; use §3.3 offer and hand-cap rules. · Art: portable corkboard, suspiciously well-stocked
-- [ ] **Forbidden Walkthrough** *(Rare)* — At the start of each combat, gain 3 Exploit. · Art: a strategy guide for a world that shouldn't have one
+- [x] **Forbidden Walkthrough** *(Rare)* — At the start of each combat, gain 3 Exploit. · Art: a strategy guide for a world that shouldn't have one
 - [ ] **Hero's Insignia** *(Rare)* — Whenever you Level Up, gain 1 Strength. · Art: the royal crest they hand out with the summoning
 - [ ] **Return by Death** *(Rare)* — When you would die, instead heal to 30% of your max HP and gain 10 EXP and 3 Exploit. Once per run. · Art: the smell of the loop (*Re:Zero* — the Lizard Tail slot, but you come back *stronger and knowing more*) · *The alpha's Return by Death rare **skill** is dropped; the name and fantasy live here (§14).*
 - [ ] **Reborn Vending Machine** *(Shop)* — The first 3 times you Level Up each combat, gain 5 Gold. Display remaining payouts; cap removal, copies, and direct Level Ups cannot exceed the 15-Gold combat limit. · Art: it fell into another world and it's thriving (*Reborn as a Vending Machine*)

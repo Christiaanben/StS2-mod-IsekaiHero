@@ -35,3 +35,6 @@ mono_crash.*.json
 
 # Decompiled base game source files
 Scratch/
+
+# Headless test intermediates
+**/obj/

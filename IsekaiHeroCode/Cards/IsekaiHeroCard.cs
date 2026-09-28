@@ -1,11 +1,13 @@
-﻿using BaseLib.Abstracts;
+using BaseLib.Abstracts;
 using BaseLib.Extensions;
 using BaseLib.Utils;
 using IsekaiHero.IsekaiHeroCode.Character;
 using IsekaiHero.IsekaiHeroCode.Extensions;
 using IsekaiHero.IsekaiHeroCode.Powers;
+using IsekaiHero.IsekaiHeroCode.Relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using System.Runtime.CompilerServices;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
@@ -17,6 +19,8 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalOverride> ConditionalOverrides = new();
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ConditionalTriggerState> ConditionalTriggers = new();
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ExploitConsumptionState> ExploitConsumptions = new();
+    private bool _resolvingPlay;
+    private bool _usedLuckThisPlay;
 
     public virtual bool HasConditionalEffects => false;
 
@@ -38,10 +42,13 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
         var hasOverride = CombatState != null &&
                           ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
                           ReferenceEquals(conditionalOverride.CombatState, CombatState);
-        var exploitPower = !condition && !hasOverride
+        var usedLuck = !condition && !hasOverride && _resolvingPlay && CombatState != null &&
+                       (_usedLuckThisPlay || Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.TryUse()));
+        _usedLuckThisPlay |= usedLuck;
+        var exploitPower = !condition && !hasOverride && !usedLuck
             ? Owner?.Creature.Powers.OfType<ExploitPower>().FirstOrDefault(power => power.Amount > 0m)
             : null;
-        var isActive = condition || hasOverride || exploitPower != null;
+        var isActive = condition || hasOverride || usedLuck || exploitPower != null;
 
         if (exploitPower != null && CombatState != null)
         {
@@ -71,11 +78,20 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     {
         if (cardPlay.Card == this)
         {
+            _resolvingPlay = true;
+            _usedLuckThisPlay = false;
             ConditionalTriggers.Remove(this);
             ExploitConsumptions.Remove(this);
         }
 
         return base.BeforeCardPlayed(cardPlay);
+    }
+
+    public override Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        if (cardPlay.Card == this)
+            _resolvingPlay = false;
+        return base.AfterCardPlayed(choiceContext, cardPlay);
     }
 
     public void EnableConditionalEffectsForCombat()

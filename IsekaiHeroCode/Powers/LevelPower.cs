@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
+using IsekaiHero.IsekaiHeroCode.Relics;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -28,6 +30,7 @@ public sealed class LevelPower : IsekaiHeroPower
     private sealed class Data
     {
         public int Exp;
+        public bool Processing;
     }
 
     public override PowerType Type => PowerType.Buff;
@@ -86,16 +89,37 @@ public sealed class LevelPower : IsekaiHeroPower
         var data = power.GetInternalData<Data>();
         data.Exp += amount;
 
+        // A relic kill can grant EXP during a reaction. Bank it for this same
+        // loop instead of entering a second Level-Up/reaction chain.
+        if (data.Processing)
+            return;
+        data.Processing = true;
+
         // At MaxLevel, surplus EXP stays banked (a future "Break the Level Cap"
         // effect can spend it) instead of being consumed for nothing.
-        while (data.Exp >= ExpPerLevel && power.Amount < MaxLevel)
+        try
         {
-            data.Exp -= ExpPerLevel;
-            await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
-            await PowerCmd.Apply<VigorPower>(choiceContext, creature, VigorPerLevelUp, creature, source, false);
-        }
+            while (data.Exp >= ExpPerLevel && power.Amount < MaxLevel &&
+                   CombatManager.Instance.IsInProgress && !creature.IsDead)
+            {
+                data.Exp -= ExpPerLevel;
+                await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
+                await PowerCmd.Apply<VigorPower>(choiceContext, creature, VigorPerLevelUp, creature, source, false);
 
-        // EXP-only gains must refresh the UI even when the level did not change.
-        power.InvokeDisplayAmountChanged();
+                var reactions = creature.Player?.Relics.OfType<ILevelUpRelic>().ToArray() ?? [];
+                foreach (var reaction in reactions)
+                {
+                    if (!CombatManager.Instance.IsInProgress || creature.IsDead)
+                        break;
+                    await reaction.AfterLevelUp(choiceContext);
+                }
+            }
+        }
+        finally
+        {
+            data.Processing = false;
+            // EXP-only gains must refresh the UI even when the level did not change.
+            power.InvokeDisplayAmountChanged();
+        }
     }
 }

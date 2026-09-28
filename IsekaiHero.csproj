@@ -52,6 +52,7 @@
     <ItemGroup>
         <Compile Remove="IsekaiHero/**" />
         <Compile Remove="Scratch/**" />
+        <Compile Remove="tests/**" />
         <Compile Remove="materials/**" />
         <Compile Remove="shaders/**" />
         <Compile Remove="images/**" />

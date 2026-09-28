@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseAppHost>false</UseAppHost>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../IsekaiHeroCode/Relics/BeginnersLuckCharm.cs" Link="Production/BeginnersLuckCharm.cs" />
+    <Compile Include="../../IsekaiHeroCode/Relics/OpSmartphone.cs" Link="Production/OpSmartphone.cs" />
+    <Compile Include="../../IsekaiHeroCode/Relics/ForbiddenWalkthrough.cs" Link="Production/ForbiddenWalkthrough.cs" />
+    <Compile Include="../../IsekaiHeroCode/Relics/ILevelUpRelic.cs" Link="Production/ILevelUpRelic.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/IsekaiHeroCard.cs" Link="Production/IsekaiHeroCard.cs" />
+    <Compile Include="../../IsekaiHeroCode/Powers/LevelPower.cs" Link="Production/LevelPower.cs" />
+    <Compile Include="../../IsekaiHeroCode/Powers/ExploitPower.cs" Link="Production/ExploitPower.cs" />
+  </ItemGroup>
+</Project>
