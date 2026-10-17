@@ -3,9 +3,15 @@
   "name": "Isekai Hero",
   "author": "Christiaanben",
   "description": "Play as the Isekai Hero, an early alpha Slay the Spire 2 character mod built around EXP, Levels, outsider logic, status screens, dramatic cheat skills, and genre-parody cards. Expect a small evolving card pool, experimental mechanics, and balance changes as the class grows.",
-  "version": "v0.10.0-alpha",
+  "version": "v0.11.1-alpha",
   "has_pck": true,
   "has_dll": true,
-  "dependencies": ["BaseLib"],
-  "affects_gameplay": true
+  "dependencies": [
+    {
+      "id": "BaseLib",
+      "min_version": "3.4.7"
+    }
+  ],
+  "affects_gameplay": true,
+  "min_game_version": "0.107.1"
 }

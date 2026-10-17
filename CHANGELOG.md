@@ -5,6 +5,30 @@ Player-facing changes for each Isekai Hero release are recorded here.
 ## [Unreleased]
 
 
+
+
+## [v0.11.1-alpha] - 2026-10-17
+
+### Fixed
+
+- Migrated the BaseLib dependency to the current manifest format, resolving the mod-manifest migration warning when starting multiplayer.
+- Declared BaseLib 3.4.7 and Slay the Spire 2 0.107.1 as the minimum supported versions.
+
+## [v0.11.0-alpha] - 2026-10-13
+
+### Added
+
+- Added Beginner's Luck Charm, OP Smartphone, and Forbidden Walkthrough, bringing the character relic pool to four relics including The System.
+- Added original combat character art and animations for idle, relaxed, attack, cast, hit, defeat, and revive actions.
+- Added an animated character-selection cover, a crystal energy counter, and hero headshot icons.
+- Added dedicated Exploit and Level icons with visible EXP progress.
+
+### Changed
+
+- Replaced Return by Death and Grinding Montage reference screenshots with custom card art.
+- Updated the character design roadmap and dependency tooling.
+
+
 ## [v0.10.0-alpha] - 2026-09-27
 
 ### Added
