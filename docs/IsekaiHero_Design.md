@@ -99,15 +99,11 @@ The goal doc's three pillars survive; they just stop being three separate system
 
 **Condition library:** `Level X+` · `the enemy intends to attack` · `a Quest is in your hand` · `you completed a Quest this turn` · `you Leveled Up this turn` · `first Attack this turn` · `N+ cards played this turn` · `only one enemy remains` · `target at full HP` · `target has a debuff` · `you have Block` · `you played a Skill this turn` · `you played a Power this turn`. Write conditional bonuses as “If X, effect.” Tutorial Strike accepts either having a Job or playing a Power this turn. For targeted intent conditions, “the enemy” means the selected target. Exploit tooltips identify eligible bonuses; not every conditional sentence is an Exploit bonus.
 
-### 3.2.1 Playtest bug: incomplete “If” coverage — unresolved
+### 3.2.1 Exploit coverage bug — unresolved
 
-**Reported:** Exploit does not trigger for every expected “If” card. No specific failing card or reproduction was supplied; code inspection alone does not establish the cause. Treat this as a release-blocking correctness audit of eligible IsekaiHero bonuses, not evidence that every sentence containing “if” should be forced. Existing eligibility flags and shared resolution hooks are the audit starting point.
+Exploit reportedly misses some eligible “If” bonuses; failing cards and cause still need reproduction. Audit all on-play conditional bonuses in §5, including upgraded effects and the legacy Training Arc Attack. Exclude Fatal, death prevention, recurring Power checks, Quest objectives, and payment/targeting restrictions.
 
-**Required coverage:** Danger Sense, Underdog Spirit, Beginner Magic, Shield Bash, Twin Blades, Boss Telegraph (including upgraded draw), Tutorial Strike (currently Tutorial Sword), Emergency Dodge, Objective Cleared, Breakthrough Strike (currently Combo Rush, with its old condition until replaced), Raid Opener, Duel, Counter Read, Barrier Magic, Steal Technique, Anti-Boss Art, Megiddo, Goddess's Blessing, and Perfect Preparation. Audit the legacy Training Arc Attack while it remains implemented; its replacement Power is not eligible. Add every future on-play conditional bonus to this inventory when designed.
-
-**Intentional exclusions:** Fatal requires a real eligible kill; Return by Death requires actual lethal damage; Grinding Montage's upgrade/discount branch, Mana Overflow's recurring Level check, and Guild Master's Quest-generation check are ongoing Power rules. Quest objectives, abandonment costs, targeting/playability restrictions, and Hero's Judgment's Level-Up listener cannot be bypassed. Keep Fatal wording visibly keyed to **Fatal** and eligible bonuses identified by the Exploit tooltip. Base-game “If” cards still require the separate compatibility audit in §10.
-
-For every eligible card, check both upgrade states with: (1) condition false and no bypass, (2) condition true with a stack available, (3) false with one stack, (4) false with Override, and (5) competing relic/Form/stack sources. Expect base only in case 1, one bonus and no stack spent in case 2, and one bonus with exactly the appropriate source spent in cases 3–5. Include previews, a second play of the same card, replay/copy, and turn boundaries. Natural and forced successes each notify Atomic/Fast Learner once; only actual stack spending notifies Mana Sense. Privilege repeats only the bonus and never doubles the event. Fix missing registration/resolution and stale preview state wherever reproduced; changing text alone is not a fix.
+Verify both upgrade states with natural success, unmet conditions with/without a bypass, and competing bypass sources. Preview must not spend resources; replay/copy/turn boundaries must not retain stale state. Check Atomic/Fast Learner, Mana Sense, and Privilege against §3.2 event rules.
 
 ### 3.3 Quests — complete, hold, or abandon
 
@@ -168,12 +164,6 @@ Format: `Name — cost · card text (upgrade) · art`. Only the effect before th
 - Prefer simple limitations such as Exhaust over per-name counters and lists of exceptions. If shortening the wording still leaves too many decisions to remember, simplify the effect.
 - Upgrades normally change a number or cost, not add another rule. Metadata below is the upgrade specification, not a second paragraph printed on the card.
 - Checkboxes track **effect implementation**. Wording-only revisions do not erase completed gameplay work; the localization pass in §12 remains pending for the entire pool. Historical struck-through text stays unchanged.
-
-### v3.2 implementation status
-
-The selected revisions are implemented: Underdog Spirit, Shield Bash, Steal, Farm the Field, Tutorial Sword, Daily Training, Map Hack, EXPLOSION!, Degenerate Tactics, Hero's Judgment, System Menu, Return by Death, and Atomic's until-played discounts. Conditional and Fatal wording is updated on the existing cards below. Compilation and headless behavior tests do not replace the shared in-game acceptance checks.
-
-At v3.2, Combo Rush retained Level 4+; v3.3 now proposes its replacement below. Level Grinding and Power-Up Montage remain repeatable 2-Energy Skills. Truck-kun remains an Uncommon without Level-Up rewards. Training Arc's separate Power replacement and all unrelated unchecked designs remain pending.
 
 ### 5.1 Basics (4)
 
@@ -262,7 +252,7 @@ At v3.2, Combo Rush retained Level 4+; v3.3 now proposes its replacement below. 
 - [ ] **Training Arc** — 1⚡ · At the start of your turn, you may Exhaust a card to gain 2 EXP. *(U: 3 EXP)* · Art: burning yesterday's techniques to forge better ones
 - [ ] **Fast Learner** — 1⚡ · Whenever you trigger an Exploit bonus, gain 1 EXP. *(U: costs 0)* · Art: skill notifications stacking faster than they can be read
 - [x] ~~**Job: Alchemist** — 1⚡ · The first time each turn you apply a debuff, gain 4 Block and your next Attack against that enemy deals 4 more damage. *(U: 6/6)*~~ **Superseded implemented version.**
-- [ ] **Job: Alchemist** — 1⚡ · The first time each turn you apply a debuff to an enemy, gain 3 Block and 3 Vigor. *(U: 5 Block, 5 Vigor)* · Art: retain existing transmutation circle (*Arifureta*). Native Vigor makes the reward visible and lets the player choose the next attack's target.
+- [ ] **Job: Alchemist** — 1⚡ · The first time each turn you apply a debuff to an enemy, gain 3 Block and 3 Vigor. *(U: 5 Block, 5 Vigor)* · Art: keep existing *That Time I Got Reincarnated as a Slime* scene: figuring out how to create full-heal potions. No art change.
 - [ ] **Job: Spellblade** — 1⚡ · After your first Skill each turn, your next Attack this turn costs 1 less and deals 4 more damage. *(U: 7 more damage)* · Art: spell wrapped around a blade edge
 - [ ] **Job: Appraiser** — 1⚡ · Before drawing each turn, look at the top 3 cards of your draw pile.<br>You may put 1 on the bottom. *(U: up to 2)* · Art: the world's stats, always visible
 - [ ] **Skill Tree** — 1⚡ · Level Ups grant 2 additional Vigor. *(U: 3)* · Art: constellation of unlocked nodes
@@ -325,10 +315,10 @@ These specify execution and verification. They must not be appended to card desc
 | Cards | Implementation contract |
 |---|---|
 | Exploit cards, Atomic, Fast Learner, Privilege | “Trigger an Exploit bonus” is the shared condition-satisfied event in §3.2, whether natural or forced. Repeating the bonus does not trigger it again. Flat bonus damage modifies the existing hit; extra-hit bonuses increase that attack's hit count. |
-| Tutorial Strike, Breakthrough Strike | Preserve the existing Tutorial Sword / Combo Rush model identities and saves where possible; change displayed names and update associated localization. Both must have native `CardTag.Strike` in addition to the word “Strike” in their names. The inspected local Strike Dummy checks the tag, not the displayed name. Verify base/upgraded/copied cards and each hit; a rename alone is insufficient. |
-| Breakthrough Strike | Check whether an actual Level Up occurred earlier this turn; starting at a high Level is insufficient. Exploit can force the extra hit. Use one multi-hit attack command so Vigor and Strike Dummy apply consistently to every hit. No draw, EXP, or Energy refund is attached. |
-| Job: Alchemist | First successful owner-applied enemy debuff each turn grants 3/5 Block and native 3/5 Vigor immediately. Applying or increasing a debuff qualifies; resisted applications, removal/decrease, and self-debuffs do not. AoE application triggers once total. Multiple copies add reward amounts with one shared first-trigger window; playing another copy must not reopen a spent window that turn. Block remains a Power grant, without Dexterity scaling. Vigor is visible, follows native persistence/consumption, and can benefit a different enemy or multi-hit/AoE attack; Megiddo's later separate attack command does not reuse consumed Vigor. |
-| Ascendant Form | Allowance is available immediately after playing the Power and refreshes at the owner's turn start. Two bypasses normally, three upgraded; duplicates neither add allowances nor refresh spent uses. With mixed upgrades, use the highest limit minus uses already spent that turn. This is a forced success, not an Exploit-stack spend, so Mana Sense does not trigger. No EXP, Energy, or automatic Quest completion is granted. |
+| Tutorial Strike, Breakthrough Strike | Preserve Tutorial Sword / Combo Rush save identities. Add native `CardTag.Strike`: Strike Dummy checks the tag, not the name. Verify upgraded/copied cards and every hit. |
+| Breakthrough Strike | Requires an actual Level Up earlier this turn, or an Exploit bypass. Resolve all hits in one attack command for native Vigor behavior. |
+| Job: Alchemist | First successful owner-applied enemy debuff each turn grants Block and native Vigor. Debuff increases qualify; resistance, removal, and self-debuffs do not. AoE triggers once. Copies add rewards but cannot reopen a spent trigger. Block has no Dexterity scaling; Vigor follows native consumption, with no hidden target bonus. |
+| Ascendant Form | Available immediately; refreshes each owner turn. Use the highest copy allowance (2/3) minus uses spent this turn; copies cannot reset it. Forced successes do not spend stacks or trigger Mana Sense. |
 | Shield Bash | Resolve the conditional Block before the unconditional Block. This removes the unusual “before playing this” sentence while keeping the card from satisfying its own condition. Preview in printed order. |
 | Steal, Degenerate Tactics | Exhaust replaces the v3.0 shared-name payout counter. Each acquired copy can pay out once through ordinary play. Neither is eligible for Cheat Inventory. Exhaust recovery, external generation, and external duplication remain explicit balance tests, not claims of universal immunity to farming. |
 | Monster Grinding | Exhaust replaces the custom per-combat growth counter. A Fatal upgrades only the played card's own persistent identity; a temporary copy has no deck identity to mutate and retains its gains only in combat. No minion Fatal. Display current damage; save original-card growth. Test external replay and Exhaust recovery. |
@@ -362,11 +352,9 @@ These specify execution and verification. They must not be appended to card desc
 2. **Cheat allocation:** Game Knowledge/Read the Code/Genre Savvy → System Menu/Mana Sense/Atomic/Privilege. Fulfill easy conditions naturally and reserve finite bypasses for expensive conditions. Ascendant Form helps two unmet clauses per turn (three upgraded) without solving the entire deck.
 3. **Quest management:** Job Board/Guild Reception/Legend → Quest Log/Objective Cleared/Sequence Break/Full Clear. Hold a Quest for Perfect Preparation, complete it for tempo, or abandon it with Side Story/Emergency Commission/Training Arc. The useful objective changes with the hand.
 4. **Fatal support:** Mob Hunt/retained Killing Blow/Last-Hit Bonus/Monster Grinding/Truck-kun reward kill sequencing. Bring Duel, Growth Slash, Hero's Judgment, or a Quest plan for isolated bosses. This is a support package, not a promised standalone archetype.
-5. **Debuff and Vigor tempo:** Negotiation/Seen It Coming/Death Flag → Alchemist → a deliberate Vigor attack. Breakthrough Strike spends no Energy, Skill Chain converts Vigor into multiple hits, and Atomic converts it into AoE. Tutorial Strike rewards playing the Job. This package can win without reaching Level 10 or finding Form; Strike Dummy is a welcome optional relic, not a required engine.
+5. **Debuff and Vigor tempo:** Negotiation/Seen It Coming/Death Flag → Alchemist → multi-hit or AoE attack. Tutorial Strike rewards the Job; Strike Dummy supports this package without being required.
 
-**Zero-cost access:** v3.3 has nine printed-zero designs before upgrades: Study the System, Emergency Dodge, Side Quest, Status Appraisal, Read the Code, Map Hack, Side Story, Breakthrough Strike, and Negotiation. The previous design had seven, several still pending; the live pool therefore feels thinner than the plan. Job Board+, Cheat Inventory+, Fast Learner+, and Sequence Break+ add four upgrade-only zero-cost options. Atomic's earned discount and Starburst Stream's X cost are separate categories. Implement the pending common access alongside these revisions before adding further slots.
-
-Free cards should offer different decisions: growth, defense, filtering, objective management, debuff setup, or an attack after investing in a Level Up. They still cost a draw. Keep Breakthrough Strike and Negotiation free of self-replacing draw; test them with external draw, Mana Sense/Fast Learner, Quest rewards, Vigor, and milestone Energy. If the new attack crowds out one-cost attacks, lower its base damage before adding another mechanic. Do not make every low-cost option generically superior through draw refunds.
+**Zero-cost access:** nine printed-zero designs, up from seven; several still await implementation. Breakthrough Strike adds an attack and Negotiation adds debuff setup. Neither draws or refunds Energy. Test free-card engines with external draw, Vigor, Exploit, and Quest rewards before expanding the pool further.
 
 Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors Skill-to-Attack turns, and Appraiser improves future draws. None scales from Level. Successful runs should differ in picks, upgrades, retention targets, and combat order; a universal best deck of filtering plus EXP plus multi-hit attacks fails the replayability check.
 
@@ -398,13 +386,7 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 ## 9. Balance and fun acceptance checklist
 
-- [ ] **Playtest regression:** complete the full §3.2.1 Exploit matrix; record the actual failing cards and root cause before marking the reported bug fixed.
-- [ ] **Strike support:** both revised names carry the Strike tag. With only Strike Dummy (+3 per hit in the inspected local reference), Tutorial Strike deals 10/14 damage before/after its bonus (12/18 upgraded); Breakthrough Strike deals 12/18 across two/three hits (14/21 upgraded). Test Vigor and Strength separately and combined; compare picks with and without the relic.
-- [ ] **Alchemist visibility:** one successful debuff produces visible 3/5 Block and 3/5 Vigor once per turn; AoE, duplicate Powers, resisted debuffs, and changing attack targets follow §5.6. No hidden target-specific damage remains.
-- [ ] **Form payoff:** compare playing a 3-Energy Form against defending or attacking now, with and without milestone Energy. Track bypasses actually used, useful payoff turn, and whether the three-use upgrade erases too many sequencing decisions. Duplicates must not reset the allowance.
-- [ ] **Zero-cost variety:** test EXP timing, debuff/Vigor, and Quest/Exploit drafts independently. Record free-card picks/skips and draw bottlenecks; a compulsory free-card engine fails the variety goal.
-- [ ] **Atomic presentation:** every resolved play has one readable impact, including replays and multiple enemies; verify fast/reduced-effects modes and lethal cleanup against §11.1.
-
+- [ ] **v3.3 checks:** reproduce the Exploit bug (§3.2.1); verify Strike tags and per-hit relic/Vigor scaling; check Alchemist/Form duplicate limits (§5.6), zero-cost engine loops, and Atomic presentation (§11.1). Compare Form setup cost and free-card picks across different deck plans.
 - [ ] **Early tempo:** test Farm the Field, Daily Training, existing Power-Up Montage/Level Grinding, and planned Read the Code against real Act 1 hands without rare engines. Track HP lost and actions enabled, not only printed value.
 - [ ] **Progress while useful:** record first useful Level Up, turn 1–3 Levels, Level before lethal, and post-lethal EXP separately. Change generators only after identifying the actual pacing failure; do not automatically raise EXP-per-Level globally.
 - [ ] **Level reward scaling:** verify alternating stats, milestone energy immediately and on subsequent turns, owner isolation, and combat reset. Test multi-hit attacks and Block cards. Independently granted Vigor still needs consumer tests.
@@ -479,20 +461,11 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | [x] | Map Hack | *Log Horizon* | Shiroe routes the raid party around the obvious path using a glowing dungeon map. |
 | [x] | Game Knowledge | *No Game No Life* | Sora realizes the living-chess match does not follow ordinary chess rules and exploits that discovery. |
 
-### 11.1 I Am Atomic — signature animation brief (pending)
+### 11.1 I Am Atomic — animation (pending)
 
-**Fantasy:** impossibly quiet concentration, then one precise violet detonation that seems to cut through the world's interface. Match the game's illustrated combat effects and existing hero silhouette; keep cards, HP, and enemy intents legible. This is an in-battle effect, not a cutaway movie. Gameplay text, damage, cost discount, Exhaust, and upgrade remain unchanged.
+Every resolved play gets a brief in-battle sequence: violet motes gather into a halo → “I / AM / ATOMIC” pulses → one violet-white expanding ring and deep impact → drifting ash. Match the game's illustrated effects and keep the UI readable. Target ~1.4 seconds; use ~0.45 seconds for fast mode and repeated plays. Reduced effects removes shake and flashes.
 
-| Beat | Normal-speed target | Visual and sound |
-|---|---|---|
-| Gather | 0.00–0.35 s | Darken the battlefield gently; violet motes collapse toward the hero's hand/blade. A thin circular sigil expands behind the hero as battle sound briefly dips. |
-| Declare | 0.35–0.75 s | Three restrained text pulses: “I” → “AM” → “ATOMIC”. A narrow vertical line divides the arena; a rising tone stops just before impact. Text is visual flair, not a new prompt. |
-| Detonate | 0.75–1.05 s | The line opens into a violet-white core and a single expanding ring across all enemies, with ink-like dark edges and a brief controlled shake. One deep impact lands with the damage numbers; avoid repeated full-screen flashes. |
-| Afterglow | 1.05–1.40 s | Fine luminous fractures and drifting violet ash fade. Restore brightness and audio; return control without waiting for decorative particles. |
-
-Play once for **every actual resolved Atomic play**, including free plays and replays, not once per enemy or per damage result. Cancellation/preview never plays it. Atomic+ applies Vulnerable before damage and can show a short violet mark on targets; damage lands at the detonation beat. The effect must not duplicate damage, add hits, alter Vigor consumption, change targeting, or create Exploit events. Ensure lethal combat cleanup safely completes or cancels remaining visuals and restores camera/audio/UI.
-
-Respect fast mode with an approximately 0.45-second gather/impact/fade version. Respect available reduced-effects settings (or provide an option): no shake, brightness pulse, or full-field flash, but retain the ring and clear impact. Multiple replays use the compact version rather than queueing long cinematics; each still gets an impact. Sound and assets should be original or appropriately licensed; do not depend on an anime voice clip. Review in solo/co-op, against one/many enemies, with lethal damage, and at normal card/UI scale. The current generic blunt hit is the implemented placeholder; this brief is not an animation asset delivery.
+Damage lands at detonation; Atomic+ applies Vulnerable first. Play once per card play, not per enemy. Preserve gameplay and clean up camera/audio/effects on lethal. Keep the current card art; the generic blunt hit is the placeholder being replaced.
 
 ## 12. Implementation roadmap and definition of done
 
@@ -500,7 +473,7 @@ Respect fast mode with an approximately 0.45-second gather/impact/fade version. 
 - [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
 - [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate stat scaling and milestone energy; independently granted Vigor still needs multi-hit and separate-command checks.
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
-- [ ] **Phase 2b — v3.3 playtest follow-up:** reproduce and fix the Exploit coverage bug (§3.2.1); replace the four struck-through implemented entries with Tutorial Strike, Breakthrough Strike, Negotiation, and Alchemist; implement Ascendant Form in the former OP Protagonist slot. Preserve save identities and art where applicable. Add Atomic's animation (§11.1) and complete the new §9 checks. All remain unimplemented by this documentation pass.
+- [ ] **Phase 2b — v3.3:** implement the four pending card replacements, Ascendant Form, Exploit coverage fix (§3.2.1), and Atomic animation (§11.1); validate §9. Preserve existing art and save identities.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
 - [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
 - [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.
@@ -519,29 +492,3 @@ Respect fast mode with an approximately 0.45-second gather/impact/fade version. 
 - [ ] **Monster Grinding persistence:** serialize growth on the original deck card; Exhaust limits ordinary reuse. A temporary copy cannot mutate another card's permanent state. Test external replay/recovery before release. If persistence cannot be verified, reopen the design instead of silently changing its run-long role.
 - [x] **Jobs scope — decided (2026-07-02):** Jobs stay a 3-power cycle + the "you have a Job" condition, with **no Level integration** — tying Job effects to Level would stack two scaling systems on one power and blow the complexity budget; the Exploit condition is already the bridge. Job: Alchemist's existing art stays. Expansion beyond three Jobs is deferred until the v3 replayability checks pass; it is not current implementation scope.
 - [ ] Give the hero an in-world name/portrait identity, or keep the anonymous "Isekai Hero" genre-blank? Currently: anonymous.
-
-## 14. v3.2 selected revisions — 2026-10-19
-
-Historical v3.2 summary; §15 supersedes it where noted. The active designs above supersede earlier v2/v3.0/v3.1 proposals. The fun and balance report remains historical research, not implementation instructions.
-
-- **Early tempo:** Underdog Spirit is 6/+6 (8/+7); Shield Bash gains unconditional Block after its condition; Farm the Field costs 1. Daily Training gains 6/8 Block and retains 1/2 EXP.
-- **Gold:** Steal pays 6/9 Gold with 6/9 damage and Exhaust. Degenerate Tactics pays 12/16 Gold and Exhausts. No shared-name gold counters.
-- **Keep existing roles:** Combo Rush retains Level 4+. Level Grinding and Power-Up Montage remain 2-cost, repeatable Skills. Truck-kun stays Uncommon with its single Fatal payout.
-- **Payoffs:** Hero's Judgment retains and grows by 4/6 per Level Up while held, preserving earned damage for the combat. EXPLOSION deals 36/44 AoE and ends the turn. Atomic discounts expire when played. System Menu costs 1.
-- **Rescue:** Return by Death keeps its name and 2-Energy cost, becomes a Power, and replaces the rewind with a shared once-per-combat 15/20 HP and 8/10 EXP rescue. No separate Checkpoint card or rewind/next-turn Energy-loss logic.
-- **Wording:** use short “If X, effect” clauses, native Fatal highlighting, and separate keyword lines. Targeted intent cards refer to the selected enemy. Wording-only changes do not alter Exploit eligibility.
-- **Unrelated designs:** the Quest package, three Job Powers, Monster Grinding, Cheat Inventory, Break the Level Cap, and NEW GAME+ retain their active v3.1 designs. Their unchecked status remains meaningful; this revision does not implement them.
-
-Validate both upgrade states at normal card size and complete the shared interaction/fun checks before declaring balance or UI acceptance complete.
-
-## 15. v3.3 playtest revisions — 2026-10-19 (design only)
-
-- **Strike support without pool growth:** Tutorial Sword becomes Tutorial Strike with the same effect. Combo Rush becomes Breakthrough Strike: a 0-cost, 3×2 damage attack (4×2 upgraded), with a third hit if you Leveled Up this turn. Both require the native Strike tag. Their old implemented entries are struck through above; Twin Blades keeps the Level 4+ role.
-- **Visible Alchemist rewards:** replace the hidden enemy-specific 4/6 damage bonus and 4/6 Block with native 3/5 Vigor and 3/5 Block. Preserve the first-debuff-per-turn trigger and existing art.
-- **More free-card decisions:** Negotiation becomes 0-cost, 1 Weak and 1 EXP (2 Weak upgraded). Together with Breakthrough Strike, this raises printed-zero designs from seven to nine without changing the 88-slot pool. Pending commons still matter to live-pool access.
-- **Exploit correctness before more tuning:** record the reported bug as unresolved, enumerate eligible clauses and intentional exclusions, and require natural/forced/consumed-event regression checks. No unsupported claim of a reproduced cause or completed fix.
-- **Iconic transformation:** replace the pending OP Protagonist design with **Ascendant Form**, a 3-cost rare Power granting two free unmet-condition bypasses each turn, three upgraded. It stays 3-cost when upgraded and does not stack. A full setup turn buys sustained rule-breaking without making every condition irrelevant.
-- **Atomic spectacle:** specify a brief gather/declaration/violet detonation/afterglow sequence for every play, with compact replay/fast-mode and reduced-effects variants. Existing card mechanics remain unchanged; animation work is pending.
-- **Playstyle breadth:** distinguish EXP breakthrough turns, debuff/Vigor tempo, finite cheat allocation, Quest management, and Fatal support. Add acceptance checks for Strike Dummy scaling, duplicate Alchemists/Form, zero-cost loops, and animation timing. No additional mechanic, Job, or card slot is introduced.
-
-Only this design document was revised. Implementation, assets, builds, and in-game validation belong to the subsequent implementation pass; unchecked entries above remain unchecked.
