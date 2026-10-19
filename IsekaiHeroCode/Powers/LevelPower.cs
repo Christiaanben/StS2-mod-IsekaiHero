@@ -44,8 +44,8 @@ public sealed class LevelPower : IsekaiHeroPower
 
     public override List<(string, string)> Localization => new PowerLoc(
         "Level",
-        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain 1 Energy immediately and 1 additional Energy each turn this combat.",
-        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain 1 Energy immediately and 1 additional Energy each turn this combat.",
+        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain {energyPrefix:energyIcons(1)} immediately and at the start of your turn.",
+        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain {energyPrefix:energyIcons(1)} immediately and at the start of your turn.",
         ("expTitle", "EXP Progress"),
         ("expProgress", "{Exp}/4 EXP toward the next level. Each filled segment represents 1 EXP."),
         ("expMax", "Maximum level reached. {Exp} EXP banked. The gold bar indicates the level cap."));
