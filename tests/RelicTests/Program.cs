@@ -134,14 +134,15 @@ Test("smartphone ignores initial Level 1 and incomplete EXP", async () =>
     Equal(1, LevelPower.GetLevel(p.Creature)); Equal(0, CreatureCmd.Hits.Count);
     await LevelPower.GainExp(context, p.Creature, 1, null); Equal(0, CreatureCmd.Hits.Count);
 });
-Test("smartphone fires for every level, after Vigor", async () =>
+Test("smartphone fires for every level, after stat rewards", async () =>
 {
     var p = Player(); var phone = Give<OpSmartphone>(p);
     await LevelPower.GainExp(context, p.Creature, 9, null);
     Equal(3, LevelPower.GetLevel(p.Creature)); Equal(2, CreatureCmd.Hits.Count); Equal(2, phone.Flashes);
     Equal(1, p.Creature.Powers.OfType<LevelPower>().Single().Experience);
-    Equal(4, p.Creature.Powers.OfType<VigorPower>().Single().Amount);
-    Equal("LevelPower,LevelPower,VigorPower,Damage,LevelPower,VigorPower,Damage", string.Join(",", PowerCmd.Events));
+    Equal(1, p.Creature.Powers.OfType<StrengthPower>().Single().Amount);
+    Equal(1, p.Creature.Powers.OfType<DexterityPower>().Single().Amount);
+    Equal("LevelPower,LevelPower,StrengthPower,Damage,LevelPower,DexterityPower,Damage", string.Join(",", PowerCmd.Events));
     foreach (var hit in CreatureCmd.Hits)
     {
         Equal(5m, hit.Damage); Equal(ValueProp.Unpowered, hit.Props); Equal(p.Creature, hit.Dealer);
@@ -224,6 +225,54 @@ Test("smartphone does not target after combat has ended", async () =>
     await phone.AfterLevelUp(context);
     Equal(0, CreatureCmd.Hits.Count); Equal(0, p.RunState.Rng.CombatTargets.Calls);
 });
+Test("level rewards alternate and milestone energy persists only for its owner", async () =>
+{
+    var p = Player(); var other = Player();
+    await LevelPower.GainExp(context, p.Creature, 1, null);
+    var level = p.Creature.Powers.OfType<LevelPower>().Single();
+    Equal(1, level.Amount); Equal(1, p.Creature.Powers.Count); Equal(0m, p.Energy);
+    for (var reached = 2; reached <= 10; reached++)
+    {
+        await LevelPower.GainExp(context, p.Creature, reached == 2 ? 3 : 4, null);
+        Equal(reached / 2, p.Creature.Powers.OfType<StrengthPower>().Sum(x => x.Amount));
+        Equal((reached - 1) / 2, p.Creature.Powers.OfType<DexterityPower>().Sum(x => x.Amount));
+        Equal((decimal)(reached / 5), p.Energy);
+        Equal(3m + reached / 5, level.ModifyMaxEnergy(p, 3));
+        Equal(3m, level.ModifyMaxEnergy(other, 3));
+    }
+    await LevelPower.GainExp(context, p.Creature, 20, null);
+    Equal(2m, p.Energy); Equal(20, level.Experience);
+    Equal(false, p.Creature.Powers.OfType<VigorPower>().Any());
+    // A new combat uses fresh powers, without carrying over earned rewards.
+    var nextCombat = Player();
+    await LevelPower.GainExp(context, nextCombat.Creature, 2, null);
+    Equal(3m, nextCombat.Creature.Powers.OfType<LevelPower>().Single().ModifyMaxEnergy(nextCombat, 3));
+    Equal(1, nextCombat.Creature.Powers.Count);
+});
+Test("multi-level gains grant milestone energy before relic reactions", async () =>
+{
+    var p = Player(); Give<OpSmartphone>(p);
+    CreatureCmd.OnDamage = _ =>
+    {
+        var reached = LevelPower.GetLevel(p.Creature);
+        Equal((decimal)(reached / 5), p.Energy);
+        Equal(reached / 2, p.Creature.Powers.OfType<StrengthPower>().Sum(x => x.Amount));
+        Equal((reached - 1) / 2, p.Creature.Powers.OfType<DexterityPower>().Sum(x => x.Amount));
+        return Task.CompletedTask;
+    };
+    await LevelPower.GainExp(context, p.Creature, 36, null);
+    Equal(9, CreatureCmd.Hits.Count); Equal(2m, p.Energy);
+    Equal(2, PowerCmd.Events.Count(x => x == "Energy"));
+});
+Test("non-player creatures receive stats without energy", async () =>
+{
+    var creature = new Creature();
+    await LevelPower.GainExp(context, creature, 36, null);
+    Equal(5, creature.Powers.OfType<StrengthPower>().Single().Amount);
+    Equal(4, creature.Powers.OfType<DexterityPower>().Single().Amount);
+    Equal(false, PowerCmd.Events.Contains("Energy"));
+});
+
 tests.AddRange(CardRevisionTests.All());
 var failed = 0;
 foreach (var (name, body) in tests)
