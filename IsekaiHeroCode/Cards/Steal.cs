@@ -11,15 +11,17 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class Steal() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(6m, ValueProp.Move),
-        new GoldVar(4)
+        new GoldVar(6)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Steal",
-        "# Deal !Damage! damage. Gain !Gold! Gold.");
+        "# Deal !Damage! damage.\nGain !Gold! Gold.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -37,6 +39,6 @@ public sealed class Steal() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Comm
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(3m);
-        DynamicVars.Gold.UpgradeValueBy(2m);
+        DynamicVars.Gold.UpgradeValueBy(3m);
     }
 }

@@ -14,5 +14,25 @@
     <Compile Include="../../IsekaiHeroCode/Cards/IsekaiHeroCard.cs" Link="Production/IsekaiHeroCard.cs" />
     <Compile Include="../../IsekaiHeroCode/Powers/LevelPower.cs" Link="Production/LevelPower.cs" />
     <Compile Include="../../IsekaiHeroCode/Powers/ExploitPower.cs" Link="Production/ExploitPower.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/HerosJudgment.cs" Link="Production/HerosJudgment.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/Explosion.cs" Link="Production/Explosion.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/IAmAtomic.cs" Link="Production/IAmAtomic.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/ReturnByDeath.cs" Link="Production/ReturnByDeath.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/ShieldBash.cs" Link="Production/ShieldBash.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/UnderdogSpirit.cs" Link="Production/UnderdogSpirit.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/Steal.cs" Link="Production/Steal.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/FarmTheField.cs" Link="Production/FarmTheField.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/DailyTraining.cs" Link="Production/DailyTraining.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/DegenerateTactics.cs" Link="Production/DegenerateTactics.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/ComboRush.cs" Link="Production/ComboRush.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/TutorialSword.cs" Link="Production/TutorialSword.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/BossTelegraph.cs" Link="Production/BossTelegraph.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/CounterRead.cs" Link="Production/CounterRead.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/SeenItComing.cs" Link="Production/SeenItComing.cs" />
+    <Compile Include="../../IsekaiHeroCode/Powers/ReturnByDeathPower.cs" Link="Production/ReturnByDeathPower.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/MapHack.cs" Link="Production/MapHack.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/SystemMenu.cs" Link="Production/SystemMenu.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/LevelGrinding.cs" Link="Production/LevelGrinding.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/PowerUpMontage.cs" Link="Production/PowerUpMontage.cs" />
   </ItemGroup>
 </Project>

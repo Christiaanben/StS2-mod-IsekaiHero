@@ -27,7 +27,7 @@ public sealed class Overkill() : IsekaiHeroCard(2, CardType.Attack, CardRarity.U
 
     public override List<(string, string)> Localization => new CardLoc(
         "Overkill",
-        "# Deal !Damage! damage. Fatal: gain !Exp! EXP.");
+        "# Deal !Damage! damage.\nIf [gold]Fatal[/gold], gain !Exp! EXP.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

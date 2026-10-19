@@ -26,7 +26,7 @@ public sealed class DangerSense() : IsekaiHeroCard(1, CardType.Skill, CardRarity
 
     public override List<(string, string)> Localization => new CardLoc(
         "Danger Sense",
-        "# Gain !Block! Block. If you are Level 2 or higher, gain !BonusBlock! more Block.");
+        "# Gain !Block! Block.\nIf Level 2+, gain !BonusBlock! more Block.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

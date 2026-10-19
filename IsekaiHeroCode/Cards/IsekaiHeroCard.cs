@@ -1,3 +1,4 @@
+using MegaCrit.Sts2.Core.HoverTips;
 using BaseLib.Abstracts;
 using BaseLib.Extensions;
 using BaseLib.Utils;
@@ -23,6 +24,10 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     private bool _usedLuckThisPlay;
 
     public virtual bool HasConditionalEffects => false;
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => HasConditionalEffects
+        ? [HoverTipFactory.FromPower<ExploitPower>()]
+        : [];
 
     //Image size:
     //Normal art: 1000x760 (Using 500x380 should also work, it will simply be scaled.)

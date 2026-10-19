@@ -26,7 +26,7 @@ public sealed class EmergencyDodge() : IsekaiHeroCard(0, CardType.Skill, CardRar
 
     public override List<(string, string)> Localization => new CardLoc(
         "Emergency Dodge",
-        "# Gain !Block! Block. Exploit (Level 3+): gain !BonusBlock! more Block.");
+        "# Gain !Block! Block.\nIf Level 3+, gain !BonusBlock! more Block.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

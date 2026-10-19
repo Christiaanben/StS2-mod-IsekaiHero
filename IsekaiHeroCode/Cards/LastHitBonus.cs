@@ -28,7 +28,7 @@ public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRari
 
     public override List<(string, string)> Localization => new CardLoc(
         "Last-Hit Bonus",
-        "# Deal !Damage! damage. Fatal: draw !Cards! {IfUpgraded:show:cards|card} and gain !Energy! Energy.");
+        "# Deal !Damage! damage.\nIf [gold]Fatal[/gold], draw !Cards! {IfUpgraded:show:cards|card} and gain !Energy! Energy.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

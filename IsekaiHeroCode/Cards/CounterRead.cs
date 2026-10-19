@@ -21,7 +21,7 @@ public sealed class CounterRead() : IsekaiHeroCard(1, CardType.Attack, CardRarit
 
     public override List<(string, string)> Localization => new CardLoc(
         "Counter Read",
-        "# Deal !Damage! damage. Exploit (an enemy intends to Attack): apply !WeakPower! Weak.");
+        "# Deal !Damage! damage.\nIf the enemy intends to attack, apply !WeakPower! Weak.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

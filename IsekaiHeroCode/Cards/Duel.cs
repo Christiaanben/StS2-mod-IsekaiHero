@@ -21,7 +21,7 @@ public sealed class Duel() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Uncom
 
     public override List<(string, string)> Localization => new CardLoc(
         "Duel",
-        "# Deal !Damage! damage. If only one enemy remains, deal !ExtraDamage! more damage.");
+        "# Deal !Damage! damage.\nIf only one enemy remains, deal !ExtraDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

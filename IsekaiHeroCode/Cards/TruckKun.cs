@@ -29,7 +29,7 @@ public sealed class TruckKun() : IsekaiHeroCard(2, CardType.Attack, CardRarity.U
 
     public override List<(string, string)> Localization => new CardLoc(
         "Truck-kun",
-        "# Deal !Damage! damage to ALL enemies. Fatal: Gain !Energy! Energy{IfUpgraded:show: and draw !Cards! card|}.");
+        "# Deal !Damage! damage to ALL enemies.\nIf [gold]Fatal[/gold], gain !Energy! Energy{IfUpgraded:show: and draw !Cards! card|}.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

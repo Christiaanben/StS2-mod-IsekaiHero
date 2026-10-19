@@ -24,7 +24,7 @@ public sealed class ComboRush() : IsekaiHeroCard(1, CardType.Attack, CardRarity.
 
     public override List<(string, string)> Localization => new CardLoc(
         "Combo Rush",
-        "# Deal !Damage! damage !Repeat! times. Exploit (Level 4+): deal !Damage! damage a third time.");
+        "# Deal !Damage! damage twice.\nIf Level 4+, hit a third time.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

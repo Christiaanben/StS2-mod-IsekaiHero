@@ -21,7 +21,7 @@ public sealed class RaidOpener() : IsekaiHeroCard(2, CardType.Attack, CardRarity
 
     public override List<(string, string)> Localization => new CardLoc(
         "Raid Opener",
-        "# Deal !Damage! damage. Exploit (target at full HP): deal !FullHpDamage! more damage.");
+        "# Deal !Damage! damage.\nIf the enemy is at full HP, deal !FullHpDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

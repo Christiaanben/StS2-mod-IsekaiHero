@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class SystemMenu() : IsekaiHeroCard(2, CardType.Skill, CardRarity.Rare, TargetType.None)
+public sealed class SystemMenu() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Rare, TargetType.None)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
@@ -20,7 +20,7 @@ public sealed class SystemMenu() : IsekaiHeroCard(2, CardType.Skill, CardRarity.
 
     public override List<(string, string)> Localization => new CardLoc(
         "System Menu",
-        "Choose a card in your hand{IfUpgraded:show: or discard pile|}. Add Override to it for the rest of combat.",
+        "Give a card in your hand{IfUpgraded:show: or discard pile|} Override this combat.",
         ("selectionScreenPrompt", "Choose a card to Override."));
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
