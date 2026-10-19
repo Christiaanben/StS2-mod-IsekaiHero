@@ -23,7 +23,7 @@ public sealed class ShieldBash() : IsekaiHeroCard(1, CardType.Attack, CardRarity
 
     public override List<(string, string)> Localization => new CardLoc(
         "Shield Bash",
-        "# Deal !Damage! damage. If you have Block, gain !Block! Block.");
+        "# Deal !Damage! damage.\nIf you have Block, gain !Block! Block.\nGain !Block! Block.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -37,6 +37,8 @@ public sealed class ShieldBash() : IsekaiHeroCard(1, CardType.Attack, CardRarity
 
         if (IsConditionalEffectActive(hadBlock))
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, play);
+
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, play);
     }
 
     protected override void OnUpgrade()

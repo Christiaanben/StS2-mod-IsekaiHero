@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Extensions;
 using MegaCrit.Sts2.Core.Commands;
@@ -22,14 +24,14 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
     public override List<(string, string)> Localization => new CardLoc(
         "Tutorial Sword",
-        "# Deal !Damage! damage. Exploit (you have a Job): deal !ExtraDamage! more damage.");
+        "# Deal !Damage! damage.\nIf you have a Job or played a Power this turn, deal !ExtraDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var damage = DynamicVars.Damage.BaseValue;
-        if (IsConditionalEffectActive(HasJob()))
+        if (IsConditionalEffectActive(HasJob() || PlayedPowerThisTurn()))
             damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage).FromCard(this).Targeting(play.Target)
@@ -42,6 +44,10 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
         DynamicVars.Damage.UpgradeValueBy(2m);
         DynamicVars.ExtraDamage.UpgradeValueBy(2m);
     }
+
+    private bool PlayedPowerThisTurn() => CombatManager.Instance.History.CardPlaysFinished.Any(entry =>
+        entry.HappenedThisTurn(CombatState) && entry.CardPlay.Card.Owner == Owner &&
+        entry.CardPlay.Card.Type == CardType.Power);
 
     private bool HasJob()
     {

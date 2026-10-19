@@ -23,7 +23,7 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
     public override List<(string, string)> Localization => new CardLoc(
         "Beginner Magic",
-        "# Deal !Damage! damage. Exploit (you played a Skill this turn): deal !ExtraDamage! more damage.");
+        "# Deal !Damage! damage.\nIf you played a Skill this turn, deal !ExtraDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

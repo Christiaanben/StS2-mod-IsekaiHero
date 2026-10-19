@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Relics;
+using IsekaiHero.IsekaiHeroCode.Cards;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -105,6 +107,15 @@ public sealed class LevelPower : IsekaiHeroPower
                 data.Exp -= ExpPerLevel;
                 await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
                 await PowerCmd.Apply<VigorPower>(choiceContext, creature, VigorPerLevelUp, creature, source, false);
+
+                // Snapshot the hand before later Level-Up reactions can change it.
+                if (creature.Player is { } player)
+                {
+                    var judgments = CardPile.Get(PileType.Hand, player)?.Cards
+                        .OfType<HerosJudgment>().ToArray() ?? [];
+                    foreach (var judgment in judgments)
+                        judgment.GainLevelDamage();
+                }
 
                 var reactions = creature.Player?.Relics.OfType<ILevelUpRelic>().ToArray() ?? [];
                 foreach (var reaction in reactions)

@@ -27,7 +27,7 @@ public sealed class MobHunt() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Co
 
     public override List<(string, string)> Localization => new CardLoc(
         "Mob Hunt",
-        "# Deal !Damage! damage. Fatal: gain !Exp! EXP.");
+        "# Deal !Damage! damage.\nIf [gold]Fatal[/gold], gain !Exp! EXP.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

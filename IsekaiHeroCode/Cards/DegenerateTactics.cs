@@ -12,16 +12,18 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class DegenerateTactics() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
         new PowerVar<WeakPower>(2m),
-        new GoldVar(8)
+        new GoldVar(12)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Degenerate Tactics",
-        "# Deal !Damage! damage. Apply !WeakPower! Weak. Gain !Gold! Gold.");
+        "# Deal !Damage! damage.\nApply !WeakPower! Weak.\nGain !Gold! Gold.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
@@ -45,6 +47,6 @@ public sealed class DegenerateTactics() : IsekaiHeroCard(1, CardType.Attack, Car
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2m);
-        DynamicVars.Gold.UpgradeValueBy(2m);
+        DynamicVars.Gold.UpgradeValueBy(4m);
     }
 }

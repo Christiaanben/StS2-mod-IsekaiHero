@@ -15,13 +15,13 @@ public sealed class DailyTraining() : IsekaiHeroCard(1, CardType.Skill, CardRari
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(5m, ValueProp.Move),
+        new BlockVar(6m, ValueProp.Move),
         new DynamicVar("Exp", 1m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Daily Training",
-        "# Gain !Block! Block. Gain !Exp! EXP.");
+        "# Gain !Block! Block and !Exp! EXP.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

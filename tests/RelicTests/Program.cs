@@ -224,11 +224,14 @@ Test("smartphone does not target after combat has ended", async () =>
     await phone.AfterLevelUp(context);
     Equal(0, CreatureCmd.Hits.Count); Equal(0, p.RunState.Rng.CombatTargets.Calls);
 });
+tests.AddRange(CardRevisionTests.All());
 var failed = 0;
 foreach (var (name, body) in tests)
 {
     CombatManager.Instance.IsInProgress = true;
-    CreatureCmd.Hits.Clear(); CreatureCmd.OnDamage = null; PowerCmd.Events.Clear();
+    CombatManager.Instance.IsEnding = false;
+    CreatureCmd.Hits.Clear(); CreatureCmd.OnDamage = null; CreatureCmd.OnHeal = null; PowerCmd.Events.Clear();
+    PlayerCmd.EndedTurns.Clear(); CombatManager.Instance.History.CardPlaysFinished.Clear(); CardPileCmd.Drawn = 0;
     try { await body(); Console.WriteLine($"PASS {name}"); }
     catch (Exception e) { failed++; Console.Error.WriteLine($"FAIL {name}: {e.Message}"); }
 }

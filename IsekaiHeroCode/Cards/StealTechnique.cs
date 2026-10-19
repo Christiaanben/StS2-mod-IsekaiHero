@@ -22,7 +22,7 @@ public sealed class StealTechnique() : IsekaiHeroCard(1, CardType.Attack, CardRa
 
     public override List<(string, string)> Localization => new CardLoc(
         "Steal Technique",
-        "# Deal !Damage! damage. Exploit (target has a debuff): gain !Exp! EXP.");
+        "# Deal !Damage! damage.\nIf the enemy has a debuff, gain !Exp! EXP.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

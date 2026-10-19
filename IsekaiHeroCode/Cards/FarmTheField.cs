@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class FarmTheField() : IsekaiHeroCard(2, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+public sealed class FarmTheField() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -19,7 +19,7 @@ public sealed class FarmTheField() : IsekaiHeroCard(2, CardType.Attack, CardRari
 
     public override List<(string, string)> Localization => new CardLoc(
         "Farm the Field",
-        "# Deal !Damage! damage to ALL enemies. Gain !Exp! EXP.");
+        "# Deal !Damage! damage to ALL enemies.\nGain !Exp! EXP.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

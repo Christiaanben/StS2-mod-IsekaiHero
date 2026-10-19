@@ -25,7 +25,7 @@ public sealed class BarrierMagic() : IsekaiHeroCard(2, CardType.Skill, CardRarit
 
     public override List<(string, string)> Localization => new CardLoc(
         "Barrier Magic",
-        "# Gain !Block! Block. Exploit (Level 4+): gain !BonusBlock! more Block.");
+        "# Gain !Block! Block.\nIf Level 4+, gain !BonusBlock! more Block.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

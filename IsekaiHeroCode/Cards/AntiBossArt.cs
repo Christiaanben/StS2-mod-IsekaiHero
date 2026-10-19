@@ -21,7 +21,7 @@ public sealed class AntiBossArt() : IsekaiHeroCard(2, CardType.Attack, CardRarit
 
     public override List<(string, string)> Localization => new CardLoc(
         "Anti-Boss Art",
-        "# Deal !Damage! damage. Exploit (target is an Elite or Boss): deal !BonusDamage! more damage.");
+        "# Deal !Damage! damage.\nIf the enemy is an Elite or Boss, deal !BonusDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {

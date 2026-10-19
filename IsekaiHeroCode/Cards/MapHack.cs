@@ -14,7 +14,7 @@ public sealed class MapHack() : IsekaiHeroCard(0, CardType.Skill, CardRarity.Unc
 
     public override List<(string, string)> Localization => new CardLoc(
         "Map Hack",
-        "# Draw !Cards! cards, then discard 1 card.",
+        "# Draw !Cards! cards.\nDiscard 1 card.",
         ("selectionScreenPrompt", "Choose a card to discard."));
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
@@ -39,6 +39,6 @@ public sealed class MapHack() : IsekaiHeroCard(0, CardType.Skill, CardRarity.Unc
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(1m);
+        AddKeyword(CardKeyword.Retain);
     }
 }
