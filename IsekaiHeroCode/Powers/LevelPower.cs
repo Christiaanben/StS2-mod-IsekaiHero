@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
@@ -20,14 +21,13 @@ namespace IsekaiHero.IsekaiHeroCode.Powers;
 /// <summary>
 /// The EXP/Level engine. Amount = current Level. EXP progress toward the next
 /// level is tracked as internal data. Class-agnostic by design: any creature
-/// that gains EXP levels up and gets the Vigor ding, so IsekaiHero cards stay
+/// that gains EXP levels up and gets combat-long stat rewards, so IsekaiHero cards stay
 /// playable in cross-pool contexts.
 /// </summary>
 public sealed class LevelPower : IsekaiHeroPower
 {
     public const int ExpPerLevel = 4;
     public const int MaxLevel = 10;
-    public const int VigorPerLevelUp = 2;
 
     private sealed class Data
     {
@@ -44,8 +44,8 @@ public sealed class LevelPower : IsekaiHeroPower
 
     public override List<(string, string)> Localization => new PowerLoc(
         "Level",
-        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you Level Up, gain 2 Vigor.",
-        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you Level Up, gain 2 Vigor.",
+        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain {energyPrefix:energyIcons(1)} immediately and at the start of your turn.",
+        "You are Level {Amount} (max 10). Every 4 EXP is a Level Up. When you reach an even Level, gain 1 Strength. When you reach an odd Level, gain 1 Dexterity. At Levels 5 and 10, gain {energyPrefix:energyIcons(1)} immediately and at the start of your turn.",
         ("expTitle", "EXP Progress"),
         ("expProgress", "{Exp}/4 EXP toward the next level. Each filled segment represents 1 EXP."),
         ("expMax", "Maximum level reached. {Exp} EXP banked. The gold bar indicates the level cap."));
@@ -56,6 +56,9 @@ public sealed class LevelPower : IsekaiHeroPower
         {
             var description = new LocString("powers", Id.Entry + (IsMaxLevel ? ".expMax" : ".expProgress"));
             description.Add("Exp", Experience);
+            yield return HoverTipFactory.FromPower<StrengthPower>();
+            yield return HoverTipFactory.FromPower<DexterityPower>();
+            yield return HoverTipFactory.ForEnergy(this);
             yield return new HoverTip(new LocString("powers", Id.Entry + ".expTitle"), description);
         }
     }
@@ -63,6 +66,11 @@ public sealed class LevelPower : IsekaiHeroPower
     protected override object InitInternalData()
     {
         return new Data();
+    }
+
+    public override decimal ModifyMaxEnergy(Player player, decimal amount)
+    {
+        return player == Owner.Player ? amount + Amount / 5 : amount;
     }
 
     public static int GetLevel(Creature? creature)
@@ -106,7 +114,13 @@ public sealed class LevelPower : IsekaiHeroPower
             {
                 data.Exp -= ExpPerLevel;
                 await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
-                await PowerCmd.Apply<VigorPower>(choiceContext, creature, VigorPerLevelUp, creature, source, false);
+                if (power.Amount % 2 == 0)
+                    await PowerCmd.Apply<StrengthPower>(choiceContext, creature, 1, creature, source, false);
+                else
+                    await PowerCmd.Apply<DexterityPower>(choiceContext, creature, 1, creature, source, false);
+
+                if (power.Amount % 5 == 0 && creature.Player is { } energyPlayer)
+                    await PlayerCmd.GainEnergy(1, energyPlayer);
 
                 // Snapshot the hand before later Level-Up reactions can change it.
                 if (creature.Player is { } player)

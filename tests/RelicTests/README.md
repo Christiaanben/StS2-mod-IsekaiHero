@@ -8,7 +8,7 @@ dotnet run --project tests/RelicTests
 
 This dependency-free console test suite returns a nonzero exit code on failure. It links the production relic classes, revised cards, card condition resolver, Exploit/Level powers, and Return by Death rescue directly. The game/Godot boundary is replaced with minimal command-recording doubles so the suite can run without launching the game or redistributing its assemblies. It tests decisions and command ordering, not Godot rendering, actual damage mitigation, hook dispatch, or multiplayer networking. `dotnet build -p:InstallModOnBuild=false` separately checks the real game API and packages resources.
 
-Coverage includes natural/Override/luck/stack precedence, first-unmet usage, replays, repeated checks within a play, non-consuming checks outside play, combat reset, owner isolation, the three-stack opening grant, random target selection, exact damage and Vigor ordering, level-cap overflow, kill-EXP re-entry, combat termination, and recovery after a reaction exception.
+Coverage includes natural/Override/luck/stack precedence, first-unmet usage, replays, repeated checks within a play, non-consuming checks outside play, combat reset, owner isolation, the three-stack opening grant, random target selection, exact damage and stat/energy reward ordering, alternating Strength/Dexterity rewards, milestone energy and owner isolation, level-cap overflow, kill-EXP re-entry, combat termination, and recovery after a reaction exception.
 
 In-game smoke checks still required:
 
@@ -24,6 +24,8 @@ The suite also checks revised values/upgrades, Map Hack Retain and unchanged dra
 The command doubles record EXPLOSION's damage-before-EndTurn order and skip the turn request after lethal combat completion. Actual end-turn discard, Retain presentation, enemy turns, multiplayer synchronization, native cost cleanup dispatch, and death-prevention precedence still require the game. The doubles model these APIs; they do not prove engine dispatch or rendering.
 
 Additional in-game smoke checks:
+
+- Level from 1 to 10: confirm Strength at even levels and Dexterity at odd levels. At Levels 5/10, verify immediate energy plus increased generation on later turns, owner isolation in co-op, and reset next combat. Level 10 totals should be 5 Strength, 4 Dexterity, and +2 energy per turn.
 
 - Inspect both upgrade states of changed cards, conditional Exploit tooltips, and gold-highlighted Fatal. Verify System Menu's selection prompt and Map Hack's Retain.
 - Hold Judgment through several Level Ups, discard/redraw it, then enter a new combat; check damage previews and reset. Check temporary upgrade/downgrade preserves earned growth.

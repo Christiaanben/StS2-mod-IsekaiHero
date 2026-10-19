@@ -32,7 +32,7 @@ The following is **our chosen scope**, not a universal base-game template. The r
 
 **Fun requirements:**
 
-1. **Prepare a breakthrough.** Level-Up Vigor benefits every hit of a multi-hit attack. Retention, EXP timing, and the choice of Vigor consumer must create different good turns.
+1. **Build a breakthrough.** Level Ups grant combat-long stats: Strength first, then Dexterity. Time EXP gains to strengthen attacks and Block and reach energy milestones before spending the turn.
 2. **Keep decisions after setup.** Limited Exploit bypasses help solve a turn; no global Power permanently makes every condition irrelevant.
 3. **Give objectives different uses.** Complete, hold, or abandon a Quest for different benefits. Rewards vary between EXP, draw, defense, and Energy.
 4. **Pay for setup honestly.** Judge an effect's whole turn, card-slot cost, threshold timing, and eventual return. A small rider does not automatically make expensive setup playable. Pure setup is allowed when its burst window justifies it.
@@ -42,7 +42,7 @@ The following is **our chosen scope**, not a universal base-game template. The r
 
 **Playstyle:** defend or apply Weak, engineer a Level Up, then exploit the opening. Death Flag and Atomic+ supply limited Vulnerable. The character pays tempo and sometimes hand space for growth; intentional death is not the intended setup engine.
 
-**Distinct identity:** Levels persist within combat, while their Vigor is allocated to a particular attack; limited cheats bypass selected rules; Quests create objectives the player can manipulate. This combination, rather than a claim that other characters have only one engine, distinguishes the hero. Jobs do not gain Level scaling.
+**Distinct identity:** Levels grant persistent combat-long stats and milestone energy generation; limited cheats bypass selected rules; Quests create objectives the player can manipulate. This combination, rather than a claim that other characters have only one engine, distinguishes the hero. Jobs do not gain Level scaling.
 
 ### 2.1 Merging the alpha — old pillars → new pillars
 
@@ -71,16 +71,16 @@ The goal doc's three pillars survive; they just stop being three separate system
 ### 3.1 EXP & Level — persistent progress, timed breakthroughs
 
 - Start each combat at **Level 1**, 0 EXP, before starting-relic effects. Every **4 EXP** grants one Level Up; unspent progress rolls over. Normal cap: **Level 10**.
-- Every actual Level Up grants **2 Vigor**. It increases each hit of the next eligible attack command, then is consumed. Multiple hits are one command; a later separate attack does not reuse the consumed Vigor. Preview actual damage.
+- Every actual Level Up grants **1 Strength at even levels** (2/4/6/8/10) or **1 Dexterity at odd levels** (3/5/7/9), lasting for the combat. Initial Level 1 grants no rewards. Reaching **Levels 5 and 10** also grants **1 Energy immediately** and **+1 Energy generated each subsequent turn** this combat. Level 10 totals: **5 Strength, 4 Dexterity, +2 Energy per turn**. Energy rewards apply only to the owning player.
 - Cards check current Level, scale with Level, or reward **leveling this turn**. These are deliberately different roles.
-- At the cap, EXP remains banked but grants no further Level Ups or Vigor. Maintain a separate **total EXP gained this combat** counter, including starting EXP and overflow, for Season Finale. Direct Level Ups do not add to this total and preserve the EXP remainder.
+- At the cap, EXP remains banked but grants no further Level Ups or stat/energy rewards. Maintain a separate **total EXP gained this combat** counter, including starting EXP and overflow, for Season Finale. Direct Level Ups do not add to this total and preserve the EXP remainder.
 - A direct Level Up cannot exceed the normal cap unless it has been removed. Break the Level Cap first installs its rewards, then removes the cap, then processes banked EXP in four-point increments. Each actual increase fires one Level-Up event; no retroactive rewards for earlier increases.
 - The System grants kill EXP for actual non-minion enemy deaths, regardless of who killed them. Card Fatal rewards require that card's eligible kill; repeated death-prevention notifications do not count. Once combat ends, do not begin further draw/damage/Level-trigger chains.
-- Process a Level Up, its Vigor, and queued reactions in deterministic order before the next player action. A death inside a reaction can queue further EXP; it cannot re-credit the same death.
+- Process a Level Up, its stat and immediate milestone energy rewards, then card and relic reactions in deterministic order before the next player action. A death inside a reaction can queue further EXP; it cannot re-credit the same death.
 
 **Pacing targets to test:** record first useful Level Up, Level on turns 1–3, and Level **before lethal**. Hallway Level 3–4, elite 5–6, and dedicated boss 8–10 are provisional developed-deck expectations, not promises for the starter. With no kills, starting EXP plus Grind reaches Level 2 after one Grind, Level 3 after three, and Level 4 after five. Do not tune using post-lethal progress.
 
-**Persistence:** all combat progress resets. Permanent growth comes from deck upgrades, relics, and the explicitly bounded Monster Grinding card. Level alone is not automatic damage or defense; cards and Vigor realize its value.
+**Persistence:** all combat progress resets. Permanent growth comes from deck upgrades, relics, and the explicitly bounded Monster Grinding card. Strength improves attacks and Dexterity improves Block; milestone energy enables more plays. Level, EXP, earned stats, and bonus energy generation reset each combat.
 
 **Cross-class:** EXP remains a class-agnostic buff. Its multi-hit interaction and zero-cost generators need shared-pool tests; availability does not guarantee safety or usefulness.
 
@@ -128,7 +128,7 @@ The installed game has a Quest card type with map/event/rest-site uses. These **
 
 Quest objectives are displayed above a separate **Reward** line, with visible progress. The shared Quest tooltip says: “Unplayable. Retain. Progress counts only while held. Complete the objective to Exhaust this and gain its reward.” Numeric progress goals mean at least that amount. Acquisition windows and offer eligibility follow the shared rules above; they are not repeated on every token.
 
-**Connections:** EXP unlocks thresholds and times Vigor; limited Exploit bypasses support difficult clauses; Quests supply distinct combat rewards; holding one enables Perfect Preparation, completing one enables Objective Cleared, and abandonment enables contingency cards. Plain Exploit stacks do not themselves complete Quests—Sequence Break and Full Clear explicitly do that.
+**Connections:** EXP unlocks thresholds, grows stats, and reaches energy milestones; limited Exploit bypasses support difficult clauses; Quests supply distinct combat rewards; holding one enables Perfect Preparation, completing one enables Objective Cleared, and abandonment enables contingency cards. Plain Exploit stacks do not themselves complete Quests—Sequence Break and Full Clear explicitly do that.
 
 ---
 
@@ -338,7 +338,7 @@ These specify execution and verification. They must not be appended to card desc
 
 ## 6. Distinct draft and combat plans
 
-1. **Breakthrough timing:** Grind/Study the System/Level Grinding → Item Box/Combo Rush/Hero's Judgment/Starburst Stream. Arrange the next Level Up and choose the right Vigor consumer. Growth Slash provides dependable sustained scaling; Season Finale converts cumulative progress into one burst.
+1. **Breakthrough timing:** Grind/Study the System/Level Grinding → Item Box/Combo Rush/Hero's Judgment/Starburst Stream. Arrange Level Ups to improve attacks or Block and reach energy milestones before committing the turn. Growth Slash provides dependable sustained scaling; Season Finale converts cumulative progress into one burst.
 2. **Cheat allocation:** Game Knowledge/Read the Code/Genre Savvy → System Menu/Mana Sense/Atomic/Privilege. Fulfill easy conditions naturally and reserve finite bypasses for expensive conditions. OP Protagonist helps two unmet clauses per turn without solving the entire deck.
 3. **Quest management:** Job Board/Guild Reception/Legend → Quest Log/Objective Cleared/Sequence Break/Full Clear. Hold a Quest for Perfect Preparation, complete it for tempo, or abandon it with Side Story/Emergency Commission/Training Arc. The useful objective changes with the hand.
 4. **Fatal support:** Mob Hunt/retained Killing Blow/Last-Hit Bonus/Monster Grinding/Truck-kun reward kill sequencing. Bring Duel, Growth Slash, Hero's Judgment, or a Quest plan for isolated bosses. This is a support package, not a promised standalone archetype.
@@ -369,13 +369,13 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 ---
 
-**Relic/potion event rules:** Smartphone damage is an owned relic effect and can complete Slay, but never credits a card's Fatal. Finish the current action before resolving queued relic damage so previews and kill attribution remain consistent. Return by Death is once per run, does not grant immunity to later hits, and checks after an unused Return by Death card rescue; only one rescue fires for one lethal event. Jar of Slime previews resulting Level/Vigor and cap waste; Bottled Cheat Code previews current eligible uses and follows bypass precedence. All combat-only resources reset at combat end.
+**Relic/potion event rules:** Smartphone damage is an owned relic effect and can complete Slay, but never credits a card's Fatal. Finish the current action before resolving queued relic damage so previews and kill attribution remain consistent. Return by Death is once per run, does not grant immunity to later hits, and checks after an unused Return by Death card rescue; only one rescue fires for one lethal event. Jar of Slime previews resulting Level, stat rewards, immediate energy, energy generation, and banked overflow; Bottled Cheat Code previews current eligible uses and follows bypass precedence. All combat-only resources reset at combat end.
 
 ## 9. Balance and fun acceptance checklist
 
 - [ ] **Early tempo:** test Farm the Field, Daily Training, existing Power-Up Montage/Level Grinding, and planned Read the Code against real Act 1 hands without rare engines. Track HP lost and actions enabled, not only printed value.
 - [ ] **Progress while useful:** record first useful Level Up, turn 1–3 Levels, Level before lethal, and post-lethal EXP separately. Change generators only after identifying the actual pacing failure; do not automatically raise EXP-per-Level globally.
-- [ ] **Vigor allocation:** verify Twin Blades, Combo Rush, Skill Chain, Starburst Stream at X=0/3/high X, and AoE consumers. Single-hit finishers must retain a reason to exist.
+- [ ] **Level reward scaling:** verify alternating stats, milestone energy immediately and on subsequent turns, owner isolation, and combat reset. Test multi-hit attacks and Block cards. Independently granted Vigor still needs consumer tests.
 - [ ] **Finite cheats:** preview natural/Override/relic/Power/stack resolution. Test unwanted automatic spending, OP Protagonist + Mana Sense, and bonus-only Privilege repeats. Copies of non-stacking Powers must say so in tooltips.
 - [ ] **Quest rules:** test acquisition windows, duplicate titles, same-event completion of different held titles, full hands, Hoarder/Flawless delayed rewards, abandonment, discard/return, and Full Clear snapshots. No reward may retroactively complete a newly generated Quest.
 - [ ] **No easy recursion:** two Dodge the Bad End+ copies both Exhaust. Test free retrieval, actual card replays, copying copies, and external duplication. A Level cap is not an anti-infinite mechanism.
@@ -391,7 +391,7 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 ## 10. Cross-class and co-op acceptance
 
-- EXP/Vigor, filtering, Weak, copying, and bounded economy can all be useful outside this class. They must be tested, not described as automatically safe.
+- EXP/stat growth, independently granted Vigor, filtering, Weak, copying, and bounded economy can all be useful outside this class. They must be tested, not described as automatically safe.
 - Naturally satisfied conditions still work outside this character; unmet clauses can use audited Exploit compatibility. A card without relevant support may be a poor draft despite having a base effect.
 - Curate base-game conditional compatibility individually. Exclude Fatal, permanent rewards, and playability restrictions; do not make an illegal target or unplayable card legal via Exploit.
 - The System sees actual eligible enemy deaths from any player; individual Fatal rewards belong to the killing card. Quest counters are owner-local. Test simultaneous deaths, damage-over-time kills, revival, shared enemies, and prevented deaths.
@@ -451,7 +451,7 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 
 - [x] **Combat character animations:** original office-worker adventurer art and existing animation work; see [CharacterAnimations](CharacterAnimations.md). Retain assets when revising card effects.
 - [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
-- [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate Vigor with multi-hit and separate attack commands.
+- [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate stat scaling and milestone energy; independently granted Vigor still needs multi-hit and separate-command checks.
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
 - [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
@@ -466,7 +466,7 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 - [ ] Should EXP-on-kill live on the character (safe from relic loss) or on The System relic (matches Bound Phylactery precedent)? Currently: relic.
 - [ ] The clause and the buff share one name (Exploit). If playtests show players think a clause *requires* the buff, rename the **buff** to **Cheat** (genre-perfect: "Gain 2 Cheat") and keep Exploit on cards. Override stays either way.
 - [ ] Which base-game conditionals make the initial Exploit compatibility list? Audit after Phase 1 event contracts are stable; shared-pool tests are part of Phase 5.
-- [x] **Level-Up identity — decided 2026-09-28:** retain 2 Vigor and its multi-hit interaction. Tune supporting cards before replacing this source of tactical depth.
+- [x] **Level-Up identity - revised 2026-10-19:** replace baseline 2 Vigor with +1 Strength on even levels and +1 Dexterity on odd levels, beginning at Level 2. Levels 5/10 each grant 1 Energy immediately and +1 per subsequent turn this combat. Level 10 totals: 5 Strength, 4 Dexterity, +2 Energy per turn. Independently granted Vigor and unrelated future designs remain unchanged.
 - [ ] **Color:** implemented `#6C3082` purple may read as Necrobinder-adjacent; consider shifting toward teal/cyan ("another world" portal palette) during the art pass.
 - [ ] **Monster Grinding persistence:** serialize growth on the original deck card; Exhaust limits ordinary reuse. A temporary copy cannot mutate another card's permanent state. Test external replay/recovery before release. If persistence cannot be verified, reopen the design instead of silently changing its run-long role.
 - [x] **Jobs scope — decided (2026-07-02):** Jobs stay a 3-power cycle + the "you have a Job" condition, with **no Level integration** — tying Job effects to Level would stack two scaling systems on one power and blow the complexity budget; the Exploit condition is already the bridge. Job: Alchemist's existing art stays. Expansion beyond three Jobs is deferred until the v3 replayability checks pass; it is not current implementation scope.

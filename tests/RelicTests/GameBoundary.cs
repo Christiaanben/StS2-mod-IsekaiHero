@@ -91,6 +91,7 @@ namespace MegaCrit.Sts2.Core.Entities.Players
         public Creatures.Creature Creature { get; }
         public Dictionary<Entities.Cards.PileType, Entities.Cards.CardPile> Piles { get; } = Enum.GetValues<Entities.Cards.PileType>().ToDictionary(x => x, _ => new Entities.Cards.CardPile());
         public int Gold;
+        public decimal Energy;
         public List<IsekaiHero.IsekaiHeroCode.Relics.IsekaiHeroRelic> Relics { get; } = [];
         public RunState RunState { get; } = new();
     }
@@ -172,6 +173,7 @@ namespace MegaCrit.Sts2.Core.Models
         protected virtual IEnumerable<Localization.DynamicVars.DynamicVar> CanonicalVars => [];
         private Localization.DynamicVars.Vars? _vars;
         public Localization.DynamicVars.Vars DynamicVars => _vars ??= new(CanonicalVars);
+        public virtual decimal ModifyMaxEnergy(Entities.Players.Player player, decimal amount) => amount;
         public virtual bool ShouldDie(Entities.Creatures.Creature creature) => true;
         public virtual Task AfterPreventingDeath(Entities.Creatures.Creature creature) => Task.CompletedTask;
         public virtual Entities.Powers.PowerType Type => default;
@@ -180,7 +182,7 @@ namespace MegaCrit.Sts2.Core.Models
         protected T GetInternalData<T>() => (T)(_data ??= InitInternalData());
     }
 }
-namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class WeakPower : PowerModel { } public class VulnerablePower : PowerModel { } }
+namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class StrengthPower : PowerModel { } public class DexterityPower : PowerModel { } public class WeakPower : PowerModel { } public class VulnerablePower : PowerModel { } }
 namespace IsekaiHero.IsekaiHeroCode.Powers
 {
     public abstract class IsekaiHeroPower : MegaCrit.Sts2.Core.Models.PowerModel { }
@@ -201,7 +203,7 @@ namespace MegaCrit.Sts2.Core.HoverTips
 {
     public interface IHoverTip { }
     public class HoverTip(Localization.LocString title, Localization.LocString description) : IHoverTip { }
-    public static class HoverTipFactory { public static IHoverTip FromKeyword(int keyword) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromPower<T>() => new HoverTip(new("", ""), new("", "")); }
+    public static class HoverTipFactory { public static IHoverTip ForEnergy(object model) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromKeyword(int keyword) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromPower<T>() => new HoverTip(new("", ""), new("", "")); }
 }
 namespace MegaCrit.Sts2.Core.Localization
 {
@@ -350,6 +352,7 @@ namespace MegaCrit.Sts2.Core.Commands
     using Models;
     public static class PlayerCmd
     {
+        public static Task GainEnergy(decimal amount, Player player) { player.Energy += amount; PowerCmd.Events.Add("Energy"); return Task.CompletedTask; }
         public static List<Player> EndedTurns { get; } = [];
         public static void EndTurn(Player player, bool canBackOut) { EndedTurns.Add(player); PowerCmd.Events.Add("EndTurn"); }
         public static Task GainGold(decimal amount, Player player, bool silent) { player.Gold += (int)amount; return Task.CompletedTask; }
