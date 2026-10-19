@@ -1,7 +1,7 @@
 [size=4][b]Description[/b][/size]
 [size=3]Isekai Hero is an early alpha playable character mod for Slay the Spire 2.
 
-[b]Current version:[/b] v0.11.1-alpha
+[b]Current version:[/b] v0.12.0-alpha
 
 Play as a genre-parody protagonist dropped into the Spire with outsider logic, status-screen instincts, and far too much confidence in the rules of another world. The current alpha begins the character's main combat identity: start each fight small, gain EXP, Level Up, and turn system knowledge into increasingly unfair turns.
 
@@ -22,7 +22,7 @@ Do not remove the DLL, PCK, or JSON file from the IsekaiHero folder. BaseLib is 
 
 [size=4][b]Main features[/b][/size]
 [size=3]- A new playable Slay the Spire 2 character: the Isekai Hero.
-- A new EXP and Level core: gain EXP during combat, Level Up, and earn Vigor when you ding.
+- An EXP and Level core: gain EXP during combat, earn Strength at even Levels and Dexterity at odd Levels, and unlock immediate and recurring Energy at Levels 5 and 10.
 - A rebuilt starter package with 4 Strikes, 4 Defends, Grind, Danger Sense, and the starter relic The System.
 - The System grants EXP at combat start and when eligible enemies die.
 - A 51-card early alpha set with genre-parody cards such as Grind, Danger Sense, Status Appraisal, Route Guide, Truck-kun, Mob Hunt, Daily Training, Death Flag, Underdog Spirit, Raid Opener, Counter Read, Barrier Magic, Starburst Stream, Slow Life, and Anti-Boss Art.

@@ -7,6 +7,21 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 
 
+
+## [v0.12.0-alpha] - 2026-10-19
+
+### Changed
+
+- Reworked Level Up rewards: reaching even Levels grants 1 Strength, and reaching odd Levels grants 1 Dexterity, replacing the previous Vigor reward. Levels 5 and 10 each grant 1 immediate Energy and 1 additional Energy per turn for the rest of combat.
+- Reworked Hero's Judgment: it now Retains and gains 4 damage (6 upgraded) this combat for each Level Up while held in hand.
+- Reworked Return by Death into a Power that prevents death once per combat, healing 15 HP and granting 8 EXP (20 HP and 10 EXP upgraded). All copies share the same rescue.
+- EXPLOSION! now deals 36 damage (44 upgraded) to all enemies and ends your turn, replacing its next-turn Attack restriction.
+- I Am Atomic's Exploit discounts now last until the card is played rather than the entire combat.
+- Reduced Farm the Field and System Menu to 1 Energy. Increased Daily Training's base Block to 6 and Underdog Spirit's base and bonus damage to 6 each, with revised upgrade scaling.
+- Shield Bash now always grants Block, with an additional Block grant if its condition is met. Tutorial Sword's bonus can also trigger after playing a Power this turn.
+- Steal and Degenerate Tactics now Exhaust and award more Gold: 6/9 and 12/16 respectively for base/upgraded cards.
+- Map Hack's upgrade now adds Retain instead of drawing an additional card.
+- Shortened card descriptions, clarified conditional bonuses and Fatal text, added Exploit hover tips to conditional cards, and updated Level tooltips with stat and Energy explanations.
 ## [v0.11.1-alpha] - 2026-10-17
 
 ### Fixed

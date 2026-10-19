@@ -2,7 +2,7 @@
 
 Isekai Hero is an alpha playable character mod for Slay the Spire 2.
 
-**Current release:** `v0.11.1-alpha`
+**Current release:** `v0.12.0-alpha`
 
 The character is a genre-parody power fantasy built around outsider logic:
 gain a **Job**, find ways to **Exploit** the Spire's systems, and earn absurd
