@@ -89,6 +89,34 @@ Test("checking outside a play does not spend luck", () =>
     card.Check(false); card.Check(false); Equal(0, charm.Flashes);
     return Task.CompletedTask;
 });
+Test("previews never mark an Exploit trigger or stack consumption", async () =>
+{
+    var p = Player(); var card = new TestCard { Owner = p };
+    await PowerCmd.Apply<ExploitPower>(context, p.Creature, 2, p.Creature, null);
+    Equal(true, card.Check(false)); Equal(true, card.Check(true));
+    Equal(false, card.DidTriggerConditionalEffectThisPlay()); Equal(false, card.DidConsumeExploitThisPlay());
+    var exploit = p.Creature.Powers.OfType<ExploitPower>().Single();
+    await exploit.AfterCardPlayed(context, new CardPlay(card)); Equal(2, exploit.Amount);
+});
+Test("repeated Form checks spend once per play and preserve remaining bypasses in previews", async () =>
+{
+    var p = Player(); var card = new TestCard { Owner = p };
+    await PowerCmd.Apply<AscendantFormPower>(context, p.Creature, 3, p.Creature, null);
+    var form = p.Creature.Powers.OfType<AscendantFormPower>().Single();
+    Equal(true, card.Check(false)); Equal(3, form.Remaining);
+    var play = new CardPlay(card); await card.BeforeCardPlayed(play);
+    Equal(true, card.Check(false)); Equal(true, card.Check(false)); Equal(2, form.Remaining);
+    await card.AfterCardPlayed(context, play); Equal(true, card.Check(false)); Equal(2, form.Remaining);
+});
+Test("stack settlement cannot decrement twice for the same play", async () =>
+{
+    var p = Player(); var card = new TestCard { Owner = p };
+    await PowerCmd.Apply<ExploitPower>(context, p.Creature, 3, p.Creature, null);
+    await Play(card, false);
+    var exploit = p.Creature.Powers.OfType<ExploitPower>().Single();
+    await exploit.AfterCardPlayed(context, new CardPlay(card)); Equal(2, exploit.Amount);
+    await Play(card, false); Equal(1, exploit.Amount);
+});
 Test("charm resets next combat", async () =>
 {
     var p = Player(); var charm = Give<BeginnersLuckCharm>(p); var card = new TestCard { Owner = p };
@@ -274,6 +302,7 @@ Test("non-player creatures receive stats without energy", async () =>
 });
 
 tests.AddRange(CardRevisionTests.All());
+tests.AddRange(PlaytestRevisionTests.All());
 var failed = 0;
 foreach (var (name, body) in tests)
 {

@@ -23,6 +23,10 @@ The current release is an early public test build. It includes:
 Expect the card pool, balance, visuals, and mechanics to change while the
 character moves toward its Jobs, Exploits, and Cheat Skills identity.
 
+The development branch adds Ascendant Form (52 implemented cards total),
+Strike Dummy support, zero-cost tempo cards, visible Alchemist Vigor, and
+Atomic's signature animation. See [Unreleased changes](CHANGELOG.md#unreleased).
+
 ## Requirements
 
 - Slay the Spire 2.

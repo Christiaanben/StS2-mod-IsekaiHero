@@ -33,6 +33,8 @@ public sealed class LevelPower : IsekaiHeroPower
     {
         public int Exp;
         public bool Processing;
+        public int LastLevelUpRound = -1;
+        public CombatSide LastLevelUpSide;
     }
 
     public override PowerType Type => PowerType.Buff;
@@ -78,6 +80,15 @@ public sealed class LevelPower : IsekaiHeroPower
         return creature?.Powers.OfType<LevelPower>().FirstOrDefault()?.Amount ?? 0;
     }
 
+    public static bool LeveledUpThisTurn(Creature creature)
+    {
+        var power = creature.Powers.OfType<LevelPower>().FirstOrDefault();
+        if (power == null || creature.CombatState is not { } combat)
+            return false;
+        var data = power.GetInternalData<Data>();
+        return data.LastLevelUpRound == combat.RoundNumber && data.LastLevelUpSide == combat.CurrentSide;
+    }
+
     public static async Task GainExp(
         PlayerChoiceContext choiceContext,
         Creature creature,
@@ -114,6 +125,8 @@ public sealed class LevelPower : IsekaiHeroPower
             {
                 data.Exp -= ExpPerLevel;
                 await PowerCmd.Apply<LevelPower>(choiceContext, creature, 1, creature, source, false);
+                data.LastLevelUpRound = creature.CombatState?.RoundNumber ?? -1;
+                data.LastLevelUpSide = creature.CombatState?.CurrentSide ?? CombatSide.Player;
                 if (power.Amount % 2 == 0)
                     await PowerCmd.Apply<StrengthPower>(choiceContext, creature, 1, creature, source, false);
                 else

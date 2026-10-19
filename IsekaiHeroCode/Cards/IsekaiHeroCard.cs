@@ -22,6 +22,8 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
     private static readonly ConditionalWeakTable<IsekaiHeroCard, ExploitConsumptionState> ExploitConsumptions = new();
     private bool _resolvingPlay;
     private bool _usedLuckThisPlay;
+    private bool _usedFormThisPlay;
+    private bool _stackSettled;
 
     public virtual bool HasConditionalEffects => false;
 
@@ -47,13 +49,22 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
         var hasOverride = CombatState != null &&
                           ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
                           ReferenceEquals(conditionalOverride.CombatState, CombatState);
-        var usedLuck = !condition && !hasOverride && _resolvingPlay && CombatState != null &&
+        // Hover/preview queries must never reserve a bypass or emit a trigger.
+        if (!_resolvingPlay)
+            return condition || hasOverride || Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.CanUse) ||
+                Owner.Creature.Powers.OfType<AscendantFormPower>().Any(power => power.Remaining > 0) ||
+                Owner.Creature.Powers.OfType<ExploitPower>().Any(power => power.Amount > 0);
+
+        var usedLuck = !condition && !hasOverride && CombatState != null &&
                        (_usedLuckThisPlay || Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.TryUse()));
         _usedLuckThisPlay |= usedLuck;
-        var exploitPower = !condition && !hasOverride && !usedLuck
+        var usedForm = !condition && !hasOverride && !usedLuck && CombatState != null &&
+                       (_usedFormThisPlay || Owner.Creature.Powers.OfType<AscendantFormPower>().Any(power => power.TryUse()));
+        _usedFormThisPlay |= usedForm;
+        var exploitPower = !condition && !hasOverride && !usedLuck && !usedForm
             ? Owner?.Creature.Powers.OfType<ExploitPower>().FirstOrDefault(power => power.Amount > 0m)
             : null;
-        var isActive = condition || hasOverride || usedLuck || exploitPower != null;
+        var isActive = condition || hasOverride || usedLuck || usedForm || exploitPower != null;
 
         if (exploitPower != null && CombatState != null)
         {
@@ -79,12 +90,21 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
                ReferenceEquals(consumptionState.CombatState, CombatState);
     }
 
+    internal bool SettleExploitThisPlay()
+    {
+        if (_stackSettled || !DidConsumeExploitThisPlay()) return false;
+        _stackSettled = true;
+        return true;
+    }
+
     public override Task BeforeCardPlayed(CardPlay cardPlay)
     {
         if (cardPlay.Card == this)
         {
             _resolvingPlay = true;
             _usedLuckThisPlay = false;
+            _usedFormThisPlay = false;
+            _stackSettled = false;
             ConditionalTriggers.Remove(this);
             ExploitConsumptions.Remove(this);
         }

@@ -125,13 +125,16 @@ static class CardRevisionTests
             await Play(card, enemy); Equal(11m, CreatureCmd.Hits.Last().Damage);
             p.Creature.CombatState.RoundNumber++; await Play(card, enemy); Equal(7m, CreatureCmd.Hits.Last().Damage);
         });
-        yield return ("Combo Rush retains its Level 4 threshold", async () =>
+        yield return ("Breakthrough Strike is free and rewards a Level Up this turn", async () =>
         {
             var p = Player(); var card = new ComboRush { Owner = p }; var enemy = p.Creature.CombatState!.Enemies[0];
+            Equal(0, card.BaseCost); Equal(true, card.Tags.Contains(CardTag.Strike));
             await Play(card, enemy); Equal(2, CreatureCmd.Hits.Count);
             await LevelPower.GainExp(Context, p.Creature, 12, null);
             CreatureCmd.Hits.Clear(); card.Upgrade(); await Play(card, enemy);
-            Equal(3, CreatureCmd.Hits.Count); Equal(true, CreatureCmd.Hits.All(h => h.Damage == 5));
+            Equal(3, CreatureCmd.Hits.Count); Equal(true, CreatureCmd.Hits.All(h => h.Damage == 4));
+            p.Creature.CombatState.RoundNumber++;
+            CreatureCmd.Hits.Clear(); await Play(card, enemy); Equal(2, CreatureCmd.Hits.Count);
         });
         yield return ("Judgment grows once per actual level only while held", async () =>
         {

@@ -7,6 +7,22 @@
     <UseAppHost>false</UseAppHost>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../IsekaiHeroCode/Cards/AscendantForm.cs" Link="Production/AscendantForm.cs" />
+    <Compile Include="../../IsekaiHeroCode/Powers/AscendantFormPower.cs" Link="Production/AscendantFormPower.cs" />
+    <Compile Include="../../IsekaiHeroCode/Powers/AlchemistPower.cs" Link="Production/AlchemistPower.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/JobAlchemist.cs" Link="Production/JobAlchemist.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/Negotiation.cs" Link="Production/Negotiation.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/AntiBossArt.cs" Link="Production/AntiBossArt.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/BarrierMagic.cs" Link="Production/BarrierMagic.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/BeginnerMagic.cs" Link="Production/BeginnerMagic.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/DangerSense.cs" Link="Production/DangerSense.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/EmergencyDodge.cs" Link="Production/EmergencyDodge.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/Duel.cs" Link="Production/Duel.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/Megiddo.cs" Link="Production/Megiddo.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/RaidOpener.cs" Link="Production/RaidOpener.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/StealTechnique.cs" Link="Production/StealTechnique.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/TrainingArc.cs" Link="Production/TrainingArc.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/TwinBlades.cs" Link="Production/TwinBlades.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/BeginnersLuckCharm.cs" Link="Production/BeginnersLuckCharm.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/OpSmartphone.cs" Link="Production/OpSmartphone.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/ForbiddenWalkthrough.cs" Link="Production/ForbiddenWalkthrough.cs" />

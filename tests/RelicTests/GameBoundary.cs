@@ -46,8 +46,9 @@ namespace MegaCrit.Sts2.Core.Entities.Relics
 namespace MegaCrit.Sts2.Core.Entities.Cards
 {
     public enum CardType { Skill, Attack, Power }
-    public enum CardRarity { Common, Uncommon, Rare }
-    public enum TargetType { None, AnyEnemy, AllEnemies }
+    public enum CardRarity { Basic, Common, Uncommon, Rare }
+    public enum TargetType { None, AnyEnemy, AllEnemies, Self }
+    public enum CardTag { Strike }
     public enum CardKeyword { Retain, Exhaust }
     public enum PileType { Hand, Discard, Draw, Exhaust }
     public class CardPile
@@ -55,11 +56,12 @@ namespace MegaCrit.Sts2.Core.Entities.Cards
         public List<MegaCrit.Sts2.Core.Models.CardModel> Cards { get; } = [];
         public static CardPile? Get(PileType type, MegaCrit.Sts2.Core.Entities.Players.Player player) => player.Piles[type];
     }
-    public record CardPlay(MegaCrit.Sts2.Core.Models.CardModel Card, MegaCrit.Sts2.Core.Entities.Creatures.Creature? Target = null);
+    public record CardPlay(MegaCrit.Sts2.Core.Models.CardModel Card, MegaCrit.Sts2.Core.Entities.Creatures.Creature? Target = null)
+    { public int PlayIndex { get; init; } }
 }
 namespace MegaCrit.Sts2.Core.Entities.Powers
 {
-    public enum PowerType { Buff }
+    public enum PowerType { Buff, Debuff }
     public enum PowerStackType { Counter, Single }
 }
 namespace MegaCrit.Sts2.Core.GameActions.Multiplayer { public class PlayerChoiceContext { } public class BlockingPlayerChoiceContext : PlayerChoiceContext { } }
@@ -71,6 +73,8 @@ namespace MegaCrit.Sts2.Core.Combat
     public class CombatState : ICombatState
     {
         public int RoundNumber { get; set; } = 1;
+        public CombatSide CurrentSide { get; set; }
+        public Encounter? Encounter { get; set; }
         public List<MegaCrit.Sts2.Core.Entities.Creatures.Creature> Enemies { get; } = [];
         public IEnumerable<MegaCrit.Sts2.Core.Entities.Creatures.Creature> HittableEnemies => Enemies.Where(x => !x.IsDead);
     }
@@ -110,7 +114,7 @@ namespace MegaCrit.Sts2.Core.Entities.Players
 }
 namespace MegaCrit.Sts2.Core.Entities.Creatures
 {
-    public class Monster { public bool IntendsToAttack; }
+    public class Monster { public bool IntendsToAttack; public MegaCrit.Sts2.Core.Combat.CombatState CombatState { get; set; } = new(); }
     public class Creature
     {
         public Players.Player? Player { get; init; }
@@ -122,6 +126,7 @@ namespace MegaCrit.Sts2.Core.Entities.Creatures
         public int MaxHp = 70;
         public Monster? Monster = new();
         public bool IsDead { get; set; }
+        public bool IsEnemy => Side == MegaCrit.Sts2.Core.Combat.CombatSide.Enemy;
     }
 }
 namespace MegaCrit.Sts2.Core.Models
@@ -154,6 +159,8 @@ namespace MegaCrit.Sts2.Core.Models
         public virtual bool GainsBlock => false;
         public virtual IEnumerable<Entities.Cards.CardKeyword> CanonicalKeywords => [];
         public HashSet<Entities.Cards.CardKeyword> Keywords { get; } = [];
+        protected virtual HashSet<Entities.Cards.CardTag> CanonicalTags => [];
+        public HashSet<Entities.Cards.CardTag> Tags => CanonicalTags;
         public void AddKeyword(Entities.Cards.CardKeyword keyword) => Keywords.Add(keyword);
         protected virtual IEnumerable<Localization.DynamicVars.DynamicVar> CanonicalVars => [];
         private Localization.DynamicVars.Vars? _vars;
@@ -170,19 +177,23 @@ namespace MegaCrit.Sts2.Core.Models
         private object? _data;
         public Entities.Creatures.Creature Owner { get; set; } = null!;
         public int Amount { get; set; }
+        public virtual int DisplayAmount => Amount;
         protected virtual IEnumerable<Localization.DynamicVars.DynamicVar> CanonicalVars => [];
         private Localization.DynamicVars.Vars? _vars;
         public Localization.DynamicVars.Vars DynamicVars => _vars ??= new(CanonicalVars);
         public virtual decimal ModifyMaxEnergy(Entities.Players.Player player, decimal amount) => amount;
         public virtual bool ShouldDie(Entities.Creatures.Creature creature) => true;
         public virtual Task AfterPreventingDeath(Entities.Creatures.Creature creature) => Task.CompletedTask;
+        public virtual Task AfterPlayerTurnStart(GameActions.Multiplayer.PlayerChoiceContext context, Entities.Players.Player player) => Task.CompletedTask;
+        public virtual Task AfterPowerAmountChanged(GameActions.Multiplayer.PlayerChoiceContext context, PowerModel power, decimal amount, Entities.Creatures.Creature? applier, CardModel? source) => Task.CompletedTask;
+        public virtual Entities.Powers.PowerType GetTypeForAmount(decimal amount) => Type;
         public virtual Entities.Powers.PowerType Type => default;
         public virtual Entities.Powers.PowerStackType StackType => default;
         protected virtual object InitInternalData() => new object();
         protected T GetInternalData<T>() => (T)(_data ??= InitInternalData());
     }
 }
-namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class StrengthPower : PowerModel { } public class DexterityPower : PowerModel { } public class WeakPower : PowerModel { } public class VulnerablePower : PowerModel { } }
+namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class StrengthPower : PowerModel { } public class DexterityPower : PowerModel { } public class WeakPower : PowerModel { public override Entities.Powers.PowerType Type => Entities.Powers.PowerType.Debuff; } public class VulnerablePower : PowerModel { public override Entities.Powers.PowerType Type => Entities.Powers.PowerType.Debuff; } }
 namespace IsekaiHero.IsekaiHeroCode.Powers
 {
     public abstract class IsekaiHeroPower : MegaCrit.Sts2.Core.Models.PowerModel { }
@@ -222,14 +233,16 @@ namespace MegaCrit.Sts2.Core.Commands
         {
             foreach (var target in targets) await Apply<T>(context, target, amount, applier, source, silent);
         }
-        public static Task<T?> Apply<T>(PlayerChoiceContext context, Creature target, decimal amount, Creature applier,
+        public static async Task<T?> Apply<T>(PlayerChoiceContext context, Creature target, decimal amount, Creature applier,
             CardModel? source, bool silent = false) where T : PowerModel, new()
         {
             Events.Add(typeof(T).Name);
             var power = target.Powers.OfType<T>().FirstOrDefault();
             if (power == null) { power = new T { Owner = target }; target.Powers.Add(power); }
             power.Amount += (int)amount;
-            return Task.FromResult<T?>(power);
+            foreach (var listener in applier.Powers.ToArray())
+                await listener.AfterPowerAmountChanged(context, power, amount, applier, source);
+            return power;
         }
         public static Task Decrement(PowerModel power)
         {
@@ -257,6 +270,12 @@ namespace MegaCrit.Sts2.Core.Commands
             PowerCmd.Events.Add("Block");
             return Task.CompletedTask;
         }
+        public static Task GainBlock(Creature creature, decimal amount, ValueProps.ValueProp props, Models.CardModel? source, bool fast = false)
+        {
+            creature.Block += amount;
+            PowerCmd.Events.Add("Block");
+            return Task.CompletedTask;
+        }
         public static async Task Damage(PlayerChoiceContext context, IEnumerable<Creature> targets, decimal amount,
             ValueProps.ValueProp props, Creature dealer)
         {
@@ -271,7 +290,8 @@ namespace MegaCrit.Sts2.Core.Commands
     }
 }
 
-namespace MegaCrit.Sts2.Core.Rooms { public class CombatRoom { } }
+namespace MegaCrit.Sts2.Core.Rooms { public class CombatRoom { } public enum RoomType { Monster, Elite, Boss } }
+namespace MegaCrit.Sts2.Core.Combat { public class Encounter { public Rooms.RoomType RoomType { get; set; } } }
 namespace MegaCrit.Sts2.Core.Localization.DynamicVars
 {
     public class DynamicVar(string name, decimal value)
@@ -281,8 +301,8 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
         public int IntValue => (int)BaseValue;
         public void UpgradeValueBy(decimal value) => BaseValue += value;
     }
-    public class DamageVar(decimal value, ValueProps.ValueProp props) : DynamicVar("Damage", value) { }
-    public class BlockVar(decimal value, ValueProps.ValueProp props) : DynamicVar("Block", value) { }
+    public class DamageVar : DynamicVar { public DamageVar(decimal value, ValueProps.ValueProp props) : base("Damage", value) { } public DamageVar(string name, decimal value, ValueProps.ValueProp props) : base(name, value) { } }
+    public class BlockVar : DynamicVar { public BlockVar(decimal value, ValueProps.ValueProp props) : base("Block", value) { } public BlockVar(string name, decimal value, ValueProps.ValueProp props) : base(name, value) { } }
     public class ExtraDamageVar(decimal value) : DynamicVar("ExtraDamage", value) { }
     public class GoldVar(decimal value) : DynamicVar("Gold", value) { }
     public class HealVar(decimal value) : DynamicVar("Heal", value) { }
@@ -306,7 +326,7 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
 }
 namespace MegaCrit.Sts2.Core.Combat
 {
-    public class HistoryData { public List<HistoryEntry> CardPlaysFinished { get; } = []; }
+    public class HistoryData { public List<History.Entries.CardPlayFinishedEntry> CardPlaysFinished { get; } = []; }
     public class HistoryEntry(Entities.Cards.CardPlay play, CombatState combat)
     {
         public Entities.Cards.CardPlay CardPlay => play;
@@ -316,6 +336,7 @@ namespace MegaCrit.Sts2.Core.Combat
 }
 namespace MegaCrit.Sts2.Core.Combat.History.Entries
 {
+    public class CardPlayFinishedEntry(Entities.Cards.CardPlay play, CombatState combat) : Combat.HistoryEntry(play, combat) { }
     public static class HistoryExtensions
     {
         public static bool HappenedThisTurn(this Combat.HistoryEntry entry, Combat.CombatState? combat) =>
@@ -380,13 +401,25 @@ namespace MegaCrit.Sts2.Core.Commands
         public AttackBuilder FromCard(CardModel card) { _card = card; return this; }
         public AttackBuilder Targeting(Creature target) { _targets = [target]; return this; }
         public AttackBuilder TargetingAllOpponents(Combat.CombatState combat) { _targets = combat.HittableEnemies.ToArray(); return this; }
-        public AttackBuilder WithHitFx(string fx, string? other = null, string? sound = null) => this;
+        public AttackBuilder WithHitFx(string? fx, string? other = null, string? sound = null) => this;
+        public AttackBuilder WithNoAttackerAnim() => this;
         public AttackBuilder WithHitCount(int hits) { _hits = hits; return this; }
         public async Task Execute(PlayerChoiceContext context)
         {
             for (var i = 0; i < _hits; i++)
                 await CreatureCmd.Damage(context, _targets, amount, ValueProps.ValueProp.Move, _card.Owner.Creature);
         }
+    }
+}
+
+namespace IsekaiHero.IsekaiHeroCode.Vfx
+{
+    public class AtomicVfx
+    {
+        public static readonly List<string> Events = [];
+        public static Task<AtomicVfx?> Charge(MegaCrit.Sts2.Core.Entities.Creatures.Creature caster, bool replay)
+        { Events.Add(replay ? "CompactCharge" : "Charge"); return Task.FromResult<AtomicVfx?>(new()); }
+        public void Detonate() => Events.Add("Detonate");
     }
 }
 

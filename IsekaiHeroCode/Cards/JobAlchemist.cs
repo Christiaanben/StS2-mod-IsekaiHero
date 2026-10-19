@@ -7,19 +7,23 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class JobAlchemist() : IsekaiHeroCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<VigorPower>()];
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Amount", 4m)
+        new DynamicVar("Amount", 3m)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
         "Job: Alchemist",
-        "# The first time each turn you apply a debuff, gain !Amount! Block and your next Attack against that enemy deals !Amount! more damage.");
+        "# The first time each turn you apply a debuff to an enemy, gain !Amount! Block and !Amount! Vigor.");
 
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)

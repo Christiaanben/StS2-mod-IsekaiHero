@@ -9,11 +9,11 @@ using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class Negotiation() : IsekaiHeroCard(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class Negotiation() : IsekaiHeroCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<WeakPower>(2m),
+        new PowerVar<WeakPower>(1m),
         new DynamicVar("Exp", 1m)
     ];
 
@@ -39,6 +39,5 @@ public sealed class Negotiation() : IsekaiHeroCard(1, CardType.Skill, CardRarity
     protected override void OnUpgrade()
     {
         DynamicVars.Weak.UpgradeValueBy(1m);
-        DynamicVars["Exp"].UpgradeValueBy(1m);
     }
 }

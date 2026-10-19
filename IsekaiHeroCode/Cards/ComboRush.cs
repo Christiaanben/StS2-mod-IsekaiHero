@@ -10,28 +10,29 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class ComboRush() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+// Keep the model ID and portrait paths for existing saves.
+public sealed class ComboRush() : IsekaiHeroCard(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
-    private const int RequiredLevel = 4;
+    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
     public override bool HasConditionalEffects => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(4m, ValueProp.Move),
+        new DamageVar(3m, ValueProp.Move),
         new RepeatVar(2)
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
-        "Combo Rush",
-        "# Deal !Damage! damage twice.\nIf Level 4+, hit a third time.");
+        "Breakthrough Strike",
+        "# Deal !Damage! damage twice.\nIf you Leveled Up this turn, hit a third time.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
     {
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var hitCount = DynamicVars.Repeat.IntValue;
-        if (IsConditionalEffectActive(LevelPower.GetLevel(Owner.Creature) >= RequiredLevel))
+        if (IsConditionalEffectActive(LevelPower.LeveledUpThisTurn(Owner.Creature)))
             hitCount++;
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
