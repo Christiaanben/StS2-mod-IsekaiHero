@@ -4,6 +4,7 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+- Fixed Atomic's animation failing inside the game with a generated Godot callback exception. Replaced the custom C# node with native shapes/tweens and added automatic engine playback checks.
 - Added Ascendant Form, a 3-cost rare Power with two free Exploit bypasses per turn (three upgraded), original card art, and a remaining-use icon.
 - Tutorial Sword is now Tutorial Strike and supports Strike Dummy. Combo Rush is now the zero-cost Breakthrough Strike: 3 damage twice (4 upgraded), with a third hit after leveling this turn; it also supports Strike Dummy. Existing saves and art are preserved.
 - Alchemist now grants 3 Block and 3 Vigor (5 each upgraded) on the first enemy debuff each turn, replacing its hidden target-specific damage. Its existing Slime potion-making art is preserved.

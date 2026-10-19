@@ -459,7 +459,7 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 
 Every resolved play gets a brief in-battle sequence: violet motes gather into a halo → “I / AM / ATOMIC” pulses → one violet-white expanding ring and deep impact → drifting ash. Match the game's illustrated effects and keep the UI readable. [Rendered preview](animations/i-am-atomic.gif). Target ~1.4 seconds; use ~0.45 seconds for fast mode and repeated plays. Reduced effects removes shake and flashes.
 
-Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per play, not per enemy. Keep existing card art. Production VFX use native Godot drawing; no camera/audio state is retained. Reduced effects follows disabled text effects or screenshake. In-game visual/co-op acceptance remains pending.
+Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per play, not per enemy. Keep existing card art. Production VFX use native shapes/tweens, avoiding the custom C# callback failure observed in-game; no camera/audio state is retained. Reduced effects follows disabled text effects or screenshake. In-game visual/co-op acceptance remains pending.
 
 ## 12. Implementation roadmap and definition of done
 
@@ -467,7 +467,7 @@ Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per pla
 - [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
 - [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate stat scaling and milestone energy; independently granted Vigor still needs multi-hit and separate-command checks.
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
-- [x] **Phase 2b — v3.3:** four card revisions, Ascendant Form with new art/icon, Exploit resolver hardening, and Atomic animation implemented. Original save IDs and existing art retained. Build and 273 headless behavior checks pass; in-game acceptance remains §9.
+- [x] **Phase 2b — v3.3:** four card revisions, Ascendant Form with new art/icon, Exploit resolver hardening, and Atomic animation implemented. Original save IDs and existing art retained. Build, 273 behavior checks, and 6 Godot engine checks pass; in-game acceptance remains §9.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
 - [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
 - [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.
