@@ -1,8 +1,0 @@
-config_version=5
-[application]
-config/name="Atomic VFX Tests"
-run/main_scene="res://RuntimeTests.tscn"
-[dotnet]
-project/assembly_name="AtomicVfxTests"
-[rendering]
-renderer/rendering_method="gl_compatibility"

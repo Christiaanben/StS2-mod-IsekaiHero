@@ -46,7 +46,7 @@ namespace MegaCrit.Sts2.Core.Entities.Relics
 namespace MegaCrit.Sts2.Core.Entities.Cards
 {
     public enum CardType { Skill, Attack, Power }
-    public enum CardRarity { Basic, Common, Uncommon, Rare }
+    public enum CardRarity { Common, Uncommon, Rare }
     public enum TargetType { None, AnyEnemy, AllEnemies, Self }
     public enum CardTag { Strike }
     public enum CardKeyword { Retain, Exhaust }
@@ -74,7 +74,6 @@ namespace MegaCrit.Sts2.Core.Combat
     {
         public int RoundNumber { get; set; } = 1;
         public CombatSide CurrentSide { get; set; }
-        public Encounter? Encounter { get; set; }
         public List<MegaCrit.Sts2.Core.Entities.Creatures.Creature> Enemies { get; } = [];
         public IEnumerable<MegaCrit.Sts2.Core.Entities.Creatures.Creature> HittableEnemies => Enemies.Where(x => !x.IsDead);
     }
@@ -114,7 +113,7 @@ namespace MegaCrit.Sts2.Core.Entities.Players
 }
 namespace MegaCrit.Sts2.Core.Entities.Creatures
 {
-    public class Monster { public bool IntendsToAttack; public MegaCrit.Sts2.Core.Combat.CombatState CombatState { get; set; } = new(); }
+    public class Monster { public bool IntendsToAttack; }
     public class Creature
     {
         public Players.Player? Player { get; init; }
@@ -293,8 +292,7 @@ namespace MegaCrit.Sts2.Core.Commands
     }
 }
 
-namespace MegaCrit.Sts2.Core.Rooms { public class CombatRoom { } public enum RoomType { Monster, Elite, Boss } }
-namespace MegaCrit.Sts2.Core.Combat { public class Encounter { public Rooms.RoomType RoomType { get; set; } } }
+namespace MegaCrit.Sts2.Core.Rooms { public class CombatRoom { } }
 namespace MegaCrit.Sts2.Core.Localization.DynamicVars
 {
     public class DynamicVar(string name, decimal value)
@@ -304,8 +302,8 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
         public int IntValue => (int)BaseValue;
         public void UpgradeValueBy(decimal value) => BaseValue += value;
     }
-    public class DamageVar : DynamicVar { public DamageVar(decimal value, ValueProps.ValueProp props) : base("Damage", value) { } public DamageVar(string name, decimal value, ValueProps.ValueProp props) : base(name, value) { } }
-    public class BlockVar : DynamicVar { public BlockVar(decimal value, ValueProps.ValueProp props) : base("Block", value) { } public BlockVar(string name, decimal value, ValueProps.ValueProp props) : base(name, value) { } }
+    public class DamageVar(decimal value, ValueProps.ValueProp props) : DynamicVar("Damage", value) { }
+    public class BlockVar(decimal value, ValueProps.ValueProp props) : DynamicVar("Block", value) { }
     public class ExtraDamageVar(decimal value) : DynamicVar("ExtraDamage", value) { }
     public class GoldVar(decimal value) : DynamicVar("Gold", value) { }
     public class HealVar(decimal value) : DynamicVar("Heal", value) { }
@@ -331,7 +329,7 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
 }
 namespace MegaCrit.Sts2.Core.Combat
 {
-    public class HistoryData { public List<History.Entries.CardPlayFinishedEntry> CardPlaysFinished { get; } = []; }
+    public class HistoryData { public List<HistoryEntry> CardPlaysFinished { get; } = []; }
     public class HistoryEntry(Entities.Cards.CardPlay play, CombatState combat)
     {
         public Entities.Cards.CardPlay CardPlay => play;
@@ -341,7 +339,6 @@ namespace MegaCrit.Sts2.Core.Combat
 }
 namespace MegaCrit.Sts2.Core.Combat.History.Entries
 {
-    public class CardPlayFinishedEntry(Entities.Cards.CardPlay play, CombatState combat) : Combat.HistoryEntry(play, combat) { }
     public static class HistoryExtensions
     {
         public static bool HappenedThisTurn(this Combat.HistoryEntry entry, Combat.CombatState? combat) =>
@@ -427,13 +424,10 @@ namespace IsekaiHero.IsekaiHeroCode.Vfx
 {
     public class AtomicVfx
     {
-        public static readonly List<string> Events = [];
-        public static Task<AtomicVfx?> Charge(MegaCrit.Sts2.Core.Entities.Creatures.Creature caster, bool replay)
-        { Events.Add(replay ? "CompactCharge" : "Charge"); return Task.FromResult<AtomicVfx?>(new()); }
-        public void Detonate() => Events.Add("Detonate");
+        public static Task<AtomicVfx?> Charge(MegaCrit.Sts2.Core.Entities.Creatures.Creature caster, bool replay) => Task.FromResult<AtomicVfx?>(null);
+        public void Detonate() { }
     }
 }
-
 namespace MegaCrit.Sts2.Core.CardSelection
 {
     public class CardSelectorPrefs(string prompt, int count) { }

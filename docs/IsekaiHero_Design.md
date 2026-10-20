@@ -99,12 +99,6 @@ The goal doc's three pillars survive; they just stop being three separate system
 
 **Condition library:** `Level X+` · `the enemy intends to attack` · `a Quest is in your hand` · `you completed a Quest this turn` · `you Leveled Up this turn` · `first Attack this turn` · `N+ cards played this turn` · `only one enemy remains` · `target at full HP` · `target has a debuff` · `you have Block` · `you played a Skill this turn` · `you played a Power this turn`. Write conditional bonuses as “If X, effect.” Tutorial Strike accepts either having a Job or playing a Power this turn. For targeted intent conditions, “the enemy” means the selected target. Exploit tooltips identify eligible bonuses; not every conditional sentence is an Exploit bonus.
 
-### 3.2.1 Exploit coverage
-
-All 22 implemented on-play conditional cards use the shared resolver and have regression coverage in both upgrade states. Previews no longer record success/spending; stack settlement is limited to once per play. Tutorial Strike recognizes Alchemist as a Job. Permanent rewards, death prevention, recurring Power rules, Quest objectives, and payment/targeting restrictions remain excluded.
-
-The Overkill report exposed the former Fatal exclusion; combat-only Fatal clauses now use the shared resolver. Verify the changed behavior in-game, including natural kills preserving bypasses.
-
 ### 3.3 Quests — complete, hold, or abandon
 
 The installed game has a Quest card type with map/event/rest-site uses. These **combat objectives** are a new system using that type, not an existing colorless combat package.
@@ -309,7 +303,7 @@ These specify execution and verification. They must not be appended to card desc
 | Cards | Implementation contract |
 |---|---|
 | Exploit cards, Atomic, Fast Learner, Privilege | “Trigger an Exploit bonus” is the shared condition-satisfied event in §3.2, whether natural or forced. Repeating the bonus does not trigger it again. Flat bonus damage modifies the existing hit; extra-hit bonuses increase that attack's hit count. |
-| Tutorial Strike, Breakthrough Strike | Preserve Tutorial Sword / Combo Rush save identities. Add native `CardTag.Strike`: Strike Dummy checks the tag, not the name. Debug aliases `TUTORIAL_STRIKE` / `BREAKTHROUGH_STRIKE` (also with `ISEKAIHERO-`) resolve to the saved IDs and autocomplete for `card` / `remove_card`. Verify upgraded/copied cards and every hit. |
+| Tutorial Strike, Breakthrough Strike | Class, file, and both portraits use the displayed names; native Strike tags enable Strike Dummy. The console discovers their new IDs automatically. |
 | Breakthrough Strike | Requires an actual Level Up earlier this turn, or an Exploit bypass. Resolve all hits in one attack command for native Vigor behavior. |
 | Job: Alchemist | First successful owner-applied enemy debuff each turn grants Block and native Vigor. Debuff increases qualify; resistance, removal, and self-debuffs do not. AoE triggers once. Copies add rewards but cannot reopen a spent trigger. Block has no Dexterity scaling; Vigor follows native consumption, with no hidden target bonus. |
 | Ascendant Form | Available immediately; refreshes each owner turn. Use the highest copy allowance (2/3) minus uses spent this turn; copies cannot reset it. Forced successes do not spend stacks or trigger Mana Sense. |
@@ -380,7 +374,7 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 ## 9. Balance and fun acceptance checklist
 
-- [ ] **v3.3 checks:** confirm the reported Exploit case in-game (§3.2.1); verify Strike tags and per-hit relic/Vigor scaling; check Alchemist/Form duplicate limits (§5.6), zero-cost engine loops, and Atomic presentation (§11.1). Compare Form setup cost and free-card picks across different deck plans.
+- [ ] **v3.3 checks:** verify combat-only Fatal bypasses (§3.2); verify Strike tags and per-hit relic/Vigor scaling; check Alchemist/Form duplicate limits (§5.6), zero-cost engine loops, and Atomic presentation (§11.1). Compare Form setup cost and free-card picks across different deck plans.
 - [ ] **Early tempo:** test Farm the Field, Daily Training, existing Power-Up Montage/Level Grinding, and planned Read the Code against real Act 1 hands without rare engines. Track HP lost and actions enabled, not only printed value.
 - [ ] **Progress while useful:** record first useful Level Up, turn 1–3 Levels, Level before lethal, and post-lethal EXP separately. Change generators only after identifying the actual pacing failure; do not automatically raise EXP-per-Level globally.
 - [ ] **Level reward scaling:** verify alternating stats, milestone energy immediately and on subsequent turns, owner isolation, and combat reset. Test multi-hit attacks and Block cards. Independently granted Vigor still needs consumer tests.
@@ -467,7 +461,7 @@ Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per pla
 - [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
 - [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate stat scaling and milestone energy; independently granted Vigor still needs multi-hit and separate-command checks.
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
-- [x] **Phase 2b — v3.3:** four card revisions, Ascendant Form with new art/icon, Exploit resolver hardening, and Atomic animation implemented. Original save IDs and existing art retained. Build, 326 behavior checks, and 6 Godot engine checks pass; in-game acceptance remains §9.
+- [x] **Phase 2b — v3.3:** card revisions, Ascendant Form art/icon, combat-only Fatal bypasses, and Atomic animation implemented. Build and focused regressions pass; Atomic and Exploit behavior confirmed in playtests.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
 - [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
 - [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.

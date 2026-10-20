@@ -10,8 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-// Keep the model ID and portrait paths for existing saves.
-public sealed class ComboRush() : IsekaiHeroCard(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public sealed class BreakthroughStrike() : IsekaiHeroCard(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 

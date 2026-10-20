@@ -302,7 +302,6 @@ Test("non-player creatures receive stats without energy", async () =>
 });
 
 tests.AddRange(CardRevisionTests.All());
-tests.AddRange(PlaytestRevisionTests.All());
 var failed = 0;
 foreach (var (name, body) in tests)
 {

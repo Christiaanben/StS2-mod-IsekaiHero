@@ -11,23 +11,11 @@
     <Compile Include="../../IsekaiHeroCode/Cards/MobHunt.cs" Link="Production/MobHunt.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/LastHitBonus.cs" Link="Production/LastHitBonus.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/TruckKun.cs" Link="Production/TruckKun.cs" />
-    <Compile Include="../../IsekaiHeroCode/Debug/CardConsoleAliases.cs" Link="Production/CardConsoleAliases.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/AscendantForm.cs" Link="Production/AscendantForm.cs" />
     <Compile Include="../../IsekaiHeroCode/Powers/AscendantFormPower.cs" Link="Production/AscendantFormPower.cs" />
     <Compile Include="../../IsekaiHeroCode/Powers/AlchemistPower.cs" Link="Production/AlchemistPower.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/JobAlchemist.cs" Link="Production/JobAlchemist.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/Negotiation.cs" Link="Production/Negotiation.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/AntiBossArt.cs" Link="Production/AntiBossArt.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/BarrierMagic.cs" Link="Production/BarrierMagic.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/BeginnerMagic.cs" Link="Production/BeginnerMagic.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/DangerSense.cs" Link="Production/DangerSense.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/EmergencyDodge.cs" Link="Production/EmergencyDodge.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/Duel.cs" Link="Production/Duel.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/Megiddo.cs" Link="Production/Megiddo.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/RaidOpener.cs" Link="Production/RaidOpener.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/StealTechnique.cs" Link="Production/StealTechnique.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/TrainingArc.cs" Link="Production/TrainingArc.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/TwinBlades.cs" Link="Production/TwinBlades.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/BeginnersLuckCharm.cs" Link="Production/BeginnersLuckCharm.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/OpSmartphone.cs" Link="Production/OpSmartphone.cs" />
     <Compile Include="../../IsekaiHeroCode/Relics/ForbiddenWalkthrough.cs" Link="Production/ForbiddenWalkthrough.cs" />
@@ -45,8 +33,8 @@
     <Compile Include="../../IsekaiHeroCode/Cards/FarmTheField.cs" Link="Production/FarmTheField.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/DailyTraining.cs" Link="Production/DailyTraining.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/DegenerateTactics.cs" Link="Production/DegenerateTactics.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/ComboRush.cs" Link="Production/ComboRush.cs" />
-    <Compile Include="../../IsekaiHeroCode/Cards/TutorialSword.cs" Link="Production/TutorialSword.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/BreakthroughStrike.cs" Link="Production/BreakthroughStrike.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/TutorialStrike.cs" Link="Production/TutorialStrike.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/BossTelegraph.cs" Link="Production/BossTelegraph.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/CounterRead.cs" Link="Production/CounterRead.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/SeenItComing.cs" Link="Production/SeenItComing.cs" />

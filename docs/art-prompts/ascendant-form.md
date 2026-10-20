@@ -1,7 +1,0 @@
-# Ascendant Form
-
-Generated with the built-in imagegen tool using the user's two game-art collages as style references. Existing card art is untouched. Final image is resized to 1000×760 and 250×190; the power icon is a separate native SVG glyph with 256/64 PNG exports.
-
-Final refinement prompt:
-
-> Image 1 is the edit target: simplify and redraw it in the much chunkier game-card illustration style shown in images 2 and 3 (these two are collage STYLE references only, never copy their layouts). Preserve Image 1's office-worker transformation, dark flaring coat, ivory shirt and loose tie, violet energy and shattered cyan status-window halo. The key correction is STYLE: remove fine anime hair strands, anime facial features, glossy rendering, little shards and dense texture. Use MUCH heavier irregular black outlines, a caricatured long angular adult face with blocky cheek/nose shapes, hair as six or seven bold triangular masses, large chunky black coat shapes, cel shading in only two or three values per material. Like the chunky Slay the Spire illustrations in the collage: readable iconic character silhouette, dramatic graphic diagonals, brushy angular color blocks. Keep the large half-body silhouette with hands open and broken halo behind head. Reduce shards to about 8 large graphic angular shapes. No collage, no grid, no text, no card border. Produce one landscape 1000:760 card art composition.
