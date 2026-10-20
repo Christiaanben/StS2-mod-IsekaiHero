@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Extensions;
+using IsekaiHero.IsekaiHeroCode.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -13,6 +14,7 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
@@ -23,6 +25,7 @@ public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRari
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.Static(StaticHoverTip.Fatal),
+        HoverTipFactory.FromPower<ExploitPower>(),
         EnergyHoverTip
     ];
 
@@ -41,7 +44,7 @@ public sealed class LastHitBonus() : IsekaiHeroCard(1, CardType.Attack, CardRari
 
         var killedTarget = shouldTriggerFatal &&
                            attack.Results.SelectMany(results => results).Any(result => result.WasTargetKilled);
-        if (!killedTarget)
+        if (!IsConditionalEffectActive(killedTarget))
             return;
 
         await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);

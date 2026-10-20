@@ -4,6 +4,8 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+- Exploit can now activate the combat-only Fatal rewards on Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun without a kill. Real kills preserve bypasses; forced rewards never grant kill credit or permanent rewards.
+- Added `TUTORIAL_STRIKE` and `BREAKTHROUGH_STRIKE` debug aliases and autocomplete for card spawning/removal, preserving their original save IDs.
 - Fixed Atomic's animation failing inside the game with a generated Godot callback exception. Replaced the custom C# node with native shapes/tweens and added automatic engine playback checks.
 - Added Ascendant Form, a 3-cost rare Power with two free Exploit bypasses per turn (three upgraded), original card art, and a remaining-use icon.
 - Tutorial Sword is now Tutorial Strike and supports Strike Dummy. Combo Rush is now the zero-cost Breakthrough Strike: 3 damage twice (4 upgraded), with a third hit after leveling this turn; it also supports Strike Dummy. Existing saves and art are preserved.

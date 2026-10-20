@@ -39,6 +39,10 @@ static class PlaytestRevisionTests
     }
     static (Func<IsekaiHeroCard> Make, Action<Player, bool> Verify)[] ConditionalCards =>
     [
+        (() => new Overkill(), (p,u) => Equal(u ? 10 : 8, TotalExp(p))),
+        (() => new MobHunt(), (p,u) => Equal(u ? 6 : 4, TotalExp(p))),
+        (() => new LastHitBonus(), (p,u) => { Equal(u ? 2 : 1, CardPileCmd.Drawn); Equal(1m, p.Energy); }),
+        (() => new TruckKun(), (p,u) => { Equal(u ? 1 : 0, CardPileCmd.Drawn); Equal(1m, p.Energy); }),
         (() => new DangerSense(), (p,u) => Equal(u ? 10m : 8m, p.Creature.Block)),
         (() => new UnderdogSpirit(), (p,u) => Equal(u ? 15m : 12m, CreatureCmd.Hits.Last().Damage)),
         (() => new BeginnerMagic(), (p,u) => Equal(u ? 12m : 9m, CreatureCmd.Hits.Last().Damage)),
@@ -59,8 +63,34 @@ static class PlaytestRevisionTests
         (() => new TrainingArc(), (p,u) => Equal(4m, p.Creature.Block))
     ];
 
+    static int TotalExp(Player p)
+    {
+        var power = p.Creature.Powers.OfType<LevelPower>().Single();
+        return (power.Amount - 1) * LevelPower.ExpPerLevel + power.Experience;
+    }
+
     public static IEnumerable<(string, Func<Task>)> All()
     {
+        yield return ("debug aliases resolve new Strike names without changing saved IDs or pile arguments", () =>
+        {
+            var input = new[] { "tutorial_strike", "hand" };
+            var resolved = IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.Resolve(input);
+            Equal("ISEKAIHERO-TUTORIAL_SWORD", resolved[0]); Equal("hand", resolved[1]);
+            Equal("tutorial_strike", input[0]);
+            Equal("ISEKAIHERO-COMBO_RUSH", IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.Resolve(["ISEKAIHERO-breakthrough_strike"])[0]);
+            Equal("ISEKAIHERO-TUTORIAL_SWORD", IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.Resolve(["ISEKAIHERO-TUTORIAL_SWORD"])[0]);
+            Equal(0, IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.Resolve([]).Length);
+            return Task.CompletedTask;
+        });
+        yield return ("debug alias completion accepts new names and preserves the command prefix", () =>
+        {
+            var matches = IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.Complete("tutorial_str").ToList();
+            Equal("TUTORIAL_STRIKE", matches.Single());
+            Equal("card TUTORIAL_STRIKE ", IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.CommonCompletion("card ", matches));
+            Equal("card ISEKAIHERO-TUTORIAL_S", IsekaiHero.IsekaiHeroCode.Debug.CardConsoleAliases.CommonCompletion("card ",
+                ["ISEKAIHERO-TUTORIAL_SWORD", "ISEKAIHERO-TUTORIAL_STRIKE"]));
+            return Task.CompletedTask;
+        });
         foreach (var (make, verify) in ConditionalCards)
         foreach (var upgraded in new[] { false, true })
         foreach (var source in new[] { "none", "stack", "Override", "luck", "Form" })
@@ -82,6 +112,13 @@ static class PlaytestRevisionTests
                 {
                     Equal(source == "stack" ? 1 : 2, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
                     verify(p, upgraded);
+                    if (card is Overkill or MobHunt or LastHitBonus or TruckKun)
+                        Equal(true, p.Creature.CombatState.Enemies.All(enemy => !enemy.IsDead));
+                }
+                else if (card is Overkill or MobHunt or LastHitBonus or TruckKun)
+                {
+                    Equal(false, p.Creature.Powers.OfType<LevelPower>().Any());
+                    Equal(0, CardPileCmd.Drawn); Equal(0m, p.Energy);
                 }
             });
         }
@@ -103,6 +140,8 @@ static class PlaytestRevisionTests
                 var charm = new BeginnersLuckCharm { Owner = p }; p.Relics.Add(charm);
                 await Play(new AscendantForm { Owner = p });
                 var card = make(); card.Owner = p; if (upgraded) card.Upgrade();
+                if (card is Overkill or MobHunt or LastHitBonus or TruckKun)
+                    CreatureCmd.OnDamage = hit => { hit.Target.IsDead = true; return Task.CompletedTask; };
                 await Play(card, enemy);
                 Equal(true, card.DidTriggerConditionalEffectThisPlay());
                 Equal(false, card.DidConsumeExploitThisPlay()); Equal(0, charm.Flashes);
@@ -124,6 +163,37 @@ static class PlaytestRevisionTests
             await alchemist.AfterPlayerTurnStart(Context, p);
             await Play(new Negotiation { Owner = p }, enemy);
             Equal(11m, p.Creature.Block); Equal(11, p.Creature.Powers.OfType<VigorPower>().Single().Amount);
+        });
+        yield return ("Overkill bypass gives EXP and Atomic discount without killing or earning death credit", async () =>
+        {
+            var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];
+            var card = new Overkill { Owner = p }; var atomic = new IAmAtomic { Owner = p };
+            await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 2, p.Creature, null);
+            await Play(card, enemy);
+            Equal(8, TotalExp(p)); Equal(1, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
+            Equal(false, enemy.IsDead); Equal(49, enemy.CurrentHp);
+            await atomic.AfterCardPlayed(Context, new CardPlay(card)); Equal(-1, atomic.EnergyCost.Offset);
+        });
+        yield return ("Truck-kun multi-kill pays once and preserves Exploit", async () =>
+        {
+            var p = Player(); var card = new TruckKun { Owner = p }; card.Upgrade();
+            await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 2, p.Creature, null);
+            CreatureCmd.OnDamage = hit => { hit.Target.IsDead = true; return Task.CompletedTask; };
+            await Play(card);
+            Equal(1m, p.Energy); Equal(1, CardPileCmd.Drawn);
+            Equal(2, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
+            Equal(false, card.DidConsumeExploitThisPlay());
+        });
+        yield return ("Fatal eligibility restrictions require a bypass when a kill is ineligible", async () =>
+        {
+            var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];
+            enemy.Powers.Add(new NoFatalPower { Owner = enemy });
+            var card = new Overkill { Owner = p };
+            CreatureCmd.OnDamage = hit => { hit.Target.IsDead = true; return Task.CompletedTask; };
+            await Play(card, enemy); Equal(false, card.DidTriggerConditionalEffectThisPlay());
+            enemy.IsDead = false;
+            await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 2, p.Creature, null);
+            await Play(card, enemy); Equal(8, TotalExp(p)); Equal(true, card.DidConsumeExploitThisPlay());
         });
         yield return ("Alchemist ignores resisted, removed, self and ally debuffs", async () =>
         {
@@ -198,4 +268,5 @@ static class PlaytestRevisionTests
             Equal("CompactCharge,Detonate", string.Join(',', events));
         });
     }
+    sealed class NoFatalPower : PowerModel { public override bool ShouldOwnerDeathTriggerFatal() => false; }
 }

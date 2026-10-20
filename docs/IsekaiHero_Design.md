@@ -75,7 +75,7 @@ The goal doc's three pillars survive; they just stop being three separate system
 - Cards check current Level, scale with Level, or reward **leveling this turn**. These are deliberately different roles.
 - At the cap, EXP remains banked but grants no further Level Ups or stat/energy rewards. Maintain a separate **total EXP gained this combat** counter, including starting EXP and overflow, for Season Finale. Direct Level Ups do not add to this total and preserve the EXP remainder.
 - A direct Level Up cannot exceed the normal cap unless it has been removed. Break the Level Cap first installs its rewards, then removes the cap, then processes banked EXP in four-point increments. Each actual increase fires one Level-Up event; no retroactive rewards for earlier increases.
-- The System grants kill EXP for actual non-minion enemy deaths, regardless of who killed them. Card Fatal rewards require that card's eligible kill; repeated death-prevention notifications do not count. Once combat ends, do not begin further draw/damage/Level-trigger chains.
+- The System grants kill EXP for actual non-minion enemy deaths, regardless of who killed them. Natural Fatal rewards require that card's eligible kill; Exploit may force combat-only bonuses without kill credit (§3.2). Repeated death-prevention notifications do not count. Once combat ends, do not begin further draw/damage/Level-trigger chains.
 - Process a Level Up, its stat and immediate milestone energy rewards, then card and relic reactions in deterministic order before the next player action. A death inside a reaction can queue further EXP; it cannot re-credit the same death.
 
 **Pacing targets to test:** record first useful Level Up, Level on turns 1–3, and Level **before lethal**. Hallway Level 3–4, elite 5–6, and dedicated boss 8–10 are provisional developed-deck expectations, not promises for the starter. With no kills, starting EXP plus Grind reaches Level 2 after one Grind, Level 3 after three, and Level 4 after five. Do not tune using post-lethal progress.
@@ -94,16 +94,16 @@ The goal doc's three pillars survive; they just stop being three separate system
 - Emit exactly one **condition-satisfied** event per eligible original card play, whether natural or forced. Track **naturally satisfied**, **forced**, and **stack consumed** separately. Fast Learner and Atomic use satisfied; Mana Sense uses stack consumed.
 - **Privilege repeats only the explicit bonus**, never the base, a replacement, or the condition event. Added-hit bonuses increase the same attack command's hit count; flat damage bonuses modify that command. Repeated draw/Block/EXP applies once more without creating another satisfaction event. Distinct later attack commands, such as Megiddo's AoE after its first hit, do not inherit already-consumed Vigor. Limits are reserved before resolving rewards to prevent re-entry.
 - Healing and other alternative values use base-plus-bonus wording, not “instead,” so repeating the bonus has one meaning. Actual card replays are separate plays and may trigger events again; effect-only repeats are not replays.
-- **Fatal is never an Exploit condition.** No cheat, Override, or forced Quest completion fabricates a kill for Fatal, gold, or permanent-card-growth credit.
+- **Combat-only Fatal bonuses are eligible:** Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun may use the normal bypass sources once per play. Real eligible kills satisfy the clause for free. A bypass grants only the printed combat reward, never a death event, Quest kill progress, kill EXP from The System, Gold, or permanent growth. Audit future Fatal cards individually; permanent rewards remain excluded.
 - Base-game compatibility is future work: audit and tag individual safe cards rather than trying to flip arbitrary conditions. Do not include permanent-reward or eligibility checks.
 
 **Condition library:** `Level X+` · `the enemy intends to attack` · `a Quest is in your hand` · `you completed a Quest this turn` · `you Leveled Up this turn` · `first Attack this turn` · `N+ cards played this turn` · `only one enemy remains` · `target at full HP` · `target has a debuff` · `you have Block` · `you played a Skill this turn` · `you played a Power this turn`. Write conditional bonuses as “If X, effect.” Tutorial Strike accepts either having a Job or playing a Power this turn. For targeted intent conditions, “the enemy” means the selected target. Exploit tooltips identify eligible bonuses; not every conditional sentence is an Exploit bonus.
 
 ### 3.2.1 Exploit coverage
 
-All 18 implemented on-play conditional cards use the shared resolver and have regression coverage in both upgrade states. Previews no longer record success/spending; stack settlement is limited to once per play. Tutorial Strike recognizes Alchemist as a Job. Fatal, death prevention, recurring Power rules, Quest objectives, and payment/targeting restrictions remain excluded.
+All 22 implemented on-play conditional cards use the shared resolver and have regression coverage in both upgrade states. Previews no longer record success/spending; stack settlement is limited to once per play. Tutorial Strike recognizes Alchemist as a Job. Permanent rewards, death prevention, recurring Power rules, Quest objectives, and payment/targeting restrictions remain excluded.
 
-Verify the originally reported missed trigger in-game; no specific failing play was supplied. Automated coverage does not establish that runtime reproduction is resolved.
+The Overkill report exposed the former Fatal exclusion; combat-only Fatal clauses now use the shared resolver. Verify the changed behavior in-game, including natural kills preserving bypasses.
 
 ### 3.3 Quests — complete, hold, or abandon
 
@@ -309,7 +309,7 @@ These specify execution and verification. They must not be appended to card desc
 | Cards | Implementation contract |
 |---|---|
 | Exploit cards, Atomic, Fast Learner, Privilege | “Trigger an Exploit bonus” is the shared condition-satisfied event in §3.2, whether natural or forced. Repeating the bonus does not trigger it again. Flat bonus damage modifies the existing hit; extra-hit bonuses increase that attack's hit count. |
-| Tutorial Strike, Breakthrough Strike | Preserve Tutorial Sword / Combo Rush save identities. Add native `CardTag.Strike`: Strike Dummy checks the tag, not the name. Verify upgraded/copied cards and every hit. |
+| Tutorial Strike, Breakthrough Strike | Preserve Tutorial Sword / Combo Rush save identities. Add native `CardTag.Strike`: Strike Dummy checks the tag, not the name. Debug aliases `TUTORIAL_STRIKE` / `BREAKTHROUGH_STRIKE` (also with `ISEKAIHERO-`) resolve to the saved IDs and autocomplete for `card` / `remove_card`. Verify upgraded/copied cards and every hit. |
 | Breakthrough Strike | Requires an actual Level Up earlier this turn, or an Exploit bypass. Resolve all hits in one attack command for native Vigor behavior. |
 | Job: Alchemist | First successful owner-applied enemy debuff each turn grants Block and native Vigor. Debuff increases qualify; resistance, removal, and self-debuffs do not. AoE triggers once. Copies add rewards but cannot reopen a spent trigger. Block has no Dexterity scaling; Vigor follows native consumption, with no hidden target bonus. |
 | Ascendant Form | Available immediately; refreshes each owner turn. Use the highest copy allowance (2/3) minus uses spent this turn; copies cannot reset it. Forced successes do not spend stacks or trigger Mana Sense. |
@@ -329,7 +329,7 @@ These specify execution and verification. They must not be appended to card desc
 | Party Formation | Choose two different modes, then resolve damage, Block, and EXP in that order for the selected modes. Upgrade changes their numbers, not the number of choices. |
 | Ascendant Form, Break the Level Cap, Guild Master, Privilege | “Does not stack” means another copy cannot increase allowances/multipliers or reset counters. The highest upgraded allowance applies where relevant. Existing §3 event rules still apply. Break the Level Cap's upgrade now reduces cost; it no longer grants Dexterity. |
 | Legend in the Making | With a living Elite/Boss, offer Boss Slayer if eligible alongside up to two ordinary Quests; otherwise offer up to three ordinary Quests. Choice is optional. Block and the ongoing death trigger resolve even if no Quest can be added. This is a special offer pool, not another player rule. |
-| Truck-kun | One payout if this attack kills any eligible non-minion enemy, regardless of the number killed. No Level-Up rewards. Upgrade also draws one card. |
+| Truck-kun | One payout on any eligible kill or a forced Fatal bonus, regardless of the number of targets/kills. No Level-Up rewards. Upgrade also draws one card. |
 | Cleave the Horde | “For each Fatal kill” counts eligible non-minion kills caused by this attack, once per victim. |
 | Hero's Judgment | Each actual Level Up while held adds 4/6 damage before later relic reactions. Preserve earned damage through plays/discards for this combat, reset between combats, and display current damage. Upgrading changes future growth, not earlier gains. No Exploit condition. |
 | EXPLOSION! | Resolve AoE damage, then request the owner's normal turn end if combat is still active and the owner alive. No fatigue Power or next-turn Attack restriction. |
@@ -401,7 +401,7 @@ Jobs remain three uncommon Powers: Alchemist favors debuffs, Spellblade favors S
 
 - EXP/stat growth, independently granted Vigor, filtering, Weak, copying, and bounded economy can all be useful outside this class. They must be tested, not described as automatically safe.
 - Naturally satisfied conditions still work outside this character; unmet clauses can use audited Exploit compatibility. A card without relevant support may be a poor draft despite having a base effect.
-- Curate base-game conditional compatibility individually. Exclude Fatal, permanent rewards, and playability restrictions; do not make an illegal target or unplayable card legal via Exploit.
+- Curate base-game conditional compatibility individually. Exclude permanent rewards and playability restrictions; audit combat-only Fatal clauses individually; do not make an illegal target or unplayable card legal via Exploit.
 - The System sees actual eligible enemy deaths from any player; individual Fatal rewards belong to the killing card. Quest counters are owner-local. Test simultaneous deaths, damage-over-time kills, revival, shared enemies, and prevented deaths.
 - Validate external draw, cost reduction, duplication, and multi-hit modifiers against §9 limits. Quest completion never fabricates Fatal credit, and copies never reset economy limits.
 
@@ -467,7 +467,7 @@ Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per pla
 - [x] **Existing core:** LevelPower, The System, Grind, Danger Sense, Exploit stacks, and per-card Override exist. This check records code presence, not acceptance of all v3 semantics.
 - [ ] **Phase 1 — Engine contracts:** total EXP counter, overflow/direct-Level semantics, deterministic triggers, source-aware bypass precedence, natural/forced/consumed events, and bonus-only repeat rules (§3). Add damage/resource previews. Validate stat scaling and milestone energy; independently granted Vigor still needs multi-hit and separate-command checks.
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
-- [x] **Phase 2b — v3.3:** four card revisions, Ascendant Form with new art/icon, Exploit resolver hardening, and Atomic animation implemented. Original save IDs and existing art retained. Build, 273 behavior checks, and 6 Godot engine checks pass; in-game acceptance remains §9.
+- [x] **Phase 2b — v3.3:** four card revisions, Ascendant Form with new art/icon, Exploit resolver hardening, and Atomic animation implemented. Original save IDs and existing art retained. Build, 326 behavior checks, and 6 Godot engine checks pass; in-game acceptance remains §9.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
 - [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
 - [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.
