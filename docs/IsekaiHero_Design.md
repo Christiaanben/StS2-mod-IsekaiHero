@@ -461,8 +461,8 @@ Keep the anonymous office-worker adventurer consistent: messy dark hair, cream r
 
 | Status | Asset | Implementation / acceptance |
 | --- | --- | --- |
-| [x] | Rest-site character | Original seated hero/log sprite, subtle native breathing; replaces visible Ironclad art while retaining rest-site controls and thought bubbles. Single-player in-game acceptance pending. |
-| [x] | Shop character | Original standing, thoughtful hero sprite, subtle breathing and a shop death reaction; replaces visible Ironclad art. Single-player in-game acceptance pending. |
+| [x] | Rest-site character | Original seated hero sprite, with no baked-in log (the backdrop supplies it), subtle native breathing; replaces visible Ironclad art while retaining rest-site controls and thought bubbles. Single-player in-game acceptance pending. |
+| [x] | Shop character | Original right-facing standing, thoughtful hero sprite, subtle breathing and a shop death reaction; replaces visible Ironclad art. Single-player in-game acceptance pending. |
 | [ ] | Multiplayer pointing hand | Still inherits Ironclad; create a matching gloved hand. Multiplayer testing deferred until available. |
 | [ ] | Multiplayer rock hand | Still inherits Ironclad; multiplayer testing deferred. |
 | [ ] | Multiplayer paper hand | Still inherits Ironclad; multiplayer testing deferred. |

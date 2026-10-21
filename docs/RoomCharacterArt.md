@@ -4,9 +4,9 @@ The two original sprites follow the established anonymous office-worker hero: cr
 
 ## Assets and prompts
 
-- `IsekaiHero/images/character/hero_rest_site_v1.png`: 1254 x 1254 RGBA; seated hero on a log, facing right, sword safely lowered.
-- `IsekaiHero/images/character/hero_shop_v1.png`: 1024 x 1536 RGBA; thoughtful standing hero facing left toward the merchant, sword lowered and a small cyan system panel.
-- Both were generated/refined with the built-in imagegen tool and copied without raster post-processing. Generated alpha is preserved. Discarded atmospheric shop variants are not shipped.
+- `IsekaiHero/images/character/hero_rest_site_v1.png`: 1254 x 1254 RGBA; seated hero facing right, sword safely lowered; no seat/log is baked into the sprite because the room backdrop already supplies one.
+- `IsekaiHero/images/character/hero_shop_v1.png`: 1024 x 1536 RGBA; thoughtful standing hero with sword lowered and a small cyan system panel. The source faces left; Sprite2D.FlipH makes it face right in the shop.
+- Both were generated with the built-in imagegen tool and copied without raster post-processing. The rest sprite uses the original generation before the discarded log refinement. Generated alpha is preserved. Discarded atmospheric shop variants are not shipped.
 - The exact generation/refinement prompts for the shipped images are in [room-character-art.json](art-prompts/room-character-art.json).
 - [Native Godot preview](animations/room-character-art.png) shows the packaged textures on plain backgrounds. It is an asset/placement preview, not an in-game capture.
 
@@ -18,7 +18,7 @@ The inherited room scenes still load; their top-level Spine artwork is hidden on
 
 Sprites use native nodes and bound breathing tweens, with no new C# Godot callbacks. Shop `die` requests also slump/dim the replacement art. The character preloads both textures. This avoids adding unsupported `.tscn` files to the quick PCK packer.
 
-The raw image scales are 0.56 for the camp and 0.30 for the shop. Camp art uses the inherited scene's mid-body origin and 0.760006 root scale; shop art uses a feet origin. The original camp uses a 421 x 683 local hitbox; the new 530 x 660 bounds include the seated cape and log.
+The raw image scales are 0.56 for the camp and 0.30 for the shop. Camp art uses the inherited scene's mid-body origin and 0.760006 root scale; shop art uses a feet origin. The original camp uses a 421 x 683 local hitbox; the new 530 x 660 bounds include the seated cape and boots.
 
 ## Verification
 

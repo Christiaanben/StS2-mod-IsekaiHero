@@ -33,6 +33,7 @@ func verify():
         var sprite = Sprite2D.new()
         sprite.texture = texture
         sprite.centered = false
+        sprite.flip_h = not rest
         # Same source scale and origin as production, including camp's inherited 0.76 scale.
         var factor = 0.56 * 0.760006 if rest else 0.30
         sprite.scale = Vector2.ONE * factor

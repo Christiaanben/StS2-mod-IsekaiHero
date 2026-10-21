@@ -34,6 +34,7 @@ internal static class IsekaiHeroRoomArt
             Name = "Sprite",
             Texture = texture,
             Centered = false,
+            FlipH = !rest, // Shop faces right; seated art already faces right.
             Scale = Vector2.One * factor,
             Position = rest
                 ? new Vector2(-texture.GetWidth() * factor / 2 + 55, -364)
