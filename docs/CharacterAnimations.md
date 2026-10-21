@@ -23,7 +23,7 @@ The combat hero follows the office-worker/system-reader premise in `IsekaiHero_D
 | Dead | 1.2 s | Collapse, hold final pose |
 | Revive | 0.7 s | Rise → Idle |
 
-This is a pose-based set with interpolated movement, scale and rotation, not a Spine skeletal rig or individually drawn in-between frames. The sprite is rendered at 65% atlas resolution, approximately 270 px tall in idle. Pose-specific anchors keep feet on the ground; regions include the cape and spell overhangs. Every animation resets all animated transforms so interrupted actions do not leave stale offsets. Bounds, intent, center, orb and speech anchors satisfy NCreatureVisuals' node contract. Existing character-select, merchant and rest-site placeholders are outside this combat animation pass.
+This is a pose-based set with interpolated movement, scale and rotation, not a Spine skeletal rig or individually drawn in-between frames. The sprite is rendered at 65% atlas resolution, approximately 270 px tall in idle. Pose-specific anchors keep feet on the ground; regions include the cape and spell overhangs. Every animation resets all animated transforms so interrupted actions do not leave stale offsets. Bounds, intent, center, orb and speech anchors satisfy NCreatureVisuals' node contract. The character-select cover and room art are separate passes; see [CharacterSelectArt](CharacterSelectArt.md) and [RoomCharacterArt](RoomCharacterArt.md).
 
 No new Harmony patches are needed. The visual factory avoids `.tscn` files, which the current quick PCK packer does not support; `.tres` and PNG are supported. The character adds its atlas to preloaded asset paths.
 

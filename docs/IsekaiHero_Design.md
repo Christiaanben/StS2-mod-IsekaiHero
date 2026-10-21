@@ -455,6 +455,27 @@ Every resolved play gets a brief in-battle sequence: violet motes gather into a 
 
 Damage lands at detonation; Atomic+ applies Vulnerable first. One effect per play, not per enemy. Keep existing card art. Production VFX use native shapes/tweens, avoiding the custom C# callback failure observed in-game; no camera/audio state is retained. Reduced effects follows disabled text effects or screenshake. In-game visual/co-op acceptance remains pending.
 
+### 11.2 Character-art completion checklist (2026-10-21)
+
+Keep the anonymous office-worker adventurer consistent: messy dark hair, cream rolled-sleeve shirt, purple tie/cape, charcoal trousers, brown gloves/boots and cyan system motifs. Match the supplied Ironclad screenshots' chunky angular silhouettes, broad flat shadows and reduced detail. Screenshots are style/pose references and are not redistributed.
+
+| Status | Asset | Implementation / acceptance |
+| --- | --- | --- |
+| [x] | Rest-site character | Original seated hero/log sprite, subtle native breathing; replaces visible Ironclad art while retaining rest-site controls and thought bubbles. Single-player in-game acceptance pending. |
+| [x] | Shop character | Original standing, thoughtful hero sprite, subtle breathing and a shop death reaction; replaces visible Ironclad art. Single-player in-game acceptance pending. |
+| [ ] | Multiplayer pointing hand | Still inherits Ironclad; create a matching gloved hand. Multiplayer testing deferred until available. |
+| [ ] | Multiplayer rock hand | Still inherits Ironclad; multiplayer testing deferred. |
+| [ ] | Multiplayer paper hand | Still inherits Ironclad; multiplayer testing deferred. |
+| [ ] | Multiplayer scissors hand | Still inherits Ironclad; multiplayer testing deferred. |
+| [ ] | Multiplayer portrait outline | Still inherits Ironclad; needs a silhouette matching hero_headshot_v1.png. Multiplayer testing deferred. |
+| [ ] | Locked selection icon | Template asset remains; create a matching locked silhouette if exposing a locked state. |
+| [ ] | Card-play trail | Still inherits Ironclad; optional cyan/purple visual-identity pass. |
+| [ ] | Selection transition/wipe | Still inherits Ironclad; optional custom transition. |
+
+Already present: six combat poses/seven animations, the active v3 selection cover, the top-bar/run-history headshot, unlocked selection-button artwork and map marker. The old character_icon_char_name.png is an unused template asset; the active headshot is hero_headshot_v1.png. Generic filenames on the updated map/selection assets do not imply missing art.
+
+Room-art assets, integration, generation prompts and verification are documented in [RoomCharacterArt](RoomCharacterArt.md). Implementation checkmarks mean assets and code exist; they do not imply in-game or multiplayer acceptance. Multiplayer assets are deliberately deferred, not counted as tested by single-player checks.
+
 ## 12. Implementation roadmap and definition of done
 
 - [x] **Combat character animations:** original office-worker adventurer art and existing animation work; see [CharacterAnimations](CharacterAnimations.md). Retain assets when revising card effects.

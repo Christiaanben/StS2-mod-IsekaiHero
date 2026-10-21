@@ -35,7 +35,9 @@ public class IsekaiHero : PlaceholderCharacterModel
     private const string EmptyEnergyLayerPath = "res://IsekaiHero/images/charui/energy_empty_layer.png";
 
     protected override IEnumerable<string> ExtraAssetPaths => base.ExtraAssetPaths.Concat(
-        [IsekaiHeroVisuals.AtlasPath, IsekaiHeroSelectArt.TexturePath, EnergyDiamondPath, EmptyEnergyLayerPath]);
+        [IsekaiHeroVisuals.AtlasPath, IsekaiHeroSelectArt.TexturePath, EnergyDiamondPath, EmptyEnergyLayerPath,
+         IsekaiHeroRoomArt.RestTexturePath,
+         IsekaiHeroRoomArt.ShopTexturePath]);
 
     public override IEnumerable<CardModel> StartingDeck => [
         ModelDb.Card<StrikeIsekaiHero>(),
