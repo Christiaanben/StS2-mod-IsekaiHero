@@ -60,7 +60,7 @@ Simple cards are not a defect. Reliable attacks and defensive commons make the i
 
 ### Vigor is much more interesting than the document acknowledges
 
-The installed Vigor implementation adds its amount during an attack and removes the stored amount afterward. With a multi-hit attack implemented as one attack command, it benefits **every hit**. Twin Blades and Combo Rush use exactly that structure. Level-Up Vigor is therefore not simply “two more damage.” [Sources: Vigor](../Scratch/ResearchBalance/sts2/MegaCrit.Sts2.Core.Models.Powers/VigorPower.cs), [Twin Blades implementation](../IsekaiHeroCode/Cards/TwinBlades.cs), [Combo Rush implementation](../IsekaiHeroCode/Cards/ComboRush.cs).
+The installed Vigor implementation adds its amount during an attack and removes the stored amount afterward. With a multi-hit attack implemented as one attack command, it benefits **every hit**. Twin Blades and Combo Rush use exactly that structure. Level-Up Vigor is therefore not simply “two more damage.” [Sources: Vigor](../Scratch/ResearchBalance/sts2/MegaCrit.Sts2.Core.Models.Powers/VigorPower.cs), [Twin Blades implementation](../IsekaiHeroCode/Cards/TwinBlades.cs), [Combo Rush implementation](../IsekaiHeroCode/Cards/BreakthroughStrike.cs).
 
 Illustrative unupgraded outputs, without Strength, Weak, Vulnerable, or other modifiers:
 

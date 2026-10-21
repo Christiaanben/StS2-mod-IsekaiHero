@@ -4,6 +4,14 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+- Exploit can now activate the combat-only Fatal rewards on Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun without a kill. Real kills preserve bypasses; forced rewards never grant kill credit or permanent rewards.
+- Fixed Atomic's animation failing inside the game with a generated Godot callback exception. Replaced the custom C# node with native shapes/tweens and verified playback.
+- Added Ascendant Form, a 3-cost rare Power with two free Exploit bypasses per turn (three upgraded), original card art, and a remaining-use icon.
+- Tutorial Sword is now Tutorial Strike and supports Strike Dummy. Combo Rush is now the zero-cost Breakthrough Strike: 3 damage twice (4 upgraded), with a third hit after leveling this turn; it also supports Strike Dummy. Card classes, files, and portraits now use the new names for native console discovery; internal IDs change accordingly. Existing art is retained.
+- Alchemist now grants 3 Block and 3 Vigor (5 each upgraded) on the first enemy debuff each turn, replacing its hidden target-specific damage. Its existing Slime potion-making art is preserved.
+- Negotiation now costs 0 and applies 1 Weak (2 upgraded), with 1 EXP in both versions.
+- Added a dedicated I Am Atomic charge, declaration, and violet detonation animation, with fast/replay and reduced-effects variants.
+- Fixed Tutorial Strike missing the Alchemist Job, preview checks recording Exploit triggers, and repeated Exploit settlement. Added focused regression checks.
 
 
 

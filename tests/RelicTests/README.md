@@ -19,7 +19,7 @@ In-game smoke checks still required:
 
 ## Card revision coverage
 
-The suite also checks revised values/upgrades, Map Hack Retain and unchanged draw count, System Menu discard selection, the unchanged Level Grinding/Power-Up Montage roles, Shield Bash ordering, selected-target intent, Tutorial Sword's Job/Power alternatives, and Combo Rush's retained Level threshold. Judgment tests cover actual Level Ups, multi-level gains, before-relic ordering, changing hand membership, cap overflow, allies, upgrade growth, and combat cleanup. Rescue tests cover base/upgraded HP and EXP, reservation before reactions, duplicate/reapplied copies, owner isolation, HP caps, and new combats. Atomic tests cover until-played offsets, independent copies, fresh discounts, and unrelated combat modifiers.
+The suite also checks revised values/upgrades, Map Hack Retain and unchanged draw count, System Menu discard selection, the unchanged Level Grinding/Power-Up Montage roles, Shield Bash ordering, selected-target intent, Tutorial Strike's Job/Power alternatives, and Breakthrough Strike's current-turn Level Up condition. Judgment tests cover actual Level Ups, multi-level gains, before-relic ordering, changing hand membership, cap overflow, allies, upgrade growth, and combat cleanup. Rescue tests cover base/upgraded HP and EXP, reservation before reactions, duplicate/reapplied copies, owner isolation, HP caps, and new combats. Atomic tests cover until-played offsets, independent copies, fresh discounts, and unrelated combat modifiers.
 
 The command doubles record EXPLOSION's damage-before-EndTurn order and skip the turn request after lethal combat completion. Actual end-turn discard, Retain presentation, enemy turns, multiplayer synchronization, native cost cleanup dispatch, and death-prevention precedence still require the game. The doubles model these APIs; they do not prove engine dispatch or rendering.
 
@@ -32,3 +32,5 @@ Additional in-game smoke checks:
 - Play EXPLOSION with enemies surviving: confirm ordinary end-turn effects/discard occur once and Attacks work normally next turn. Repeat with lethal damage and in co-op.
 - Trigger Return by Death on a multi-hit, then take another lethal hit. Test upgraded/duplicate copies, a second combat, and Lizard Tail or another late rescue: only one save should fire per lethal event.
 - Discount Atomic, retain or discard/redraw it, play and recover it from Exhaust, and verify fresh discounts and reset without clearing other cost effects. Atomic+ must apply Vulnerable before damage.
+
+The v3.3 checks cover Strike tags, Alchemist Vigor, Form duplicate limits, and combat-only Fatal bypasses without kill credit. Atomic presentation is skipped by the headless boundary; use the [GIF preview](../../docs/animations/i-am-atomic.gif) and in-game playtests.

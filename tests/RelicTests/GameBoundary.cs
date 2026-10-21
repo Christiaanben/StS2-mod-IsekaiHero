@@ -47,7 +47,8 @@ namespace MegaCrit.Sts2.Core.Entities.Cards
 {
     public enum CardType { Skill, Attack, Power }
     public enum CardRarity { Common, Uncommon, Rare }
-    public enum TargetType { None, AnyEnemy, AllEnemies }
+    public enum TargetType { None, AnyEnemy, AllEnemies, Self }
+    public enum CardTag { Strike }
     public enum CardKeyword { Retain, Exhaust }
     public enum PileType { Hand, Discard, Draw, Exhaust }
     public class CardPile
@@ -55,11 +56,12 @@ namespace MegaCrit.Sts2.Core.Entities.Cards
         public List<MegaCrit.Sts2.Core.Models.CardModel> Cards { get; } = [];
         public static CardPile? Get(PileType type, MegaCrit.Sts2.Core.Entities.Players.Player player) => player.Piles[type];
     }
-    public record CardPlay(MegaCrit.Sts2.Core.Models.CardModel Card, MegaCrit.Sts2.Core.Entities.Creatures.Creature? Target = null);
+    public record CardPlay(MegaCrit.Sts2.Core.Models.CardModel Card, MegaCrit.Sts2.Core.Entities.Creatures.Creature? Target = null)
+    { public int PlayIndex { get; init; } }
 }
 namespace MegaCrit.Sts2.Core.Entities.Powers
 {
-    public enum PowerType { Buff }
+    public enum PowerType { Buff, Debuff }
     public enum PowerStackType { Counter, Single }
 }
 namespace MegaCrit.Sts2.Core.GameActions.Multiplayer { public class PlayerChoiceContext { } public class BlockingPlayerChoiceContext : PlayerChoiceContext { } }
@@ -71,6 +73,7 @@ namespace MegaCrit.Sts2.Core.Combat
     public class CombatState : ICombatState
     {
         public int RoundNumber { get; set; } = 1;
+        public CombatSide CurrentSide { get; set; }
         public List<MegaCrit.Sts2.Core.Entities.Creatures.Creature> Enemies { get; } = [];
         public IEnumerable<MegaCrit.Sts2.Core.Entities.Creatures.Creature> HittableEnemies => Enemies.Where(x => !x.IsDead);
     }
@@ -122,6 +125,7 @@ namespace MegaCrit.Sts2.Core.Entities.Creatures
         public int MaxHp = 70;
         public Monster? Monster = new();
         public bool IsDead { get; set; }
+        public bool IsEnemy => Side == MegaCrit.Sts2.Core.Combat.CombatSide.Enemy;
     }
 }
 namespace MegaCrit.Sts2.Core.Models
@@ -152,8 +156,11 @@ namespace MegaCrit.Sts2.Core.Models
         public string SelectionScreenPrompt => "Select a card";
         public bool IsUpgraded { get; private set; }
         public virtual bool GainsBlock => false;
+        protected MegaCrit.Sts2.Core.HoverTips.IHoverTip EnergyHoverTip => MegaCrit.Sts2.Core.HoverTips.HoverTipFactory.ForEnergy(this);
         public virtual IEnumerable<Entities.Cards.CardKeyword> CanonicalKeywords => [];
         public HashSet<Entities.Cards.CardKeyword> Keywords { get; } = [];
+        protected virtual HashSet<Entities.Cards.CardTag> CanonicalTags => [];
+        public HashSet<Entities.Cards.CardTag> Tags => CanonicalTags;
         public void AddKeyword(Entities.Cards.CardKeyword keyword) => Keywords.Add(keyword);
         protected virtual IEnumerable<Localization.DynamicVars.DynamicVar> CanonicalVars => [];
         private Localization.DynamicVars.Vars? _vars;
@@ -170,19 +177,24 @@ namespace MegaCrit.Sts2.Core.Models
         private object? _data;
         public Entities.Creatures.Creature Owner { get; set; } = null!;
         public int Amount { get; set; }
+        public virtual int DisplayAmount => Amount;
         protected virtual IEnumerable<Localization.DynamicVars.DynamicVar> CanonicalVars => [];
         private Localization.DynamicVars.Vars? _vars;
         public Localization.DynamicVars.Vars DynamicVars => _vars ??= new(CanonicalVars);
         public virtual decimal ModifyMaxEnergy(Entities.Players.Player player, decimal amount) => amount;
         public virtual bool ShouldDie(Entities.Creatures.Creature creature) => true;
+        public virtual bool ShouldOwnerDeathTriggerFatal() => true;
         public virtual Task AfterPreventingDeath(Entities.Creatures.Creature creature) => Task.CompletedTask;
+        public virtual Task AfterPlayerTurnStart(GameActions.Multiplayer.PlayerChoiceContext context, Entities.Players.Player player) => Task.CompletedTask;
+        public virtual Task AfterPowerAmountChanged(GameActions.Multiplayer.PlayerChoiceContext context, PowerModel power, decimal amount, Entities.Creatures.Creature? applier, CardModel? source) => Task.CompletedTask;
+        public virtual Entities.Powers.PowerType GetTypeForAmount(decimal amount) => Type;
         public virtual Entities.Powers.PowerType Type => default;
         public virtual Entities.Powers.PowerStackType StackType => default;
         protected virtual object InitInternalData() => new object();
         protected T GetInternalData<T>() => (T)(_data ??= InitInternalData());
     }
 }
-namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class StrengthPower : PowerModel { } public class DexterityPower : PowerModel { } public class WeakPower : PowerModel { } public class VulnerablePower : PowerModel { } }
+namespace MegaCrit.Sts2.Core.Models.Powers { public class VigorPower : PowerModel { } public class StrengthPower : PowerModel { } public class DexterityPower : PowerModel { } public class WeakPower : PowerModel { public override Entities.Powers.PowerType Type => Entities.Powers.PowerType.Debuff; } public class VulnerablePower : PowerModel { public override Entities.Powers.PowerType Type => Entities.Powers.PowerType.Debuff; } }
 namespace IsekaiHero.IsekaiHeroCode.Powers
 {
     public abstract class IsekaiHeroPower : MegaCrit.Sts2.Core.Models.PowerModel { }
@@ -201,9 +213,10 @@ namespace IsekaiHero.IsekaiHeroCode.Relics
 }
 namespace MegaCrit.Sts2.Core.HoverTips
 {
+    public enum StaticHoverTip { Fatal }
     public interface IHoverTip { }
     public class HoverTip(Localization.LocString title, Localization.LocString description) : IHoverTip { }
-    public static class HoverTipFactory { public static IHoverTip ForEnergy(object model) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromKeyword(int keyword) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromPower<T>() => new HoverTip(new("", ""), new("", "")); }
+    public static class HoverTipFactory { public static IHoverTip Static(StaticHoverTip tip) => new HoverTip(new("", ""), new("", "")); public static IHoverTip ForEnergy(object model) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromKeyword(int keyword) => new HoverTip(new("", ""), new("", "")); public static IHoverTip FromPower<T>() => new HoverTip(new("", ""), new("", "")); }
 }
 namespace MegaCrit.Sts2.Core.Localization
 {
@@ -222,14 +235,16 @@ namespace MegaCrit.Sts2.Core.Commands
         {
             foreach (var target in targets) await Apply<T>(context, target, amount, applier, source, silent);
         }
-        public static Task<T?> Apply<T>(PlayerChoiceContext context, Creature target, decimal amount, Creature applier,
+        public static async Task<T?> Apply<T>(PlayerChoiceContext context, Creature target, decimal amount, Creature applier,
             CardModel? source, bool silent = false) where T : PowerModel, new()
         {
             Events.Add(typeof(T).Name);
             var power = target.Powers.OfType<T>().FirstOrDefault();
             if (power == null) { power = new T { Owner = target }; target.Powers.Add(power); }
             power.Amount += (int)amount;
-            return Task.FromResult<T?>(power);
+            foreach (var listener in applier.Powers.ToArray())
+                await listener.AfterPowerAmountChanged(context, power, amount, applier, source);
+            return power;
         }
         public static Task Decrement(PowerModel power)
         {
@@ -254,6 +269,12 @@ namespace MegaCrit.Sts2.Core.Commands
         public static Task GainBlock(Creature creature, Localization.DynamicVars.DynamicVar block, Entities.Cards.CardPlay play)
         {
             creature.Block += block.BaseValue;
+            PowerCmd.Events.Add("Block");
+            return Task.CompletedTask;
+        }
+        public static Task GainBlock(Creature creature, decimal amount, ValueProps.ValueProp props, Models.CardModel? source, bool fast = false)
+        {
+            creature.Block += amount;
             PowerCmd.Events.Add("Block");
             return Task.CompletedTask;
         }
@@ -288,6 +309,7 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
     public class HealVar(decimal value) : DynamicVar("Heal", value) { }
     public class CardsVar(decimal value) : DynamicVar("Cards", value) { }
     public class RepeatVar(decimal value) : DynamicVar("Repeat", value) { }
+    public class EnergyVar(decimal value) : DynamicVar("Energy", value) { }
     public class PowerVar<T>(decimal value) : DynamicVar(typeof(T).Name, value) { }
     public class Vars(IEnumerable<DynamicVar> vars)
     {
@@ -300,6 +322,7 @@ namespace MegaCrit.Sts2.Core.Localization.DynamicVars
         public DynamicVar Heal => this["Heal"];
         public DynamicVar Cards => this["Cards"];
         public DynamicVar Repeat => this["Repeat"];
+        public DynamicVar Energy => this["Energy"];
         public DynamicVar Weak => this["WeakPower"];
         public DynamicVar Vulnerable => this["VulnerablePower"];
     }
@@ -374,22 +397,37 @@ namespace MegaCrit.Sts2.Core.Commands
     }
     public class AttackBuilder(decimal amount)
     {
+        public record Result(Creature Receiver, bool WasTargetKilled);
+        public List<List<Result>> Results { get; } = [];
         private CardModel _card = null!;
         private Creature[] _targets = [];
         private int _hits = 1;
         public AttackBuilder FromCard(CardModel card) { _card = card; return this; }
         public AttackBuilder Targeting(Creature target) { _targets = [target]; return this; }
         public AttackBuilder TargetingAllOpponents(Combat.CombatState combat) { _targets = combat.HittableEnemies.ToArray(); return this; }
-        public AttackBuilder WithHitFx(string fx, string? other = null, string? sound = null) => this;
+        public AttackBuilder WithHitFx(string? fx, string? other = null, string? sound = null) => this;
+        public AttackBuilder WithNoAttackerAnim() => this;
         public AttackBuilder WithHitCount(int hits) { _hits = hits; return this; }
-        public async Task Execute(PlayerChoiceContext context)
+        public async Task<AttackBuilder> Execute(PlayerChoiceContext context)
         {
             for (var i = 0; i < _hits; i++)
+            {
                 await CreatureCmd.Damage(context, _targets, amount, ValueProps.ValueProp.Move, _card.Owner.Creature);
+                Results.Add(_targets.Select(target => new Result(target, target.IsDead)).ToList());
+            }
+            return this;
         }
     }
 }
 
+namespace IsekaiHero.IsekaiHeroCode.Vfx
+{
+    public class AtomicVfx
+    {
+        public static Task<AtomicVfx?> Charge(MegaCrit.Sts2.Core.Entities.Creatures.Creature caster, bool replay) => Task.FromResult<AtomicVfx?>(null);
+        public void Detonate() { }
+    }
+}
 namespace MegaCrit.Sts2.Core.CardSelection
 {
     public class CardSelectorPrefs(string prompt, int count) { }

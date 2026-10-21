@@ -14,6 +14,7 @@ namespace IsekaiHero.IsekaiHeroCode.Cards;
 
 public sealed class MobHunt() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    public override bool HasConditionalEffects => true;
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
@@ -22,7 +23,8 @@ public sealed class MobHunt() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Co
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(StaticHoverTip.Fatal)
+        HoverTipFactory.Static(StaticHoverTip.Fatal),
+        HoverTipFactory.FromPower<ExploitPower>()
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
@@ -42,7 +44,7 @@ public sealed class MobHunt() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Co
 
         var killedTarget = shouldTriggerFatal &&
                            attack.Results.SelectMany(results => results).Any(result => result.WasTargetKilled);
-        if (!killedTarget)
+        if (!IsConditionalEffectActive(killedTarget))
             return;
 
         await LevelPower.GainExp(choiceContext, Owner.Creature, DynamicVars["Exp"].IntValue, this);

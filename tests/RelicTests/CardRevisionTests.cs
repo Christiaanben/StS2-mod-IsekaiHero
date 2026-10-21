@@ -23,7 +23,7 @@ static class CardRevisionTests
     {
         var player = new Player();
         player.Creature.CombatState = new CombatState();
-        player.Creature.CombatState.Enemies.Add(new Creature());
+        player.Creature.CombatState.Enemies.Add(new Creature { Side = CombatSide.Enemy });
         return player;
     }
     static async Task Play(CardModel card, Creature? target = null)
@@ -31,6 +31,8 @@ static class CardRevisionTests
         var play = new CardPlay(card, target);
         await card.BeforeCardPlayed(play);
         await card.Play(Context, play);
+        foreach (var power in card.Owner.Creature.Powers.ToArray())
+            await power.AfterCardPlayed(Context, play);
         await card.AfterCardPlayed(Context, play);
     }
     static async Task<ReturnByDeathPower> Rescue(Player player, bool upgraded = false)
@@ -113,9 +115,9 @@ static class CardRevisionTests
                 await Play(card, attacker); Equal(true, card.DidTriggerConditionalEffectThisPlay());
             }
         });
-        yield return ("Tutorial Sword accepts Job or owner Power this turn", async () =>
+        yield return ("Tutorial Strike accepts Job or owner Power this turn", async () =>
         {
-            var p = Player(); var card = new TutorialSword { Owner = p }; var enemy = p.Creature.CombatState!.Enemies[0];
+            var p = Player(); var card = new TutorialStrike { Owner = p }; var enemy = p.Creature.CombatState!.Enemies[0];
             await Play(card, enemy); Equal(7m, CreatureCmd.Hits.Last().Damage);
             p.Creature.Powers.Add(new JobTestPower()); await Play(card, enemy); Equal(11m, CreatureCmd.Hits.Last().Damage);
             p.Creature.Powers.Clear();
@@ -124,14 +126,19 @@ static class CardRevisionTests
             CombatManager.Instance.History.CardPlaysFinished.Add(new(new CardPlay(new ReturnByDeath { Owner = p }), p.Creature.CombatState));
             await Play(card, enemy); Equal(11m, CreatureCmd.Hits.Last().Damage);
             p.Creature.CombatState.RoundNumber++; await Play(card, enemy); Equal(7m, CreatureCmd.Hits.Last().Damage);
+            await Play(new JobAlchemist { Owner = p }); await Play(card, enemy);
+            Equal(11m, CreatureCmd.Hits.Last().Damage); Equal(true, card.Tags.Contains(CardTag.Strike));
         });
-        yield return ("Combo Rush retains its Level 4 threshold", async () =>
+        yield return ("Breakthrough Strike is free and rewards a Level Up this turn", async () =>
         {
-            var p = Player(); var card = new ComboRush { Owner = p }; var enemy = p.Creature.CombatState!.Enemies[0];
+            var p = Player(); var card = new BreakthroughStrike { Owner = p }; var enemy = p.Creature.CombatState!.Enemies[0];
+            Equal(0, card.BaseCost); Equal(true, card.Tags.Contains(CardTag.Strike));
             await Play(card, enemy); Equal(2, CreatureCmd.Hits.Count);
             await LevelPower.GainExp(Context, p.Creature, 12, null);
             CreatureCmd.Hits.Clear(); card.Upgrade(); await Play(card, enemy);
-            Equal(3, CreatureCmd.Hits.Count); Equal(true, CreatureCmd.Hits.All(h => h.Damage == 5));
+            Equal(3, CreatureCmd.Hits.Count); Equal(true, CreatureCmd.Hits.All(h => h.Damage == 4));
+            p.Creature.CombatState.RoundNumber++;
+            CreatureCmd.Hits.Clear(); await Play(card, enemy); Equal(2, CreatureCmd.Hits.Count);
         });
         yield return ("Judgment grows once per actual level only while held", async () =>
         {
@@ -234,6 +241,61 @@ static class CardRevisionTests
             await Play(allyTrigger, ally.Creature.CombatState!.Enemies[0]); await atomic.AfterCardPlayed(Context, new CardPlay(allyTrigger));
             Equal(-2, atomic.EnergyCost.Offset);
         });
+        yield return ("Alchemist grants visible Vigor once per turn; duplicates increase rewards without rearming", async () =>
+        {
+            var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];
+            var job = new JobAlchemist { Owner = p }; await Play(job);
+            await Play(new Negotiation { Owner = p }, enemy);
+            var alchemist = p.Creature.Powers.OfType<AlchemistPower>().Single();
+            Equal(3m, p.Creature.Block); Equal(3, p.Creature.Powers.OfType<VigorPower>().Single().Amount);
+            job.Upgrade(); await Play(job); await Play(new Negotiation { Owner = p }, enemy);
+            Equal(8, alchemist.Amount); Equal(3m, p.Creature.Block);
+            await alchemist.AfterPlayerTurnStart(Context, p);
+            await Play(new Negotiation { Owner = p }, enemy);
+            Equal(11m, p.Creature.Block); Equal(11, p.Creature.Powers.OfType<VigorPower>().Single().Amount);
+            var negotiation = new Negotiation { Owner = p }; negotiation.Upgrade();
+            Equal(0, negotiation.BaseCost); Equal(1, negotiation.DynamicVars["Exp"].IntValue);
+        });
+        yield return ("Form duplicates preserve spent uses and refresh only on the owner turn", async () =>
+        {
+            var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];
+            var card = new UnderdogSpirit { Owner = p }; var formCard = new AscendantForm { Owner = p };
+            await Play(formCard); var form = p.Creature.Powers.OfType<AscendantFormPower>().Single();
+            await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 3, p.Creature, null);
+            await Play(card, enemy); Equal(1, form.Remaining);
+            await Play(formCard); Equal(1, form.Remaining);
+            formCard.Upgrade(); await Play(formCard); Equal(2, form.Remaining);
+            await Play(card, enemy); await Play(card, enemy); await Play(card, enemy);
+            Equal(2, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
+            await form.AfterPlayerTurnStart(Context, Player()); Equal(0, form.Remaining);
+            await form.AfterPlayerTurnStart(Context, p); Equal(3, form.Remaining);
+        });
+        foreach (var make in new Func<IsekaiHeroCard>[] { () => new Overkill(), () => new MobHunt(), () => new LastHitBonus(), () => new TruckKun() })
+        foreach (var upgraded in new[] { false, true })
+            yield return ($"{make().GetType().Name}{(upgraded ? "+" : "")} bypass rewards without a kill; natural kills preserve stacks", async () =>
+            {
+                var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];
+                var card = make(); card.Owner = p; if (upgraded) card.Upgrade();
+                await Play(card, enemy); Equal(false, card.DidTriggerConditionalEffectThisPlay());
+                await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 2, p.Creature, null);
+                await Play(card, enemy);
+                Equal(false, enemy.IsDead); Equal(1, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
+                if (card is Overkill or MobHunt)
+                {
+                    var level = p.Creature.Powers.OfType<LevelPower>().Single();
+                    Equal(card.DynamicVars["Exp"].IntValue, (level.Amount - 1) * 4 + level.Experience);
+                }
+                else
+                {
+                    Equal(1m, p.Energy);
+                    Equal(card is LastHitBonus ? (upgraded ? 2 : 1) : (upgraded ? 1 : 0), CardPileCmd.Drawn);
+                }
+                var atomic = new IAmAtomic { Owner = p }; await atomic.AfterCardPlayed(Context, new CardPlay(card));
+                Equal(-1, atomic.EnergyCost.Offset);
+                CreatureCmd.OnDamage = hit => { hit.Target.IsDead = true; return Task.CompletedTask; };
+                await Play(card, enemy);
+                Equal(false, card.DidConsumeExploitThisPlay()); Equal(1, p.Creature.Powers.OfType<ExploitPower>().Single().Amount);
+            });
     }
     sealed class JobTestPower : PowerModel { }
 }

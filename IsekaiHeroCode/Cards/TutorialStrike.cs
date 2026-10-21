@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Combat.History.Entries;
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Extensions;
+using IsekaiHero.IsekaiHeroCode.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -12,8 +13,10 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace IsekaiHero.IsekaiHeroCode.Cards;
 
-public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class TutorialStrike() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
+    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
+
     public override bool HasConditionalEffects => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -23,7 +26,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
     ];
 
     public override List<(string, string)> Localization => new CardLoc(
-        "Tutorial Sword",
+        "Tutorial Strike",
         "# Deal !Damage! damage.\nIf you have a Job or played a Power this turn, deal !ExtraDamage! more.");
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay play)
@@ -51,6 +54,7 @@ public sealed class TutorialSword() : IsekaiHeroCard(1, CardType.Attack, CardRar
 
     private bool HasJob()
     {
-        return Owner.Creature.Powers.Any(power => power.GetType().Name.StartsWith("Job", StringComparison.Ordinal));
+        return Owner.Creature.Powers.Any(power => power is AlchemistPower ||
+            power.GetType().Name.StartsWith("Job", StringComparison.Ordinal));
     }
 }

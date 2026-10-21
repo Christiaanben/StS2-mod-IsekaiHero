@@ -8,6 +8,7 @@ namespace IsekaiHero.IsekaiHeroCode.Relics;
 public sealed class BeginnersLuckCharm : IsekaiHeroRelic
 {
     private bool _used;
+    internal bool CanUse => !_used;
 
     public override RelicRarity Rarity => RelicRarity.Common;
     public override bool ShouldReceiveCombatHooks => true;

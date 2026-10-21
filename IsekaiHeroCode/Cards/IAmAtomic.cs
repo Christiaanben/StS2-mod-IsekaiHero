@@ -1,5 +1,6 @@
 using BaseLib.Abstracts;
 using IsekaiHero.IsekaiHeroCode.Extensions;
+using IsekaiHero.IsekaiHeroCode.Vfx;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -38,9 +39,12 @@ public sealed class IAmAtomic() : IsekaiHeroCard(3, CardType.Attack, CardRarity.
                 false);
         }
 
+        var effect = await AtomicVfx.Charge(Owner.Creature, play.PlayIndex > 0);
+        effect?.Detonate();
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this)
             .TargetingAllOpponents(combatState)
-            .WithHitFx("vfx/vfx_attack_blunt", null, "heavy_attack.mp3")
+            .WithNoAttackerAnim()
+            .WithHitFx(null, null, "heavy_attack.mp3")
             .Execute(choiceContext);
     }
 
