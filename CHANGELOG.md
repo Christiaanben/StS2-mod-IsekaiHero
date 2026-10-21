@@ -4,6 +4,8 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
+- Added original resting and shop character artwork with subtle breathing, preserving native room controls. Tracked the remaining character art and deferred multiplayer verification in the design doc.
+
 - Exploit can now activate the combat-only Fatal rewards on Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun without a kill. Real kills preserve bypasses; forced rewards never grant kill credit or permanent rewards.
 - Fixed Atomic's animation failing inside the game with a generated Godot callback exception. Replaced the custom C# node with native shapes/tweens and verified playback.
 - Added Ascendant Form, a 3-cost rare Power with two free Exploit bypasses per turn (three upgraded), original card art, and a remaining-use icon.
