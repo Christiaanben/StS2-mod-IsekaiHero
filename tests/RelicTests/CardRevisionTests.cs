@@ -44,6 +44,51 @@ static class CardRevisionTests
     }
     public static IEnumerable<(string, Func<Task>)> All()
     {
+        yield return ("native gold glow follows live conditions and qualifying enemies", async () =>
+        {
+            var p = Player(); var combat = p.Creature.CombatState!;
+            var shield = new ShieldBash { Owner = p };
+            Equal(false, shield.ShouldGlowGold);
+            p.Creature.Block = 1; Equal(true, shield.ShouldGlowGold);
+            p.Creature.Block = 0; Equal(false, shield.ShouldGlowGold);
+            var underdog = new UnderdogSpirit { Owner = p };
+            Equal(false, underdog.ShouldGlowGold);
+            await LevelPower.GainExp(Context, p.Creature, 8, null);
+            Equal(true, underdog.ShouldGlowGold);
+            var counter = new CounterRead { Owner = p };
+            Equal(false, counter.ShouldGlowGold);
+            var attacker = new Creature { Side = CombatSide.Enemy, Monster = new() { IntendsToAttack = true } };
+            combat.Enemies.Add(attacker); Equal(true, counter.ShouldGlowGold);
+            attacker.IsDead = true; Equal(false, counter.ShouldGlowGold);
+            Equal(false, counter.DidTriggerConditionalEffectThisPlay());
+            p.Creature.CombatState = null; Equal(false, shield.ShouldGlowGold);
+            Equal(false, new ShieldBash().ShouldGlowGold);
+        });
+        yield return ("gold glow previews bypasses without spending or recording triggers", async () =>
+        {
+            var p = Player(); var card = new ShieldBash { Owner = p };
+            var charm = new BeginnersLuckCharm { Owner = p }; p.Relics.Add(charm);
+            for (var i = 0; i < 5; i++) Equal(true, card.ShouldGlowGold);
+            Equal(0, charm.Flashes); Equal(true, charm.CanUse);
+            var play = new CardPlay(card, p.Creature.CombatState!.Enemies[0]);
+            await card.BeforeCardPlayed(play);
+            Equal(true, card.ShouldGlowGold); Equal(true, charm.CanUse);
+            Equal(false, card.DidTriggerConditionalEffectThisPlay());
+            await card.Play(Context, play); await card.AfterCardPlayed(Context, play);
+            p.Creature.Block = 0; Equal(false, card.ShouldGlowGold);
+            await PowerCmd.Apply<AscendantFormPower>(Context, p.Creature, 1, p.Creature, null);
+            var form = p.Creature.Powers.OfType<AscendantFormPower>().Single();
+            Equal(true, card.ShouldGlowGold); Equal(1, form.Remaining);
+            form.TryUse(); Equal(false, card.ShouldGlowGold);
+            await PowerCmd.Apply<ExploitPower>(Context, p.Creature, 1, p.Creature, null);
+            var fatal = new MobHunt { Owner = p };
+            Equal(true, fatal.ShouldGlowGold); Equal(false, fatal.DidConsumeExploitThisPlay());
+            var exploit = p.Creature.Powers.OfType<ExploitPower>().Single();
+            Equal(1, exploit.Amount); exploit.Amount = 0; Equal(false, fatal.ShouldGlowGold);
+            fatal.EnableConditionalEffectsForCombat(); Equal(true, fatal.ShouldGlowGold);
+            p.Creature.CombatState = new CombatState(); Equal(false, fatal.ShouldGlowGold);
+            Equal(false, new JobAlchemist { Owner = p }.ShouldGlowGold);
+        });
         yield return ("revised card numbers and upgrades", async () =>
         {
             var p = Player(); var enemy = p.Creature.CombatState!.Enemies[0];

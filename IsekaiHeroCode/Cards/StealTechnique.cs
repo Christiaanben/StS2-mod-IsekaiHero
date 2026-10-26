@@ -14,6 +14,8 @@ public sealed class StealTechnique() : IsekaiHeroCard(1, CardType.Attack, CardRa
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.HittableEnemies.Any(enemy => enemy.Powers.Any(power => power.GetTypeForAmount(power.Amount) == PowerType.Debuff)) == true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(7m, ValueProp.Move),

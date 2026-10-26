@@ -13,6 +13,8 @@ public sealed class CounterRead() : IsekaiHeroCard(1, CardType.Attack, CardRarit
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.HittableEnemies.Any(enemy => enemy.Monster?.IntendsToAttack == true) == true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(7m, ValueProp.Move),

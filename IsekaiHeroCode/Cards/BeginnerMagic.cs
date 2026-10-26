@@ -15,6 +15,8 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => PlayedSkillThisTurn();
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(5m, ValueProp.Move),
@@ -30,7 +32,7 @@ public sealed class BeginnerMagic() : IsekaiHeroCard(1, CardType.Attack, CardRar
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var damage = DynamicVars.Damage.BaseValue;
-        if (IsConditionalEffectActive(PlayedSkillThisTurn()))
+        if (IsConditionalEffectActive(IsNaturalConditionMet))
             damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage)

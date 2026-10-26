@@ -13,6 +13,8 @@ public sealed class RaidOpener() : IsekaiHeroCard(2, CardType.Attack, CardRarity
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.HittableEnemies.Any(enemy => enemy.CurrentHp == enemy.MaxHp) == true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(15m, ValueProp.Move),

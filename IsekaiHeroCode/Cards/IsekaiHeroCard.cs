@@ -27,6 +27,22 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
 
     public virtual bool HasConditionalEffects => false;
 
+    // The hand renderer polls the native hook and supplies the gold outline animation.
+    protected override bool ShouldGlowGoldInternal => Owner != null && CombatState != null &&
+        HasConditionalEffects && (CanBypassCondition || IsNaturalConditionMet);
+
+    // Fatal conditions are outcomes of a play, so only guaranteed bypasses preview them.
+    protected virtual bool IsNaturalConditionMet => false;
+
+    private bool HasConditionOverride => CombatState != null &&
+        ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
+        ReferenceEquals(conditionalOverride.CombatState, CombatState);
+
+    private bool CanBypassCondition => HasConditionOverride ||
+        Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.CanUse) ||
+        Owner.Creature.Powers.OfType<AscendantFormPower>().Any(power => power.Remaining > 0) ||
+        Owner.Creature.Powers.OfType<ExploitPower>().Any(power => power.Amount > 0);
+
     protected override IEnumerable<IHoverTip> ExtraHoverTips => HasConditionalEffects
         ? [HoverTipFactory.FromPower<ExploitPower>()]
         : [];
@@ -46,14 +62,10 @@ public abstract class IsekaiHeroCard(int cost, CardType type, CardRarity rarity,
 
     protected bool IsConditionalEffectActive(bool condition)
     {
-        var hasOverride = CombatState != null &&
-                          ConditionalOverrides.TryGetValue(this, out var conditionalOverride) &&
-                          ReferenceEquals(conditionalOverride.CombatState, CombatState);
+        var hasOverride = HasConditionOverride;
         // Hover/preview queries must never reserve a bypass or emit a trigger.
         if (!_resolvingPlay)
-            return condition || hasOverride || Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.CanUse) ||
-                Owner.Creature.Powers.OfType<AscendantFormPower>().Any(power => power.Remaining > 0) ||
-                Owner.Creature.Powers.OfType<ExploitPower>().Any(power => power.Amount > 0);
+            return condition || CanBypassCondition;
 
         var usedLuck = !condition && !hasOverride && CombatState != null &&
                        (_usedLuckThisPlay || Owner.Relics.OfType<BeginnersLuckCharm>().Any(relic => relic.TryUse()));

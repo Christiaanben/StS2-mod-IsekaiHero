@@ -15,6 +15,8 @@ public sealed class UnderdogSpirit() : IsekaiHeroCard(1, CardType.Attack, CardRa
 
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => LevelPower.GetLevel(Owner.Creature) >= RequiredLevel;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(6m, ValueProp.Move),
@@ -30,7 +32,7 @@ public sealed class UnderdogSpirit() : IsekaiHeroCard(1, CardType.Attack, CardRa
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var damage = DynamicVars.Damage.BaseValue;
-        if (IsConditionalEffectActive(LevelPower.GetLevel(Owner.Creature) >= RequiredLevel))
+        if (IsConditionalEffectActive(IsNaturalConditionMet))
             damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage)

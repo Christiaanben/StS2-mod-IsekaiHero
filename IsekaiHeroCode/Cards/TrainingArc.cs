@@ -15,6 +15,8 @@ public sealed class TrainingArc() : IsekaiHeroCard(1, CardType.Attack, CardRarit
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => PlayedSkillThisTurn();
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -39,7 +41,7 @@ public sealed class TrainingArc() : IsekaiHeroCard(1, CardType.Attack, CardRarit
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        if (!IsConditionalEffectActive(PlayedSkillThisTurn()))
+        if (!IsConditionalEffectActive(IsNaturalConditionMet))
             return;
 
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, play);

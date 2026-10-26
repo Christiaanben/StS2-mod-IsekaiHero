@@ -13,6 +13,8 @@ public sealed class ShieldBash() : IsekaiHeroCard(1, CardType.Attack, CardRarity
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => Owner.Creature.Block > 0;
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>

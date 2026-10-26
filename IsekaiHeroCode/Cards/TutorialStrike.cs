@@ -19,6 +19,8 @@ public sealed class TutorialStrike() : IsekaiHeroCard(1, CardType.Attack, CardRa
 
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => HasJob() || PlayedPowerThisTurn();
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(7m, ValueProp.Move),
@@ -34,7 +36,7 @@ public sealed class TutorialStrike() : IsekaiHeroCard(1, CardType.Attack, CardRa
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var damage = DynamicVars.Damage.BaseValue;
-        if (IsConditionalEffectActive(HasJob() || PlayedPowerThisTurn()))
+        if (IsConditionalEffectActive(IsNaturalConditionMet))
             damage += DynamicVars.ExtraDamage.BaseValue;
 
         await DamageCmd.Attack(damage).FromCard(this).Targeting(play.Target)
