@@ -156,6 +156,8 @@ namespace MegaCrit.Sts2.Core.Models
         public string SelectionScreenPrompt => "Select a card";
         public bool IsUpgraded { get; private set; }
         public virtual bool GainsBlock => false;
+        protected virtual bool ShouldGlowGoldInternal => false;
+        public bool ShouldGlowGold => ShouldGlowGoldInternal;
         protected MegaCrit.Sts2.Core.HoverTips.IHoverTip EnergyHoverTip => MegaCrit.Sts2.Core.HoverTips.HoverTipFactory.ForEnergy(this);
         public virtual IEnumerable<Entities.Cards.CardKeyword> CanonicalKeywords => [];
         public HashSet<Entities.Cards.CardKeyword> Keywords { get; } = [];

@@ -16,6 +16,8 @@ public sealed class BreakthroughStrike() : IsekaiHeroCard(0, CardType.Attack, Ca
 
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => LevelPower.LeveledUpThisTurn(Owner.Creature);
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(3m, ValueProp.Move),
@@ -31,7 +33,7 @@ public sealed class BreakthroughStrike() : IsekaiHeroCard(0, CardType.Attack, Ca
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var hitCount = DynamicVars.Repeat.IntValue;
-        if (IsConditionalEffectActive(LevelPower.LeveledUpThisTurn(Owner.Creature)))
+        if (IsConditionalEffectActive(IsNaturalConditionMet))
             hitCount++;
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)

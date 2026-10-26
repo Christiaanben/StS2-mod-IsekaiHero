@@ -16,6 +16,8 @@ public sealed class EmergencyDodge() : IsekaiHeroCard(0, CardType.Skill, CardRar
 
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => LevelPower.GetLevel(Owner.Creature) >= RequiredLevel;
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -32,7 +34,7 @@ public sealed class EmergencyDodge() : IsekaiHeroCard(0, CardType.Skill, CardRar
     {
         await CommonActions.CardBlock(this, play);
 
-        if (!IsConditionalEffectActive(LevelPower.GetLevel(Owner.Creature) >= RequiredLevel))
+        if (!IsConditionalEffectActive(IsNaturalConditionMet))
             return;
 
         await CreatureCmd.GainBlock(Owner.Creature, (BlockVar)DynamicVars["BonusBlock"], play);

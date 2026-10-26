@@ -13,6 +13,8 @@ public sealed class Duel() : IsekaiHeroCard(1, CardType.Attack, CardRarity.Uncom
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.HittableEnemies.Count() == 1;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),

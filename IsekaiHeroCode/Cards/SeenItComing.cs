@@ -14,6 +14,8 @@ public sealed class SeenItComing() : IsekaiHeroCard(1, CardType.Skill, CardRarit
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.HittableEnemies.Any(enemy => enemy.Monster?.IntendsToAttack == true) == true;
+
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>

@@ -13,6 +13,8 @@ public sealed class AntiBossArt() : IsekaiHeroCard(2, CardType.Attack, CardRarit
 {
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => CombatState?.Encounter?.RoomType is RoomType.Elite or RoomType.Boss;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(20m, ValueProp.Move),

@@ -16,6 +16,8 @@ public sealed class TwinBlades() : IsekaiHeroCard(1, CardType.Attack, CardRarity
 
     public override bool HasConditionalEffects => true;
 
+    protected override bool IsNaturalConditionMet => LevelPower.GetLevel(Owner.Creature) >= RequiredLevel;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(3m, ValueProp.Move),
@@ -31,7 +33,7 @@ public sealed class TwinBlades() : IsekaiHeroCard(1, CardType.Attack, CardRarity
         ArgumentNullException.ThrowIfNull(play.Target);
 
         var hitCount = DynamicVars.Repeat.IntValue;
-        if (IsConditionalEffectActive(LevelPower.GetLevel(Owner.Creature) >= RequiredLevel))
+        if (IsConditionalEffectActive(IsNaturalConditionMet))
             hitCount++;
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
