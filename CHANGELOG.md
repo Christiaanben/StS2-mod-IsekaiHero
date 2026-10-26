@@ -4,19 +4,31 @@ Player-facing changes for each Isekai Hero release are recorded here.
 
 ## [Unreleased]
 
-- Added original resting and shop character artwork with subtle breathing, preserving native room controls. Tracked the remaining character art and deferred multiplayer verification in the design doc.
+## [v0.13.0-alpha] - 2026-10-26
 
-- Exploit can now activate the combat-only Fatal rewards on Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun without a kill. Real kills preserve bypasses; forced rewards never grant kill credit or permanent rewards.
-- Fixed Atomic's animation failing inside the game with a generated Godot callback exception. Replaced the custom C# node with native shapes/tweens and verified playback.
-- Added Ascendant Form, a 3-cost rare Power with two free Exploit bypasses per turn (three upgraded), original card art, and a remaining-use icon.
-- Tutorial Sword is now Tutorial Strike and supports Strike Dummy. Combo Rush is now the zero-cost Breakthrough Strike: 3 damage twice (4 upgraded), with a third hit after leveling this turn; it also supports Strike Dummy. Card classes, files, and portraits now use the new names for native console discovery; internal IDs change accordingly. Existing art is retained.
-- Alchemist now grants 3 Block and 3 Vigor (5 each upgraded) on the first enemy debuff each turn, replacing its hidden target-specific damage. Its existing Slime potion-making art is preserved.
-- Negotiation now costs 0 and applies 1 Weak (2 upgraded), with 1 EXP in both versions.
-- Added a dedicated I Am Atomic charge, declaration, and violet detonation animation, with fast/replay and reduced-effects variants.
-- Fixed Tutorial Strike missing the Alchemist Job, preview checks recording Exploit triggers, and repeated Exploit settlement. Added focused regression checks.
+### Added
 
+- Added Ascendant Form, a rare 3-cost Power that grants two free conditional-effect bypasses each turn (three upgraded), with original card art and a remaining-use icon.
+- Conditional cards now show the base game's animated gold outline when their bonus is available, including available Exploit, Beginner's Luck, and Ascendant Form bypasses.
+- Added original resting and shop character artwork with subtle breathing animations.
+- Added a dedicated I Am Atomic charge, declaration, and violet detonation animation, including fast/replay and reduced-effects variants.
 
+### Changed
 
+- Renamed Tutorial Sword to Tutorial Strike and Combo Rush to Breakthrough Strike. Both now support Strike Dummy. Breakthrough Strike costs 0 and deals 3 damage twice (4 upgraded), with a third hit after leveling up that turn.
+- Alchemist now grants 3 Block and 3 Vigor (5 each upgraded) on the first enemy debuff each turn.
+- Negotiation now costs 0, applies 1 Weak (2 upgraded), and grants 1 EXP.
+- Exploit can now activate the combat-only Fatal rewards on Overkill, Mob Hunt, Last-Hit Bonus, and Truck-kun without a kill. Forced rewards do not grant kill credit or permanent rewards; real kills preserve available bypasses.
+
+### Fixed
+
+- Fixed Tutorial Strike failing to recognize the Alchemist Job.
+- Fixed conditional previews recording Exploit triggers and repeated Exploit settlement. Checking the gold outline does not spend bypass uses.
+- Fixed I Am Atomic's animation failing in game.
+
+### Compatibility
+
+- Tutorial Strike and Breakthrough Strike use new internal card IDs. Existing runs containing Tutorial Sword or Combo Rush may be incompatible; starting a new run is recommended.
 
 ## [v0.12.0-alpha] - 2026-10-19
 
