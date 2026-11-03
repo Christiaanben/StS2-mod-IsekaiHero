@@ -3,6 +3,8 @@
 // Production relics, card condition resolution, and EXP engine are linked unchanged.
 namespace BaseLib.Abstracts
 {
+    public interface ITomeCard { }
+    public interface ITranscendenceCard { MegaCrit.Sts2.Core.Models.CardModel GetTranscendenceTransformedCard(); }
     public class CardLoc(string name, string description, params (string, string)[] extra) : List<(string, string)> { }
     public class RelicLoc(string name, string description, string flavor) : List<(string, string)> { }
     public class PowerLoc : List<(string, string)>
@@ -46,13 +48,14 @@ namespace MegaCrit.Sts2.Core.Entities.Relics
 namespace MegaCrit.Sts2.Core.Entities.Cards
 {
     public enum CardType { Skill, Attack, Power }
-    public enum CardRarity { Common, Uncommon, Rare }
+    public enum CardRarity { Common, Uncommon, Rare, Basic, Ancient }
     public enum TargetType { None, AnyEnemy, AllEnemies, Self }
     public enum CardTag { Strike }
     public enum CardKeyword { Retain, Exhaust }
-    public enum PileType { Hand, Discard, Draw, Exhaust }
+    public enum PileType { Hand, Discard, Draw, Exhaust, Play }
     public class CardPile
     {
+        public PileType Type { get; set; }
         public List<MegaCrit.Sts2.Core.Models.CardModel> Cards { get; } = [];
         public static CardPile? Get(PileType type, MegaCrit.Sts2.Core.Entities.Players.Player player) => player.Piles[type];
     }
@@ -72,6 +75,10 @@ namespace MegaCrit.Sts2.Core.Combat
     public interface ICombatState { int RoundNumber { get; } }
     public class CombatState : ICombatState
     {
+        private readonly HashSet<MegaCrit.Sts2.Core.Models.CardModel> _cards = [];
+        public bool ContainsCard(MegaCrit.Sts2.Core.Models.CardModel card) => _cards.Contains(card);
+        public void AddCard(MegaCrit.Sts2.Core.Models.CardModel card, Entities.Players.Player owner)
+        { card.Owner = owner; _cards.Add(card); }
         public int RoundNumber { get; set; } = 1;
         public CombatSide CurrentSide { get; set; }
         public List<MegaCrit.Sts2.Core.Entities.Creatures.Creature> Enemies { get; } = [];
@@ -92,7 +99,7 @@ namespace MegaCrit.Sts2.Core.Entities.Players
     {
         public Player() { Creature = new() { Player = this }; }
         public Creatures.Creature Creature { get; }
-        public Dictionary<Entities.Cards.PileType, Entities.Cards.CardPile> Piles { get; } = Enum.GetValues<Entities.Cards.PileType>().ToDictionary(x => x, _ => new Entities.Cards.CardPile());
+        public Dictionary<Entities.Cards.PileType, Entities.Cards.CardPile> Piles { get; } = Enum.GetValues<Entities.Cards.PileType>().ToDictionary(x => x, x => new Entities.Cards.CardPile { Type = x });
         public int Gold;
         public decimal Energy;
         public List<IsekaiHero.IsekaiHeroCode.Relics.IsekaiHeroRelic> Relics { get; } = [];
@@ -130,6 +137,7 @@ namespace MegaCrit.Sts2.Core.Entities.Creatures
 }
 namespace MegaCrit.Sts2.Core.Models
 {
+    public static class ModelDb { public static T Card<T>() where T : CardModel, new() => new(); }
     public class ModelId { public string Entry => "TEST"; }
     public abstract class Model
     {
@@ -149,6 +157,8 @@ namespace MegaCrit.Sts2.Core.Models
     }
     public class CardModel : Model
     {
+        public bool HasBeenRemovedFromState { get; set; }
+        public Entities.Cards.CardPile? Pile => Owner.Piles.Values.FirstOrDefault(pile => pile.Cards.Contains(this));
         public Entities.Players.Player Owner { get; set; } = null!;
         public Combat.CombatState? CombatState => Owner.Creature.CombatState;
         public virtual int BaseCost => 0;
@@ -337,6 +347,7 @@ namespace MegaCrit.Sts2.Core.Combat
         public Entities.Cards.CardPlay CardPlay => play;
         public CombatState Combat => combat;
         public int Round { get; } = combat.RoundNumber;
+        public CombatSide Side { get; } = combat.CurrentSide;
     }
 }
 namespace MegaCrit.Sts2.Core.Combat.History.Entries
@@ -344,7 +355,7 @@ namespace MegaCrit.Sts2.Core.Combat.History.Entries
     public static class HistoryExtensions
     {
         public static bool HappenedThisTurn(this Combat.HistoryEntry entry, Combat.CombatState? combat) =>
-            entry.Combat == combat && entry.Round == combat?.RoundNumber;
+            entry.Combat == combat && entry.Round == combat?.RoundNumber && entry.Side == combat.CurrentSide;
     }
 }
 namespace BaseLib.Utils
@@ -361,7 +372,10 @@ namespace MegaCrit.Sts2.Core.Entities.Cards
     public class CardEnergyCost
     {
         private readonly List<(int Value, bool UntilPlayed)> _offsets = [];
-        public bool CostsX => false;
+        public bool CostsX { get; set; }
+        public int? TurnCost { get; private set; }
+        public void SetThisTurn(int cost) => TurnCost = cost;
+        public void EndOfTurnCleanup() => TurnCost = null;
         public int Offset => _offsets.Sum(x => x.Value);
         public void AddUntilPlayed(int value) => _offsets.Add((value, true));
         public void AddThisCombat(int value) => _offsets.Add((value, false));
@@ -387,6 +401,9 @@ namespace MegaCrit.Sts2.Core.Commands
         public static Task Add(CardModel card, PileType pile)
         {
             foreach (var existing in card.Owner.Piles.Values) existing.Cards.Remove(card);
+            if (pile == PileType.Hand && card.Owner.Piles[PileType.Hand].Cards.Count >= 10)
+                pile = PileType.Discard;
+            card.Owner.Piles[pile].Type = pile;
             card.Owner.Piles[pile].Cards.Add(card);
             return Task.CompletedTask;
         }
@@ -432,17 +449,28 @@ namespace IsekaiHero.IsekaiHeroCode.Vfx
 }
 namespace MegaCrit.Sts2.Core.CardSelection
 {
-    public class CardSelectorPrefs(string prompt, int count) { }
+    public class CardSelectorPrefs(string prompt, int count)
+    {
+        public int Max { get; } = count;
+        public bool Cancelable { get; set; }
+        public CardSelectorPrefs(string prompt, int min, int max) : this(prompt, max) { }
+    }
 }
 namespace MegaCrit.Sts2.Core.Commands
 {
     public static class CardSelectCmd
     {
+        public static Func<IEnumerable<Models.CardModel>, IEnumerable<Models.CardModel>>? Select;
+        public static List<Models.CardModel> LastCandidates { get; private set; } = [];
+        public static int LastMax { get; private set; }
         public static Task<IEnumerable<Models.CardModel>> FromHand(GameActions.Multiplayer.PlayerChoiceContext context,
             Entities.Players.Player player, CardSelection.CardSelectorPrefs prefs, object? filter, Models.CardModel source) =>
             Task.FromResult<IEnumerable<Models.CardModel>>(player.Piles[Entities.Cards.PileType.Hand].Cards.Take(1).ToArray());
         public static Task<IEnumerable<Models.CardModel>> FromSimpleGrid(GameActions.Multiplayer.PlayerChoiceContext context,
-            IEnumerable<Models.CardModel> cards, Entities.Players.Player player, CardSelection.CardSelectorPrefs prefs) =>
-            Task.FromResult<IEnumerable<Models.CardModel>>(cards.Take(1).ToArray());
+            IEnumerable<Models.CardModel> cards, Entities.Players.Player player, CardSelection.CardSelectorPrefs prefs)
+        {
+            LastCandidates = cards.ToList(); LastMax = prefs.Max;
+            return Task.FromResult<IEnumerable<Models.CardModel>>((Select?.Invoke(LastCandidates) ?? LastCandidates.Take(1)).Take(prefs.Max).ToArray());
+        }
     }
 }
