@@ -7,6 +7,9 @@
     <UseAppHost>false</UseAppHost>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../IsekaiHeroCode/Cards/Grind.cs" Link="Production/Grind.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/PowerLeveling.cs" Link="Production/PowerLeveling.cs" />
+    <Compile Include="../../IsekaiHeroCode/Cards/NewGamePlus.cs" Link="Production/NewGamePlus.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/Overkill.cs" Link="Production/Overkill.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/MobHunt.cs" Link="Production/MobHunt.cs" />
     <Compile Include="../../IsekaiHeroCode/Cards/LastHitBonus.cs" Link="Production/LastHitBonus.cs" />

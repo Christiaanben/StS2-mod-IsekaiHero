@@ -302,6 +302,7 @@ Test("non-player creatures receive stats without energy", async () =>
 });
 
 tests.AddRange(CardRevisionTests.All());
+tests.AddRange(AncientCardTests.All());
 var failed = 0;
 foreach (var (name, body) in tests)
 {
@@ -309,6 +310,7 @@ foreach (var (name, body) in tests)
     CombatManager.Instance.IsEnding = false;
     CreatureCmd.Hits.Clear(); CreatureCmd.OnDamage = null; CreatureCmd.OnHeal = null; PowerCmd.Events.Clear();
     PlayerCmd.EndedTurns.Clear(); CombatManager.Instance.History.CardPlaysFinished.Clear(); CardPileCmd.Drawn = 0;
+    CardSelectCmd.Select = null;
     try { await body(); Console.WriteLine($"PASS {name}"); }
     catch (Exception e) { failed++; Console.Error.WriteLine($"FAIL {name}: {e.Message}"); }
 }

@@ -2,8 +2,8 @@
 
 > **Mod:** IsekaiHero · **Game:** Slay the Spire 2 (Early Access) · **Stack:** C# / [BaseLib-StS2](https://github.com/Alchyr/BaseLib-StS2) · Steam Workshop since game v0.107.1
 > **Character:** Isekai Hero (`ISEKAIHERO-ISEKAI_HERO`)
-> **Status:** Design v3.3 — implementation updated 2026-10-20. This file is the **single source of truth**; balance and in-game acceptance remain provisional.
-> **Tracking:** checked active entries exist in code; unchecked entries remain planned. Historical struck-through entries are excluded from the 88 slots. Implementation does not imply in-game acceptance.
+> **Status:** Design v3.4 — Ancient rewards implemented 2026-11-02. This file is the **single source of truth**; balance and in-game acceptance remain provisional.
+> **Tracking:** checked active entries exist in code; unchecked entries remain planned. Historical struck-through entries are excluded from the 89 slots. Implementation does not imply in-game acceptance.
 
 ---
 
@@ -23,7 +23,7 @@ The following is **our chosen scope**, not a universal base-game template. The r
 
 | Slot | Planned scope |
 |---|---|
-| Cards | 4 Basic + 20 Common + 37 Uncommon + 26 Rare + 1 Ancient = 88 active designs |
+| Cards | 4 Basic + 20 Common + 37 Uncommon + 26 Rare + 2 Ancient = 89 active designs |
 | Starter deck | 4 Strike + 4 Defend + Grind + Danger Sense |
 | Relics | 1 Starter + 1 upgraded Starter + 1 Common + 2 Uncommon + 3 Rare + 1 Shop = 9 |
 | Potions | 3, one per rarity |
@@ -115,7 +115,7 @@ The installed game has a Quest card type with map/event/rest-site uses. These **
 - Slay counts an eligible non-minion enemy killed by the owner's card or owned effect while the Quest is held. Damage objectives count actual enemy HP lost from the owner's cards/effects, not blocked damage or allies' output. Boss Slayer accumulates against living Elite/Boss enemies only; it does not require lethal.
 - All uncompleted Quests vanish at combat end. Completing the final enemy's kill may not produce useful combat rewards; do not promise otherwise.
 
-**Quest tokens — 8, outside the 88-card pool:**
+**Quest tokens — 8, outside the 89-card pool:**
 
 - [ ] **Slay** — Kill a non-minion enemy.<br>Reward: gain 4 EXP. Draw 1 card.
 - [ ] **Guard Duty** — Gain 12 Block in one turn.<br>Reward: gain 2 EXP and 8 Block.
@@ -141,7 +141,7 @@ Quest objectives are displayed above a separate **Reward** line, with visible pr
 
 ---
 
-## 5. Card list — 88 cards
+## 5. Card list — 89 cards
 
 Format: `Name — cost · card text (upgrade) · art`. Only the effect before the upgrade/art metadata belongs on the card. `<br>` marks an intended line break. Rules and implementation details belong in §5.6 or the shared mechanics, not in the description. Write “If X, effect” rather than “Exploit (X): effect”; retain the Exploit resource and shared tooltip.
 **Legend:** `[x]` = active effect already implemented; `[ ]` = pending effect. `~~Struck-through~~` checked entries are **historical implemented versions**, immediately followed by the pending replacement; exclude historical entries from all totals. Existing code is evidence of implementation, not full playtest approval. Art is retained when an effect changes. Shared engine/UI tasks remain tracked in §12 even for unchanged cards.
@@ -288,11 +288,14 @@ Format: `Name — cost · card text (upgrade) · art`. Only the effect before th
 - [ ] **Legend in the Making** — 2⚡ · Gain 8 Block. Choose 1 of 3 Quests.<br>Whenever a non-minion enemy dies, Level Up. *(U: 11 Block)* · Art: bards already writing the song mid-battle
 - [ ] **Protagonist Privilege** — 2⚡ · Repeat the first Exploit bonus you trigger each turn.<br>Does not stack. *(U: first 2 bonuses)* · Art: the rules apply to everyone else
 
-### 5.5 Ancient cards (1 — full-art special, obtainable only from Ancients)
+### 5.5 Ancient cards (2 — special rewards, obtainable only from Ancients)
 
-- [ ] **NEW GAME+** — 2⚡ · Power · Gain 4 EXP.<br>At the start of your turn, gain 2 EXP and 1 Exploit. *(U: recurring EXP becomes 3)* · Art: title screen with a save file that remembers everything
+- [x] **NEW GAME+** — 1⚡ · Skill · Choose up to 3 cards you played this turn.<br>Return them to your hand. They cost 0 this turn.<br>Exhaust. *(U: up to 4 cards)* · Dusty Tome grants an upgraded copy. Art: the hero reaches through a cyan restart window as spectral techniques return to his hand; thematic inspiration from Return by Death checkpoints (*Re:Zero*).
+- [x] **Power Leveling** — 1⚡ · Attack · Gain 8 EXP.<br>Deal 6 damage twice. *(U: 12 EXP, 8 damage per hit)* · Archaic Tooth transforms Grind, preserving its upgrade and enchantment. Art: the hero cuts through labyrinth monsters amid progression rings; thematic inspiration from Kumoko's grinding and evolution (*So I’m a Spider, So What?*).
 
-**Active set totals:** 35 Attacks / 34 Skills / 19 Powers = 88. Historical struck-through entries are excluded. These are our scope targets, not proof of balance.
+Both cards are implemented, have original generated portraits, and use BaseLib Ancient acquisition hooks. They are excluded from ordinary rewards by Ancient rarity. With no Grind, Archaic Tooth retains its existing unavailable-option behavior. Build/headless verification does not establish in-game acceptance. Exact art prompts and asset paths: [Ancient reward art provenance](art/AncientRewards.md).
+
+**Active set totals:** 36 Attacks / 35 Skills / 18 Powers = 89. Historical struck-through entries are excluded. These are our scope targets, not proof of balance.
 
 **Unchanged implementation clarifications:** Item Box grants Retain for the rest of combat, not only this turn. Grinding Montage triggers after the normal draw, chooses distinct Attack/Skill cards, upgrades an upgradable card, otherwise discounts a non-X-cost card for this turn. Cross-Class Combo counts played card types, not character classes; unplayable Quests do not count. Confirm all three in the shared acceptance pass.
 
@@ -328,7 +331,8 @@ These specify execution and verification. They must not be appended to card desc
 | Hero's Judgment | Each actual Level Up while held adds 4/6 damage before later relic reactions. Preserve earned damage through plays/discards for this combat, reset between combats, and display current damage. Upgrading changes future growth, not earlier gains. No Exploit condition. |
 | EXPLOSION! | Resolve AoE damage, then request the owner's normal turn end if combat is still active and the owner alive. No fatigue Power or next-turn Attack restriction. |
 | I Am Atomic | Each qualifying bonus reduces this copy's cost until played, across turns and piles. Native when-played cleanup expires those discounts without clearing unrelated modifiers. Exhaust remains. |
-| NEW GAME+ | Grant 4 EXP on play, then 2/3 EXP and 1 Exploit each subsequent turn. No Level-Up listener, cap-dependent fallback, or special duplicate rule. Copies stack normally. EXP can overflow; Exploit remains useful at the cap. |
+| NEW GAME+ | Dusty Tome target via ITomeCard. Select distinct original instances from the owner’s completed plays this turn, including Powers, exhausted cards, already-held cards, and earlier NEW GAME+ copies. Exclude the currently resolving instance and all cards in the Play pile. Restore removed Power instances without removing existing effects; replay uses normal stacking. Return with native hand-overflow handling. Set non-X Energy costs to 0 for this turn; additional resource costs and play restrictions remain. No shared repeat limit: two copies may intentionally retrieve one another indefinitely. The resolving copy becomes eligible only for a later play after it finishes. |
+| Power Leveling | Grind implements ITranscendenceCard; the existing Archaic Tooth mapping handles upgrade/enchantment preservation and exclusion from Dusty Tome fallback. Gain EXP and fully resolve Level-Up rewards/reactions before issuing a single two-hit attack command, so newly earned Strength applies to both hits. No Exhaust. |
 
 **Readability acceptance:** inspect unupgraded and upgraded cards at normal game size. Prefer 25 words or fewer for a basic/common effect and 35 or fewer for other cards; these are review targets, not reasons to omit essential timing. Alchemist, Route Guide, and Grinding Montage are allowed modestly longer text because they express one connected operation. If their rendered cards still feel dense, reopen the effect rather than shrink the font.
 
@@ -447,6 +451,8 @@ Card art = stylized homage scenes. For a free fan mod this is community-normal, 
 | [x] | System Menu | *So I'm a Spider, So What?* | Kumoko manipulates her visible status screen and branching skill tree in the Great Elroe Labyrinth. |
 | [x] | Steal Technique | *BOFURI* | Maple survives the Poison Dragon, then acquires poison resistance and Devour from the encounter. |
 | [x] | Map Hack | *Log Horizon* | Shiroe routes the raid party around the obvious path using a glowing dungeon map. |
+| [x] | Power Leveling | *So I’m a Spider, So What?* | Thematic inspiration: Kumoko’s grinding/evolution in the Great Elroe Labyrinth. Original human hero, monster silhouettes and progression rings. [Assets and exact prompt](art/AncientRewards.md#power-leveling). |
+| [x] | NEW GAME+ | *Re:Zero* | Thematic inspiration: Return by Death checkpoint awakenings with retained knowledge. Original hero reclaims spectral techniques through a restart window. [Assets and exact prompt](art/AncientRewards.md#new-game). |
 | [x] | Game Knowledge | *No Game No Life* | Sora realizes the living-chess match does not follow ordinary chess rules and exploits that discovery. |
 
 ### 11.1 I Am Atomic — animation
@@ -484,7 +490,8 @@ Room-art assets, integration, generation prompts and verification are documented
 - [x] **Phase 2 — Selected v3.2 card revisions:** implement the selected effects, conditional/Fatal text, until-played Atomic discounts, and turn-ending EXPLOSION. Headless behavior verification and build checks are tracked with the PR; in-game acceptance remains Phase 5.
 - [x] **Phase 2b — v3.3:** card revisions, Ascendant Form art/icon, combat-only Fatal bypasses, and Atomic animation implemented. Build and focused regressions pass; Atomic and Exploit behavior confirmed in playtests.
 - [ ] **Phase 3 — Combat Quests:** eight tokens, eligible offers, bounded title completion, progress windows, abandonment, delayed rewards, full-hand behavior, and owner-local co-op tracking. Implement the common/uncommon generators before judging rare Quest payoffs.
-- [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and Ancient acquisition hooks. Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
+- [x] **Phase 2c — Ancient rewards (2026-11-02):** Power Leveling, NEW GAME+, BaseLib reward hooks, original portraits and prompt provenance implemented. Headless coverage added; native Darv, Power replay, card layout, and transformation acceptance remain pending.
+- [ ] **Phase 4 — Complete active pool:** finish all remaining unchecked cards, nine relics, three potions, three Jobs, and remaining Ancient acquisition hooks (Admin Mode). Replace the legacy Training Arc Attack with its planned Power; Return by Death is already the active rescue Power. Truck-kun remains Uncommon.
 - [ ] **Phase 5 — Interaction and fun acceptance:** complete §9 deterministic checks, Act 1 exploration, and comparative full runs; log decision quality and stall incentives as well as wins. Then tune numbers and rarity.
 - [ ] **Phase 6 — Release:** finish localization for remaining pending designs; selected implemented cards already use v3.2 wording; render both upgrade states at normal card size; keep §5.6 developer notes out of descriptions. Refresh README pool counts and changelog; verify active counts and acquisition rules before release.
 
@@ -492,7 +499,8 @@ Room-art assets, integration, generation prompts and verification are documented
 
 ## 13. Open questions (for future sessions)
 
-- [ ] Does the STS2 mod API expose Ancient-encounter reward pools (needed for the Ancient card + Admin Mode upgrade)?
+- [x] **Ancient cards:** BaseLib ITomeCard registers NEW GAME+ for Dusty Tome; ITranscendenceCard on Grind registers Power Leveling for Archaic Tooth.
+- [ ] Identify the Ancient acquisition hook for The System: Admin Mode; card hooks above do not implement this relic upgrade.
 - [ ] Should EXP-on-kill live on the character (safe from relic loss) or on The System relic (matches Bound Phylactery precedent)? Currently: relic.
 - [ ] The clause and the buff share one name (Exploit). If playtests show players think a clause *requires* the buff, rename the **buff** to **Cheat** (genre-perfect: "Gain 2 Cheat") and keep Exploit on cards. Override stays either way.
 - [ ] Which base-game conditionals make the initial Exploit compatibility list? Audit after Phase 1 event contracts are stable; shared-pool tests are part of Phase 5.
